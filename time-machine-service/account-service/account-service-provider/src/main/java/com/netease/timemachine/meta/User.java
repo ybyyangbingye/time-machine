@@ -22,18 +22,15 @@ public class User implements Serializable {
 
     private String phone;
 
-    private Integer identification;
-
     private String address;
 
     private String imgUrl;
 
     private Date createTime;
 
-    public User(String userName, String phone, Integer identification, String imgUrl, Date createTime) {
+    public User(String userName, String phone, String imgUrl, Date createTime) {
         this.userName = userName;
         this.phone = phone;
-        this.identification = identification;
         this.imgUrl = imgUrl;
         this.createTime = createTime;
     }

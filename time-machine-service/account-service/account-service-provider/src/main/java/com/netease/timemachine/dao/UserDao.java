@@ -17,8 +17,8 @@ public interface UserDao {
      * 插入User对象
      * @param user
      */
-    @Insert("insert into user(user_name,phone,identification,address,imgUrl,create_time) " +
-            "values(#{userName},#{phone},#{identification},#{address},#{imgUrl},#{createTime})")
+    @Insert("insert into user(user_name,phone,address,imgUrl,create_time) " +
+            "values(#{userName},#{phone},#{address},#{imgUrl},#{createTime})")
     void insertUser(User user);
 
     /**

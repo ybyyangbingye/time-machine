@@ -25,16 +25,13 @@ public class UserDTO implements Serializable {
 
     private String phone;
 
-    private Integer identification;
-
     private String address;
 
     private String imgUrl;
 
-    public UserDTO(String userName, String phone, Integer identification, String imgUrl) {
+    public UserDTO(String userName, String phone, String imgUrl) {
         this.userName = userName;
         this.phone = phone;
-        this.identification = identification;
         this.imgUrl = imgUrl;
     }
 }

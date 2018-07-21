@@ -1,4 +1,4 @@
-package com.netease.timemachine.vo.account;
+package com.netease.timemachine.account.vo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

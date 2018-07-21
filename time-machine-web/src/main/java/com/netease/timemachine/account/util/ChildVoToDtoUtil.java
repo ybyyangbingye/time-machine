@@ -1,7 +1,7 @@
-package com.netease.timemachine.util.account;
+package com.netease.timemachine.account.util;
 
 import com.netease.timemachine.dto.ChildDTO;
-import com.netease.timemachine.vo.account.ChildVO;
+import com.netease.timemachine.account.vo.ChildVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,6 @@ import java.util.List;
  * @Date: Created in 16:51 2018/7/18
  **/
 public class ChildVoToDtoUtil {
-
-
 
     /**
      * ChildDTO集合转ChildVO集合

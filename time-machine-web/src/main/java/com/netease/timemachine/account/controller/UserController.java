@@ -1,19 +1,21 @@
-package com.netease.timemachine.controller.account;
+package com.netease.timemachine.account.controller;
 
 import com.netease.timemachine.dto.ChildDTO;
 import com.netease.timemachine.dto.UserDTO;
 import com.netease.timemachine.service.UserService;
-import com.netease.timemachine.util.account.ChildVoToDtoUtil;
-import com.netease.timemachine.util.account.ResponseView;
-import com.netease.timemachine.util.account.UserVoToDtoUtil;
-import com.netease.timemachine.vo.account.ChildVO;
-import com.netease.timemachine.vo.account.UserVO;
+import com.netease.timemachine.account.util.ChildVoToDtoUtil;
+import com.netease.timemachine.account.util.FileUtil;
+import com.netease.timemachine.account.util.ResponseView;
+import com.netease.timemachine.account.util.UserVoToDtoUtil;
+import com.netease.timemachine.account.vo.ChildVO;
+import com.netease.timemachine.account.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -57,9 +59,20 @@ public class UserController {
                                      @RequestParam(required = false) String phone,
                                      @RequestParam(required = false) Integer identification,
                                      @RequestParam(required = false) String address,
-                                     @RequestParam(required = false) String imgUrl){
-        System.out.println(imgUrl != null);
+                                     @RequestParam(required = false) MultipartFile imgUrl,
+                                     HttpServletRequest request){
         //userService.insertUser(UserVoToDtoUtil.UserVoToDto(userVO));
+        String contentType = imgUrl.getContentType();
+        String fileName = imgUrl.getOriginalFilename();
+        System.out.println("fileName-->" + fileName);
+        System.out.println("getContentType-->" + contentType);
+        System.out.println("size-->" + imgUrl.getSize());
+        String filePath = "D://imgupload/";
+        try {
+            FileUtil.uploadFile(imgUrl.getBytes(), filePath, fileName);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
         return ResponseView.success("", "添加成功");
     }
 

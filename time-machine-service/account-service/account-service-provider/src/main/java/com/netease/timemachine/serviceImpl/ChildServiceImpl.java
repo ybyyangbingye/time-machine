@@ -33,12 +33,8 @@ public class ChildServiceImpl implements ChildService {
     }
 
     @Override
-    public void insertGroup(Long childId, Long userId) {
-        childDao.insertGroup(childId, userId);
-    }
-
-    @Override
     public void updateChild(ChildDTO childDTO) {
-        childDao.updateChild(ChildDtoToMetaUtil.childDtoToMeta(childDTO));
+        Child child = ChildDtoToMetaUtil.childDtoToMeta(childDTO);
+        childDao.updateChild(child);
     }
 }

@@ -1,7 +1,7 @@
-package com.netease.timemachine.util.account;
+package com.netease.timemachine.account.util;
 
 import com.netease.timemachine.dto.UserDTO;
-import com.netease.timemachine.vo.account.UserVO;
+import com.netease.timemachine.account.vo.UserVO;
 
 /**
  * @author: wqh
@@ -18,7 +18,6 @@ public class UserVoToDtoUtil {
         userVO.setUserId(userDTO.getUserId());
         userVO.setUserName(userDTO.getUserName());
         userVO.setPhone(userDTO.getPhone());
-        userVO.setIdentification(userDTO.getIdentification());
         userVO.setAddress(userDTO.getAddress());
         userVO.setImgUrl(userDTO.getImgUrl());
         return userVO;
@@ -32,7 +31,6 @@ public class UserVoToDtoUtil {
         userDTO.setUserId(userVO.getUserId());
         userDTO.setUserName(userVO.getUserName());
         userDTO.setPhone(userVO.getPhone());
-        userDTO.setIdentification(userVO.getIdentification());
         userDTO.setImgUrl(userVO.getImgUrl());
         userDTO.setAddress(userVO.getAddress());
         return userDTO;

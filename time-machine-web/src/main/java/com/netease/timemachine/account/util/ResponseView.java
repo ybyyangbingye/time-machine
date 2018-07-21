@@ -1,4 +1,4 @@
-package com.netease.timemachine.util.account;
+package com.netease.timemachine.account.util;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

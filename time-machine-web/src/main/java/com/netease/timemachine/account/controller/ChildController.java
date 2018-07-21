@@ -1,10 +1,12 @@
-package com.netease.timemachine.controller.account;
+package com.netease.timemachine.account.controller;
 
 import com.netease.timemachine.dto.ChildDTO;
+import com.netease.timemachine.dto.GroupDTO;
 import com.netease.timemachine.service.ChildService;
-import com.netease.timemachine.util.account.ChildVoToDtoUtil;
-import com.netease.timemachine.util.account.ResponseView;
-import com.netease.timemachine.vo.account.ChildVO;
+import com.netease.timemachine.service.GroupService;
+import com.netease.timemachine.account.util.ChildVoToDtoUtil;
+import com.netease.timemachine.account.util.ResponseView;
+import com.netease.timemachine.account.vo.ChildVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +23,16 @@ public class ChildController {
     @Autowired
     private ChildService childService;
 
+    @Autowired
+    private GroupService groupService;
+
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public ResponseEntity insertChild(@RequestBody ChildVO childVO){
         ChildDTO childDTO = ChildVoToDtoUtil.childVoToDto(childVO);
         Long childId = childService.insertChild(childDTO);
-        childService.insertGroup(childId, childVO.getUserId());
+        Long userId = childVO.getUserId();
+        GroupDTO groupDTO = new GroupDTO(childId, userId, childVO.getIdentification(), 1);
+        groupService.insertGroup(groupDTO);
         return ResponseView.success(null, "添加成功");
     }
 
