@@ -1,10 +1,9 @@
 package com.netease.timemachine.mine.dto;
 
+import com.netease.timemachine.common.dto.BaseDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author zhongweichang
@@ -13,21 +12,15 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
-public class FeedBackDTO implements Serializable {
+public class FeedBackDTO extends BaseDTO implements Serializable {
 
     private static final long serialVersionUID = 1478027236204405621L;
-
-    private Long id;
 
     private String content;
 
     private String imageObj;
 
     private Long userId;
-
-    private Date gmtCreate;
-
-    private Date gmtUpdate;
 
 
 }
