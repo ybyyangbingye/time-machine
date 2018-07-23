@@ -1,6 +1,6 @@
 package com.netease.timemachine.account.util;
 
-import com.netease.timemachine.dto.UserDTO;
+import com.netease.timemachine.account.dto.UserDTO;
 import com.netease.timemachine.account.vo.UserVO;
 
 /**

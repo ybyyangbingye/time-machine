@@ -1,6 +1,6 @@
 package com.netease.timemachine.account.util;
 
-import com.netease.timemachine.dto.ChildDTO;
+import com.netease.timemachine.account.dto.ChildDTO;
 import com.netease.timemachine.account.vo.ChildVO;
 
 import java.util.ArrayList;

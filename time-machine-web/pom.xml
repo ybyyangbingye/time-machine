@@ -14,13 +14,15 @@
     <dependencies>
         <dependency>
             <groupId>com.netease</groupId>
-            <artifactId>account-service-provider</artifactId>
+            <artifactId>time-machine-service-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.netease</groupId>
-            <artifactId>auth-service</artifactId>
+            <artifactId>time-machine-service-provider</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
     </dependencies>
 
     <build>

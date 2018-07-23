@@ -1,8 +1,8 @@
 package com.netease.timemachine.account.controller;
 
-import com.netease.timemachine.dto.ChildDTO;
-import com.netease.timemachine.dto.UserDTO;
-import com.netease.timemachine.service.UserService;
+import com.netease.timemachine.account.dto.ChildDTO;
+import com.netease.timemachine.account.dto.UserDTO;
+import com.netease.timemachine.account.service.UserService;
 import com.netease.timemachine.account.util.ChildVoToDtoUtil;
 import com.netease.timemachine.account.util.FileUtil;
 import com.netease.timemachine.account.util.ResponseView;

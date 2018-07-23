@@ -21,14 +21,4 @@ public class KafkaUtil {
     @Autowired
     private KafkaTemplate kafkaTemplate;
 
-    @Value("${spring.kafka.consumer.group-id}")
-    private String t;
-
-    public String getT() {
-        return t;
-    }
-
-    public void setT(String t) {
-        this.t = t;
-    }
 }
