@@ -13,7 +13,6 @@ import com.auth0.jwt.algorithms.Algorithm;
  */
 public interface BaseAlgorithm {
 
-    void init();
+    void init() throws Exception;
 
-    Algorithm getAlgorithm();
 }

@@ -35,7 +35,7 @@ import java.util.Map;
  */
 
 @Component
-public class RsaAlgorithm {
+public class RsaAlgorithm implements BaseAlgorithm{
 
     private static final Logger LOG = LoggerFactory.getLogger(RsaAlgorithm.class);
 
@@ -53,7 +53,7 @@ public class RsaAlgorithm {
         algorithm = Algorithm.RSA256(publicKey, privateKey);
     }
 
-    public String Create(Map<String, Object> headerMap, Map<String, Object> playloadMap) {
+    public String create(Map<String, Object> headerMap, Map<String, Object> playloadMap) {
         Class c = null;
         try {
             c = Class.forName("com.auth0.jwt.JWTCreator");
@@ -69,7 +69,7 @@ public class RsaAlgorithm {
         }
     }
 
-    public JsonWebToken Verify(String token) throws JWTDecodeException {
+    public JsonWebToken verify(String token) throws JWTDecodeException {
         String[] parts = token.split("\\.");
         if (parts.length == 2 && token.endsWith(".")) {
             parts = new String[]{parts[0], parts[1], ""};
