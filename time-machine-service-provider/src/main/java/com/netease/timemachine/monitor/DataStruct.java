@@ -6,6 +6,9 @@
  */
 package com.netease.timemachine.monitor;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author 李育鑫(liyuxin02 @ corp.netease.com)
  */
@@ -16,6 +19,24 @@ public class DataStruct {
     private long freeMemory;
     private long totalMemory;
     private long maxMemory;
+    private long time;
+    private Map<String,List<String>> threads;
+
+    public Map<String, List<String>> getThreads() {
+        return threads;
+    }
+
+    public void setThreads(Map<String, List<String>> threads) {
+        this.threads = threads;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
 
     public int getThreadCount() {
         return threadCount;

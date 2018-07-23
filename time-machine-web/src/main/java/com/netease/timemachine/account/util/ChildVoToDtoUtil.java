@@ -22,7 +22,7 @@ public class ChildVoToDtoUtil {
         if(childDTOList == null){
             return null;
         }
-        List<ChildVO> childVOList = new ArrayList<>(childDTOList.size());
+        List<ChildVO> childVOList = new ArrayList<ChildVO>(childDTOList.size());
         for (ChildDTO childDTO:childDTOList) {
             childVOList.add(childDtoToVo(childDTO));
         }
