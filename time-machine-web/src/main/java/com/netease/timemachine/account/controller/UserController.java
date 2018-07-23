@@ -2,6 +2,7 @@ package com.netease.timemachine.account.controller;
 
 import com.netease.timemachine.account.dto.ChildDTO;
 import com.netease.timemachine.account.dto.UserDTO;
+import com.netease.timemachine.account.service.MsService;
 import com.netease.timemachine.account.service.UserService;
 import com.netease.timemachine.account.util.ChildVoToDtoUtil;
 import com.netease.timemachine.account.util.FileUtil;
@@ -9,6 +10,7 @@ import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.account.util.UserVoToDtoUtil;
 import com.netease.timemachine.account.vo.ChildVO;
 import com.netease.timemachine.account.vo.UserVO;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -29,6 +31,32 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private MsService msService;
+
+    @RequestMapping("/sms")
+    public String smsByPhone(@RequestParam String phone){
+        String res=null;
+        try{
+            res=msService.sms(phone);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return res;
+        }
+    }
+
+    @RequestMapping("/vms")
+    public String vmsByPhone(@RequestParam String phone,@RequestParam String code){
+        String res=null;
+        try{
+            res=msService.vms(phone,code);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return res;
+        }
+    }
 
     /**
      * 用户登录
