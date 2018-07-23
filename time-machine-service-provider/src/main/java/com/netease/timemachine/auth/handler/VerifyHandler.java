@@ -6,17 +6,14 @@
  */
 package com.netease.timemachine.auth.handler;
 
+import com.netease.timemachine.auth.annotation.JWTVerify;
+import com.netease.timemachine.auth.meta.RsaAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
-import com.netease.timemachine.auth.annotation.JWTVerify;
-import com.netease.timemachine.auth.meta.BaseAlgorithm;
-import com.netease.timemachine.auth.meta.JsonWebToken;
-import com.netease.timemachine.auth.meta.RsaAlgorithm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,7 +38,7 @@ public class VerifyHandler implements HandlerInterceptor {
             }
             try {
                 String token = res.getHeader("Authorization");
-                rsaAlgorithm.Verify(token);
+                rsaAlgorithm.verify(token);
             } catch (Exception e) {
                 LOG.error("JWT验证失败 ip = {}",res.getRemoteAddr() ,e);
                 return false;
