@@ -40,4 +40,11 @@ public interface UserRemindedService {
      * @return
      */
     boolean deleteUserRemindedByGroupTypeAndGroupId(int groupType, long groupId);
+
+    /**
+     * 删除id删除被提醒人
+     * @param id
+     * @return
+     */
+    boolean deleteUserRemindedById(long id);
 }

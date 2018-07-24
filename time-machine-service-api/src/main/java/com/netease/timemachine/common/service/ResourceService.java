@@ -32,4 +32,11 @@ public interface ResourceService {
      * @return
      */
     boolean deleteResourceByGroupIdAndGroupType(long groupId, int groupType);
+
+    /**
+     * 根据id删除资源
+     * @param id
+     * @return
+     */
+    boolean deleteResourceById(long id);
 }

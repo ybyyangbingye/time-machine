@@ -41,4 +41,6 @@ public interface LabelBelongedService {
      * @return
      */
     boolean deleteByGroupTypeAndGroupIdAndLabelId(int groupType, long groupId, long labelId);
+
+    boolean deleteLabelBelongedById(long id);
 }
