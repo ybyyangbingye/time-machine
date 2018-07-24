@@ -6,6 +6,8 @@ import com.netease.timemachine.common.service.UserRemindedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author zhongweichang
  * @email 15090552277@163.com
@@ -19,6 +21,11 @@ public class UserRemindedServiceImpl implements UserRemindedService{
     @Override
     public boolean addUserReminded(UserRemindedDTO userRemindedDTO) {
         return userRemindedDao.addUserReminded(userRemindedDTO);
+    }
+
+    @Override
+    public List<UserRemindedDTO> getByGroupTypeAndGroupId(int groupType, long groupId) {
+        return userRemindedDao.getByGroupTypeAndGroupId(groupType, groupId);
     }
 
     @Override

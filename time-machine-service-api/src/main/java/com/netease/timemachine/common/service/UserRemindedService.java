@@ -2,6 +2,8 @@ package com.netease.timemachine.common.service;
 
 import com.netease.timemachine.common.dto.UserRemindedDTO;
 
+import java.util.List;
+
 /**
  * 被提醒人相关接口
  * @author zhongweichang
@@ -15,6 +17,14 @@ public interface UserRemindedService {
      * @return
      */
     boolean addUserReminded(UserRemindedDTO userRemindedDTO);
+
+    /**
+     * 根据动态id获取被提醒人列表
+     * @param groupType
+     * @param groupId
+     * @return
+     */
+    List<UserRemindedDTO> getByGroupTypeAndGroupId(int groupType, long groupId);
 
     /**
      * 删除指定的某个被提醒人

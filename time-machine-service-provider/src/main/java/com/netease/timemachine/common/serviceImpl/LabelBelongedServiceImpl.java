@@ -6,6 +6,8 @@ import com.netease.timemachine.common.service.LabelBelongedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author zhongweichang
  * @email 15090552277@163.com
@@ -18,8 +20,13 @@ public class LabelBelongedServiceImpl implements LabelBelongedService{
     private LabelBelongedDao labelBelongedDao;
 
     @Override
-    public boolean addLabelBelonged(LabelBelongedDTO belongedDTO) {
-        return labelBelongedDao.addLabelBelonged(belongedDTO);
+    public boolean addLabelBelonged(LabelBelongedDTO labelBelongedDTO) {
+        return labelBelongedDao.addLabelBelonged(labelBelongedDTO);
+    }
+
+    @Override
+    public List<LabelBelongedDTO> getByGroupTypeAndGroupId(int groupType, long groupId) {
+        return labelBelongedDao.getByGroupTypeAndGroupId(groupType, groupId);
     }
 
     @Override

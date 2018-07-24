@@ -1,11 +1,9 @@
 package com.netease.timemachine.account.dao;
 
+import com.netease.timemachine.account.dto.UserDTO;
 import com.netease.timemachine.account.meta.Child;
 import com.netease.timemachine.account.meta.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -54,4 +52,21 @@ public interface UserDao {
     @Update("update user set user_name=#{userName},imgUrl=#{imgUrl} where user_id = #{userId}")
     void updateUser(User user);
 
+    /**
+     * 根据id集合获取用户信息集合
+     * @param ids
+     * @return
+     */
+    @Select({
+        "<script>",
+            "select",
+            "user_id, user_name, phone, imgUrl",
+            "from user",
+            "where user_id in",
+            "<foreach collection='ids' item='id' open='(' separator=',' close=')'>",
+                "#{id}",
+            "</foreach>",
+        "</script>"
+    })
+    List<UserDTO> listUsersByIds(@Param("ids") List<Long> ids);
 }

@@ -1,6 +1,6 @@
 package com.netease.timemachine.milestone.vo;
 
-import com.netease.timemachine.account.meta.User;
+import com.netease.timemachine.account.dto.UserDTO;
 import com.netease.timemachine.common.dto.LabelDTO;
 import lombok.Data;
 
@@ -28,9 +28,9 @@ public class MilestoneEventVO {
     // 1-里程碑; 2-朋友圈
     private Integer groupType;
 
-    private List<User> remindedUsers;
+    private List<UserDTO> remindedUsers;
 
-    private List<LabelDTO> labelDTOS;
+    private List<LabelDTO> labels;
 
     private Date gmtCreate;
 

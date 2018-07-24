@@ -1,10 +1,9 @@
 package com.netease.timemachine.common.dao;
 
 import com.netease.timemachine.common.dto.LabelBelongedDTO;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 /**
  * @author zhongweichang
@@ -15,8 +14,17 @@ import org.apache.ibatis.annotations.Param;
 public interface LabelBelongedDao {
 
     @Insert("insert into label_belonged(label_id, group_type, group_id, gmt_create)" +
-            "values(#{labelId}, #{groupType}, #{groupId}, #{gmtCreate}")
+            "values(#{labelId}, #{groupType}, #{groupId}, #{gmtCreate})")
     boolean addLabelBelonged(LabelBelongedDTO labelBelongedDTO);
+
+    /**
+     * 获取动态上的标签集合
+     * @param groupType
+     * @param groupId
+     * @return
+     */
+    @Select("select id, label_id, group_type, group_id, gmt_create, gmt_modified from label_belonged where group_type = #{groupType} and group_id = #{groupId}")
+    List<LabelBelongedDTO> getByGroupTypeAndGroupId(@Param("groupType") int groupType, @Param("groupId") long groupId);
 
     /**
      * 删除某个动态下的所有标签

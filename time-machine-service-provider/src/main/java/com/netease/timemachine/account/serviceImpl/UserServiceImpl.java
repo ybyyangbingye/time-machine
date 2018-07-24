@@ -52,6 +52,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDTO> listUsersByIds(List<Long> ids) {
+        return userDao.listUsersByIds(ids);
+    }
+
+    @Override
     public UserDTO selectById(Long userId) {
         return UserDtoToMetaUtil.MetaToUserDto(userDao.selectById(userId));
     }

@@ -45,4 +45,11 @@ public interface UserService {
      */
     void updateUser(UserDTO userDTO);
 
+    /**
+     * 根据id集合获取用户信息集合
+     * @param ids
+     * @return
+     */
+    List<UserDTO> listUsersByIds(List<Long> ids);
+
 }
