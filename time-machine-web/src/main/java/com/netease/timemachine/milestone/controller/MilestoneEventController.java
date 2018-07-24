@@ -96,4 +96,24 @@ public class MilestoneEventController {
         // TODO: 获取被提醒人信息和标签
         return ResponseView.success(milestoneEventVO);
     }
+
+    /**
+     * 根据里程碑中事件id删除事件及其资源
+     *
+     * @param request
+     * @param milestoneEventId
+     * @return
+     */
+    @RequestMapping(value = "/{milestone_event_id}", method = RequestMethod.DELETE)
+    @Transactional
+    public ResponseEntity deleteMilestoneEvent(HttpServletRequest request, @PathVariable("milestone_event_id") long milestoneEventId) {
+        // 删除主表
+        milestoneEventService.deleteMilestoneEventById(milestoneEventId);
+        // 删除资源表
+        milestoneEventImageService.deleteResourceByGroupIdAndGroupType(milestoneEventId, GroupTypeEnum.MILESTONE.getType());
+
+        // TODO: 删除标签和被提醒人列表
+
+        return ResponseView.success("", "删除成功");
+    }
 }

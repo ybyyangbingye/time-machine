@@ -24,4 +24,12 @@ public interface ResourceService {
      * @return
      */
     List<ResourceDTO> getResourceByGroupIdAndGroupType(long groupId, int groupType);
+
+    /**
+     * 根据资源组类型和组id删除资源
+     * @param groupId
+     * @param groupType
+     * @return
+     */
+    boolean deleteResourceByGroupIdAndGroupType(long groupId, int groupType);
 }

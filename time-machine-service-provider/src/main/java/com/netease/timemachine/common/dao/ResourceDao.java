@@ -18,8 +18,22 @@ public interface ResourceDao {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean addResource(ResourceDTO resourceDTO);
 
+    /**
+     * 根据组id和组类型获取对应的资源
+     * @param groupId
+     * @param groupType
+     * @return
+     */
     @Select("select id, resource_obj, resource_type, group_id, group_type, gmt_create, gmt_modified from resource where group_id = #{groupId} and group_type = #{groupType}")
     List<ResourceDTO> getResourceByGroupIdAndGroupType(@Param("groupId") long groupId, @Param("groupType") int groupType);
 
-
+    /**
+     * 根据组类型和组id删除对应的资源
+     *
+     * @param groupId
+     * @param groupType
+     * @return
+     */
+    @Delete("delete from resource where group_id = #{groupId} and group_type = #{groupType}")
+    boolean deleteResourceByGroupIdAndGroupType(@Param("groupId") long groupId, @Param("groupType") long groupType);
 }

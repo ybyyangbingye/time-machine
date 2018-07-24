@@ -5,6 +5,7 @@ import com.netease.timemachine.milestone.dto.MilestoneEventDTO;
 import com.netease.timemachine.milestone.service.MilestoneEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author zhongweichang
@@ -36,5 +37,17 @@ public class MilestoneEventServiceImpl implements MilestoneEventService{
     @Override
     public MilestoneEventDTO getMilestoneEventByMilestoneId(long milestoneId) {
         return milestoneEventDao.getMilestoneEventByMilestoneId(milestoneId);
+    }
+
+    /**
+     * 删除事件
+     *
+     * @param milestoneEventId
+     * @return
+     */
+    @Override
+    @Transactional
+    public boolean deleteMilestoneEventById(long milestoneEventId) {
+        return milestoneEventDao.deleteMilestoneEventById(milestoneEventId);
     }
 }

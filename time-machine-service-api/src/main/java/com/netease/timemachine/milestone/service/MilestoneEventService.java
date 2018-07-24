@@ -13,4 +13,6 @@ public interface MilestoneEventService {
 
     MilestoneEventDTO getMilestoneEventByMilestoneId(long milestoneId);
 
+    boolean deleteMilestoneEventById(long milestoneEventId);
+
 }

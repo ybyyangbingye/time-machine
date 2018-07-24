@@ -28,4 +28,9 @@ public class ResourceServiceImpl implements ResourceService{
     public List<ResourceDTO> getResourceByGroupIdAndGroupType(long groupId, int groupType) {
         return resourceDao.getResourceByGroupIdAndGroupType(groupId, groupType);
     }
+
+    @Override
+    public boolean deleteResourceByGroupIdAndGroupType(long groupId, int groupType) {
+        return resourceDao.deleteResourceByGroupIdAndGroupType(groupId, groupType);
+    }
 }

@@ -1,10 +1,7 @@
 package com.netease.timemachine.milestone.dao;
 
 import com.netease.timemachine.milestone.dto.MilestoneEventDTO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 /**
  * @author zhongweichang
@@ -21,4 +18,13 @@ public interface MilestoneEventDao {
 
     @Select("select id, milestone_id, location, time, gmt_create, gmt_modified from milestone_event where milestone_id = #{milestoneId}")
     MilestoneEventDTO getMilestoneEventByMilestoneId(long milestoneId);
+
+    /**
+     * 根据里程碑事件id删除里程碑对应的事件
+     *
+     * @param milestoneEventId
+     * @return
+     */
+    @Delete("delete from milestone_event where id = #{milestoneEventId}")
+    boolean deleteMilestoneEventById(long milestoneEventId);
 }
