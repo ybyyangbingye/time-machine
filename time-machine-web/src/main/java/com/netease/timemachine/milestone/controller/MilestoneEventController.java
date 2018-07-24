@@ -3,8 +3,11 @@ package com.netease.timemachine.milestone.controller;
 import com.google.common.collect.Lists;
 import com.netease.timemachine.account.meta.User;
 import com.netease.timemachine.account.util.ResponseView;
+import com.netease.timemachine.common.dto.LabelBelongedDTO;
+import com.netease.timemachine.common.dto.LabelDTO;
 import com.netease.timemachine.common.dto.ResourceDTO;
 import com.netease.timemachine.common.dto.UserRemindedDTO;
+import com.netease.timemachine.common.service.LabelBelongedService;
 import com.netease.timemachine.common.service.ResourceService;
 import com.netease.timemachine.common.service.UserRemindedService;
 import com.netease.timemachine.define.GroupTypeEnum;
@@ -37,6 +40,8 @@ public class MilestoneEventController {
     private ResourceService milestoneEventImageService;
     @Autowired
     private UserRemindedService userRemindedService;
+    @Autowired
+    private LabelBelongedService labelBelongedService;
 
     /**
      * 添加里程碑事件
@@ -73,12 +78,23 @@ public class MilestoneEventController {
         UserRemindedDTO userRemindedDTO = new UserRemindedDTO();
         userRemindedDTO.setGroupId(milestoneEventDTO.getId());
         userRemindedDTO.setGroupType(GroupTypeEnum.MILESTONE.getType());
+        userRemindedDTO.setGmtCreate(new Date());
         for(User user: remindedUsers) {
             userRemindedDTO.setUserId(user.getUserId());
             userRemindedService.addUserReminded(userRemindedDTO);
         }
 
-        // TODO : 添加标签
+        // 添加标签
+        List<LabelDTO> labelDTOS = milestoneEventVO.getLabelDTOS();
+        LabelBelongedDTO labelBelongedDTO = new LabelBelongedDTO();
+        labelBelongedDTO.setGroupId(milestoneEventDTO.getId());
+        labelBelongedDTO.setGroupType(GroupTypeEnum.MILESTONE.getType());
+        labelBelongedDTO.setGmtCreate(new Date());
+        for(LabelDTO labelDTO: labelDTOS) {
+            labelBelongedDTO.setLabelId(labelDTO.getId());
+            labelBelongedService.addLabelBelonged(labelBelongedDTO);
+        }
+
         return ResponseView.success("", "添加成功");
     }
 
@@ -128,8 +144,8 @@ public class MilestoneEventController {
         milestoneEventImageService.deleteResourceByGroupIdAndGroupType(milestoneEventId, GroupTypeEnum.MILESTONE.getType());
         // 删除被提醒人
         userRemindedService.deleteUserRemindedByGroupTypeAndGroupId(GroupTypeEnum.MILESTONE.getType(), milestoneEventId);
-
-        // TODO: 删除标签和被提醒人列表
+        // 删除标签
+        labelBelongedService.deleteByGroupTypeAndGroupId(GroupTypeEnum.MILESTONE.getType(), milestoneEventId);
 
         return ResponseView.success("", "删除成功");
     }
