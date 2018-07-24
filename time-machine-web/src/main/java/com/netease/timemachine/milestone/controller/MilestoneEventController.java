@@ -1,9 +1,12 @@
 package com.netease.timemachine.milestone.controller;
 
 import com.google.common.collect.Lists;
+import com.netease.timemachine.account.meta.User;
 import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.common.dto.ResourceDTO;
+import com.netease.timemachine.common.dto.UserRemindedDTO;
 import com.netease.timemachine.common.service.ResourceService;
+import com.netease.timemachine.common.service.UserRemindedService;
 import com.netease.timemachine.define.GroupTypeEnum;
 import com.netease.timemachine.milestone.dto.MilestoneEventDTO;
 import com.netease.timemachine.milestone.service.MilestoneEventService;
@@ -32,6 +35,8 @@ public class MilestoneEventController {
     private MilestoneEventService milestoneEventService;
     @Autowired
     private ResourceService milestoneEventImageService;
+    @Autowired
+    private UserRemindedService userRemindedService;
 
     /**
      * 添加里程碑事件
@@ -63,7 +68,17 @@ public class MilestoneEventController {
             milestoneEventImageService.addResource(milestoneEventImageDTO);
         }
 
-        // TODO : 添加被提醒人和标签
+        // 添加被提醒人员
+        List<User> remindedUsers = milestoneEventVO.getRemindedUsers();
+        UserRemindedDTO userRemindedDTO = new UserRemindedDTO();
+        userRemindedDTO.setGroupId(milestoneEventDTO.getId());
+        userRemindedDTO.setGroupType(GroupTypeEnum.MILESTONE.getType());
+        for(User user: remindedUsers) {
+            userRemindedDTO.setUserId(user.getUserId());
+            userRemindedService.addUserReminded(userRemindedDTO);
+        }
+
+        // TODO : 添加标签
         return ResponseView.success("", "添加成功");
     }
 
@@ -111,6 +126,8 @@ public class MilestoneEventController {
         milestoneEventService.deleteMilestoneEventById(milestoneEventId);
         // 删除资源表
         milestoneEventImageService.deleteResourceByGroupIdAndGroupType(milestoneEventId, GroupTypeEnum.MILESTONE.getType());
+        // 删除被提醒人
+        userRemindedService.deleteUserRemindedByGroupTypeAndGroupId(GroupTypeEnum.MILESTONE.getType(), milestoneEventId);
 
         // TODO: 删除标签和被提醒人列表
 
