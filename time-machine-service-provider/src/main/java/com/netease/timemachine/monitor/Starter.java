@@ -47,16 +47,12 @@ public class Starter {
         dataStruct.setMaxMemory(Runtime.getRuntime().maxMemory()/1024/1024);
         dataStruct.setTotalMemory(Runtime.getRuntime().totalMemory()/1024/1024);
         Map<Thread, StackTraceElement[]> maps = Thread.getAllStackTraces();
-        Map<String,List<String>> target = new HashMap<>();
+        Map<String, StackTraceElement[]> target = new HashMap<>();
         maps.keySet().stream().forEach((t)->{
-            target.put(String.valueOf(t.getId()),Arrays.asList((StackTraceElement[])maps.get(t)).stream().map((ste)->{
-                return ste.getFileName();
-            }).collect(Collectors.toList()));
+            target.put(String.valueOf(t.getId())+";"+t.getName(),maps.get(t));
         });
         dataStruct.setThreadCount(maps.keySet().size());
         dataStruct.setThreads(target);
-
-        System.out.println(JSON.toJSONString(dataStruct).getBytes().length);
         if (stat == null) {
             client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/service/" + appName,JSON.toJSONString(dataStruct).getBytes());
         } else {
