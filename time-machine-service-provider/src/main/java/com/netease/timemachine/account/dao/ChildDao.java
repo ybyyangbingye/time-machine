@@ -14,8 +14,8 @@ public interface ChildDao {
      * 新增孩子信息
      * @param child
      */
-    @Insert("insert into child(gender,child_name,imgUrl,birth_date,manager_id) values" +
-            "(#{gender},#{childName},#{imgUrl},#{birthDate},#{managerId})")
+    @Insert("insert into child(gender,child_name,imgUrl,birth_date) values" +
+            "(#{gender},#{childName},#{imgUrl},#{birthDate})")
     @Options(useGeneratedKeys = true, keyProperty = "childId")
     void insertChild(Child child);
 
@@ -24,8 +24,12 @@ public interface ChildDao {
      * @param childId
      */
     @Select("select * from child where child_id = #{childId}")
-    Child selectChildById(long childId);
+    Child selectChildById(Long childId);
 
+    /**
+     * 更新孩子信息
+     * @param child
+     */
     @Update("update child set gender=#{gender},child_name=#{childName},imgUrl=#{imgUrl},birth_date=#{birthDate} where child_id = #{childId}")
     void updateChild(Child child);
 }

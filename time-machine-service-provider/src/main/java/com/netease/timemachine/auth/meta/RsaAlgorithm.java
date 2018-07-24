@@ -44,6 +44,8 @@ public class RsaAlgorithm implements BaseAlgorithm{
     public RsaAlgorithm() throws Exception {
         init();
     }
+
+    @Override
     public void init() throws Exception{
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(1024);
@@ -57,7 +59,7 @@ public class RsaAlgorithm implements BaseAlgorithm{
         Class c = null;
         try {
             c = Class.forName("com.auth0.jwt.JWTCreator");
-            Constructor con = c.getDeclaredConstructor(algorithm.getClass(), Map.class, Map.class);
+            Constructor con = c.getDeclaredConstructor(Algorithm.class, Map.class, Map.class);
             con.setAccessible(true);
             JWTCreator jwtCreator = (JWTCreator) con.newInstance(algorithm, headerMap, playloadMap);
             Method method = c.getDeclaredMethod("sign");

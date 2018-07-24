@@ -2,7 +2,10 @@ package com.netease.timemachine.account.dao;
 
 import com.netease.timemachine.account.meta.Child;
 import com.netease.timemachine.account.meta.User;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -17,8 +20,8 @@ public interface UserDao {
      * 插入User对象
      * @param user
      */
-    @Insert("insert into user(user_name,phone,address,imgUrl,create_time) " +
-            "values(#{userName},#{phone},#{address},#{imgUrl},#{createTime})")
+    @Insert("insert into user(user_name,phone,imgUrl,create_time) " +
+            "values(#{userName},#{phone},#{imgUrl},#{createTime})")
     void insertUser(User user);
 
     /**
@@ -29,18 +32,26 @@ public interface UserDao {
     User selectByPhone(String phone);
 
     /**
+     * 通过userId去查询用户信息
+     * @param userId
+     * @return
+     */
+    @Select("select * from user where user_id = #{userId}")
+    User selectById(Long userId);
+
+    /**
      * 查询用户拥有的所有孩子id
      * @param userId
      * @return
      */
-    @Select("SELECT c.child_id, c.gender, c.child_name, c.imgUrl, c.birth_date from child c,user_child_group u where u.child_id = c.child_id and u.user_id=#{userId}")
+    @Select("select c.child_id, c.gender, c.child_name, c.imgUrl, c.birth_date from child c,user_child_group u where u.child_id = c.child_id and u.user_id=#{userId}")
     List<Child> selectOwnChildren(long userId);
 
     /**
      * 编辑更新用户
      * @param user
      */
-    @Update("update user set user_name=#{userName},address=#{address},imgUrl=#{imgUrl} where user_id = #{userId}")
+    @Update("update user set user_name=#{userName},imgUrl=#{imgUrl} where user_id = #{userId}")
     void updateUser(User user);
 
 }

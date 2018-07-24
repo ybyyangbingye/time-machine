@@ -17,7 +17,6 @@ public class UserDtoToMetaUtil {
         user.setUserId(userDTO.getUserId());
         user.setUserName(userDTO.getUserName());
         user.setPhone(userDTO.getPhone());
-        user.setAddress(userDTO.getAddress());
         user.setImgUrl(userDTO.getImgUrl());
         return user;
     }
@@ -30,7 +29,6 @@ public class UserDtoToMetaUtil {
         userDTO.setUserId(user.getUserId());
         userDTO.setUserName(user.getUserName());
         userDTO.setPhone(user.getPhone());
-        userDTO.setAddress(user.getAddress());
         userDTO.setImgUrl(user.getImgUrl());
         return userDTO;
     }

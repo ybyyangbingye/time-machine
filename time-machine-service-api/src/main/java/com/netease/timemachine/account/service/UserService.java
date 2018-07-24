@@ -26,11 +26,18 @@ public interface UserService {
     UserDTO selectByPhone(String phone);
 
     /**
+     * 通过userId去查询
+     * @param userId
+     * @return
+     */
+    UserDTO selectById(Long userId);
+
+    /**
      * 查询用户userId所有的孩子信息
      * @param userId
      * @return
      */
-    List<ChildDTO> selectOwnChildren(long userId);
+    List<ChildDTO> selectOwnChildren(Long userId);
 
     /**
      * 编辑更新

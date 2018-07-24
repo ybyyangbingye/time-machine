@@ -16,8 +16,6 @@ public class GroupDTO implements Serializable {
 
     private static final long serialVersionUID = 6765190487092183735L;
 
-    private Long groupId;
-
     private Long childId;
 
     private Long userId;
@@ -25,13 +23,20 @@ public class GroupDTO implements Serializable {
     /**身份描述：爸爸，妈妈....*/
     private String identification;
 
-    /**权限：管理：1，普通：0*/
+    /**昵称*/
+    private String nickName;
+
+    /**权限（创建者：0，爸爸妈妈：1，其他人：2）*/
     private Integer permission;
 
-    public GroupDTO(Long childId, Long userId, String identification, Integer permission) {
+    private String imgUrl;
+
+    public GroupDTO(Long childId, Long userId, String identification, String nickName, Integer permission, String imgUrl) {
         this.childId = childId;
         this.userId = userId;
         this.identification = identification;
+        this.nickName = nickName;
         this.permission = permission;
+        this.imgUrl = imgUrl;
     }
 }

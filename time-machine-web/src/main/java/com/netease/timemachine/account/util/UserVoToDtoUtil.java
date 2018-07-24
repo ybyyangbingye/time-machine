@@ -18,7 +18,6 @@ public class UserVoToDtoUtil {
         userVO.setUserId(userDTO.getUserId());
         userVO.setUserName(userDTO.getUserName());
         userVO.setPhone(userDTO.getPhone());
-        userVO.setAddress(userDTO.getAddress());
         userVO.setImgUrl(userDTO.getImgUrl());
         return userVO;
     }
@@ -30,9 +29,9 @@ public class UserVoToDtoUtil {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId(userVO.getUserId());
         userDTO.setUserName(userVO.getUserName());
-        userDTO.setPhone(userVO.getPhone());
         userDTO.setImgUrl(userVO.getImgUrl());
-        userDTO.setAddress(userVO.getAddress());
+        userDTO.setPhone(userVO.getPhone());
+
         return userDTO;
     }
 }

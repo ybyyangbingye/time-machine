@@ -26,7 +26,4 @@ public class ChildDTO implements Serializable {
 
     /**形如2018-07-17*/
     private String birthDate;
-
-    private String managerId;
-
 }

@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ChildDTO> selectOwnChildren(long userId) {
+    public List<ChildDTO> selectOwnChildren(Long userId) {
         List<Child> children = userDao.selectOwnChildren(userId);
         return ChildDtoToMetaUtil.childMetaToDTOList(children);
     }
@@ -51,4 +51,8 @@ public class UserServiceImpl implements UserService {
         userDao.updateUser(user);
     }
 
+    @Override
+    public UserDTO selectById(Long userId) {
+        return UserDtoToMetaUtil.MetaToUserDto(userDao.selectById(userId));
+    }
 }

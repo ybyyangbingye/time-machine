@@ -15,7 +15,6 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @EnableAutoConfiguration
 @PropertySource("classpath:smsconfig.properties")
-
 public class SmsConfig {
     @Bean
     @ConfigurationProperties(prefix = "sms")

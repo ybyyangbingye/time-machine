@@ -16,15 +16,19 @@ public class Group implements Serializable {
 
     private static final long serialVersionUID = -8345277924592070879L;
 
-    private Long groupId;
-
+    /**childId和userId联合表征*/
     private Long childId;
 
     private Long userId;
 
-    /**权限：管理：1，普通：0*/
-    private Integer permission;
-
     /**身份描述：爸爸，妈妈....*/
     private String identification;
+
+    /**昵称，宝宝称呼长辈*/
+    private String nickName;
+
+    /**权限（创建者：0，管理者：1，记录：2，查看：3），默认为2记录*/
+    private Integer permission;
+
+    private String imgUrl;
 }

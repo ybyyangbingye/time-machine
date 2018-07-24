@@ -22,8 +22,6 @@ public class UserDTO implements Serializable {
 
     private String phone;
 
-    private String address;
-
     private String imgUrl;
 
     public UserDTO(String userName, String phone, String imgUrl) {

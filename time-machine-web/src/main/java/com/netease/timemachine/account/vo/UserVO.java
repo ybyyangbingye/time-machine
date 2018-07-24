@@ -22,17 +22,11 @@ public class UserVO implements Serializable {
 
     private String phone;
 
-    private Integer identification;
-
-    private String address;
-
     private String imgUrl;
 
-    public UserVO(String userName, String phone, Integer identification, String address, String imgUrl) {
+    public UserVO(String userName, String phone, String imgUrl) {
         this.userName = userName;
         this.phone = phone;
-        this.identification = identification;
-        this.address = address;
         this.imgUrl = imgUrl;
     }
 }
