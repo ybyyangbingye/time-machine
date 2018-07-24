@@ -39,6 +39,16 @@ public class MilestoneEventServiceImpl implements MilestoneEventService{
         return milestoneEventDao.getMilestoneEventByMilestoneId(milestoneId);
     }
 
+    @Override
+    public MilestoneEventDTO getMilestoneEventById(long id) {
+        return milestoneEventDao.getMilestoneEventById(id);
+    }
+
+    @Override
+    public boolean modifyMilestoneEventById(MilestoneEventDTO milestoneEventDTO) {
+        return milestoneEventDao.modifyMilestoneEventById(milestoneEventDTO);
+    }
+
     /**
      * 删除事件
      *

@@ -37,4 +37,9 @@ public class UserRemindedServiceImpl implements UserRemindedService{
     public boolean deleteUserRemindedByGroupTypeAndGroupId(int groupType, long groupId) {
         return userRemindedDao.deleteUserRemindedByGroupTypeAndGroupId(groupType, groupId);
     }
+
+    @Override
+    public boolean deleteUserRemindedById(long id) {
+        return userRemindedDao.deleteUserRemindedById(id);
+    }
 }

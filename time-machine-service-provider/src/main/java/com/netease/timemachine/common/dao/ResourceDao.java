@@ -36,4 +36,12 @@ public interface ResourceDao {
      */
     @Delete("delete from resource where group_id = #{groupId} and group_type = #{groupType}")
     boolean deleteResourceByGroupIdAndGroupType(@Param("groupId") long groupId, @Param("groupType") long groupType);
+
+    /**
+     * 根据id删除资源
+     * @param id
+     * @return
+     */
+    @Delete("delete from resource where id = #{id}")
+    boolean deleteResourceById(@Param("id") long id);
 }

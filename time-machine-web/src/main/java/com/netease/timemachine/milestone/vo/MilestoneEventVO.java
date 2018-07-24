@@ -14,8 +14,9 @@ import java.util.List;
  */
 @Data
 public class MilestoneEventVO {
+    // 里程碑事件id
     private Long id;
-
+    // 里程碑id
     private Long milestoneId;
 
     private String location;

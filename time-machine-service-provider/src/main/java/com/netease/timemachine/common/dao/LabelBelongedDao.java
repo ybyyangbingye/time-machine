@@ -44,4 +44,12 @@ public interface LabelBelongedDao {
      */
     @Delete("delete from label_belonged where group_type = #{groupType} and group_id = #{groupId}")
     boolean deleteByGroupTypeAndGroupIdAndLabelId(@Param("groupType") int groupType, @Param("groupId") long groupId, @Param("labelId") long labelId);
+
+    /**
+     * 根据id删除数据
+     * @param id
+     * @return
+     */
+    @Delete("delete from label_belonged where id = #{id}")
+    boolean deleteLabelBelongedById(long id);
 }

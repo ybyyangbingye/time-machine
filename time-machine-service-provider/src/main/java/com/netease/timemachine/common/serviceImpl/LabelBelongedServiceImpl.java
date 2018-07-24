@@ -38,4 +38,9 @@ public class LabelBelongedServiceImpl implements LabelBelongedService{
     public boolean deleteByGroupTypeAndGroupIdAndLabelId(int groupType, long groupId, long labelId) {
         return labelBelongedDao.deleteByGroupTypeAndGroupIdAndLabelId(groupType, groupId, labelId);
     }
+
+    @Override
+    public boolean deleteLabelBelongedById(long id) {
+        return labelBelongedDao.deleteLabelBelongedById(id);
+    }
 }

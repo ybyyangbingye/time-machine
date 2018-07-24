@@ -27,4 +27,20 @@ public interface MilestoneEventDao {
      */
     @Delete("delete from milestone_event where id = #{milestoneEventId}")
     boolean deleteMilestoneEventById(long milestoneEventId);
+
+    /***
+     * 根据事件id获取事件对象
+     * @param id
+     * @return
+     */
+    @Select("select id, milestone_id, location, time, gmt_create, gmt_modified from milestone_event where id = #{id}")
+    MilestoneEventDTO getMilestoneEventById(long id);
+
+    /**
+     * 根据事件id修改事件
+     * @param milestoneEventDTO
+     * @return
+     */
+    @Update("update milestone_event set location = #{location}, time = #{time} where id = #{id}")
+    boolean modifyMilestoneEventById(MilestoneEventDTO milestoneEventDTO);
 }

@@ -50,4 +50,12 @@ public interface UserRemindedDao {
      */
     @Delete("delete from user_reminded where group_type = #{groupType} and group_id = #{groupId}")
     boolean deleteUserRemindedByGroupTypeAndGroupId(@Param("groupType") int groupType, @Param("groupId") long groupId);
+
+    /**
+     * 根据id删除数据
+     * @param id
+     * @return
+     */
+    @Delete("delete from user_reminded where id = #{id}")
+    boolean deleteUserRemindedById(long id);
 }

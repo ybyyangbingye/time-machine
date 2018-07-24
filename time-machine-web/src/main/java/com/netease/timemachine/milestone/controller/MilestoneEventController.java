@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 里程碑里的事件、图片管理
@@ -59,6 +61,7 @@ public class MilestoneEventController {
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
     public ResponseEntity addMilestoneEvent(HttpServletRequest request, @RequestBody MilestoneEventVO milestoneEventVO) {
+        // TODO redis校验重复点击
         // 添加事件到主表
         MilestoneEventDTO milestoneEventDTO = new MilestoneEventDTO();
         milestoneEventDTO.setMilestoneId(milestoneEventVO.getMilestoneId());
@@ -180,5 +183,116 @@ public class MilestoneEventController {
         labelBelongedService.deleteByGroupTypeAndGroupId(GroupTypeEnum.MILESTONE.getType(), milestoneEventId);
 
         return ResponseView.success("", "删除成功");
+    }
+
+    /**
+     * 添加里程碑事件
+     * @param request
+     * @param milestoneEventVO
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.PATCH)
+    @Transactional
+    public ResponseEntity modifyMilestoneEvent(HttpServletRequest request, @RequestBody MilestoneEventVO milestoneEventVO) {
+        // 修改事件主表
+        MilestoneEventDTO milestoneEventDTO = milestoneEventService.getMilestoneEventById(milestoneEventVO.getId());
+        // TODO: 位置信息格式需要和前端确认
+        milestoneEventDTO.setLocation(milestoneEventVO.getLocation());
+        milestoneEventDTO.setTime(milestoneEventVO.getTime());
+        milestoneEventDTO.setGmtCreate(new Date());
+        milestoneEventService.modifyMilestoneEventById(milestoneEventDTO);
+
+        // 修改事件关联的图片
+        ResourceDTO newResourceDTO = new ResourceDTO();
+        newResourceDTO.setResourceType(milestoneEventVO.getResourceType());
+        newResourceDTO.setGroupId(milestoneEventDTO.getId());
+        newResourceDTO.setGroupType(GroupTypeEnum.MILESTONE.getType());
+        newResourceDTO.setGmtCreate(new Date());
+        // 首先获取已存在的资源
+        List<ResourceDTO> resourceDTOS = milestoneEventImageService.getResourceByGroupIdAndGroupType(milestoneEventDTO.getId(), GroupTypeEnum.MILESTONE.getType());
+        List<String> existResourceObj = Lists.newArrayList();
+        Map<String, Long> mapExistResource = new HashMap<>();
+        for(ResourceDTO resourceDTO: resourceDTOS) {
+            existResourceObj.add(resourceDTO.getResourceObj());
+            mapExistResource.put(resourceDTO.getResourceObj(), resourceDTO.getId());
+        }
+        // 前端传来的新的图片集合
+        List<String> resources = milestoneEventVO.getResources();
+        for(String resource: resources) {
+            if(existResourceObj.contains(resource)) {
+                existResourceObj.remove(resource);
+                continue;
+            }else {
+                // 添加新的图片
+                newResourceDTO.setResourceObj(resource);
+                milestoneEventImageService.addResource(newResourceDTO);
+            }
+        }
+        // 删除旧的不再需要的图片
+        for(String resourceObj: existResourceObj) {
+            Long id = mapExistResource.get(resourceObj);
+            milestoneEventImageService.deleteResourceById(id);
+        }
+
+        // 修改被提醒人员
+        UserRemindedDTO newUserRemindedDTO = new UserRemindedDTO();
+        newUserRemindedDTO.setGroupId(milestoneEventDTO.getId());
+        newUserRemindedDTO.setGroupType(GroupTypeEnum.MILESTONE.getType());
+        newUserRemindedDTO.setGmtCreate(new Date());
+        List<UserDTO> remindedUsers = milestoneEventVO.getRemindedUsers();
+        // 获取原来被提醒的人员
+        List<UserRemindedDTO> userRemindedDTOS = userRemindedService.getByGroupTypeAndGroupId(GroupTypeEnum.MILESTONE.getType(), milestoneEventDTO.getId());
+        List<Long> existUserIds = Lists.newArrayList();
+        Map<Long, Long> mapExistUserReminded = new HashMap<>();
+        for(UserRemindedDTO remindedDTO: userRemindedDTOS) {
+            existUserIds.add(remindedDTO.getUserId());
+            mapExistUserReminded.put(remindedDTO.getUserId(), remindedDTO.getId());
+        }
+        for(UserDTO user: remindedUsers) {
+            if(existUserIds.contains(user.getUserId())) {
+                existUserIds.remove(user.getUserId());
+                continue;
+            }else {
+                // 添加新的提醒人
+                newUserRemindedDTO.setUserId(user.getUserId());
+                userRemindedService.addUserReminded(newUserRemindedDTO);
+            }
+        }
+        // 删除旧的提醒人
+        for(long userId: existUserIds) {
+            long userRemindedId = mapExistUserReminded.get(userId);
+            userRemindedService.deleteUserRemindedById(userId);
+        }
+
+        // 添加标签
+        List<LabelDTO> labelDTOS = milestoneEventVO.getLabels();
+        LabelBelongedDTO newLabelBelongedDTO = new LabelBelongedDTO();
+        newLabelBelongedDTO.setGroupId(milestoneEventDTO.getId());
+        newLabelBelongedDTO.setGroupType(GroupTypeEnum.MILESTONE.getType());
+        newLabelBelongedDTO.setGmtCreate(new Date());
+        //获取原来的标签
+        List<LabelBelongedDTO> labelBelongedDTOS = labelBelongedService.getByGroupTypeAndGroupId(GroupTypeEnum.MILESTONE.getType(), milestoneEventDTO.getId());
+        List<Long> existLabelIds = Lists.newArrayList();
+        Map<Long, Long> mapLabelBelonged = new HashMap<>();
+        for(LabelBelongedDTO labelBelongedDTO: labelBelongedDTOS) {
+            existLabelIds.add(labelBelongedDTO.getLabelId());
+            mapLabelBelonged.put(labelBelongedDTO.getLabelId(), labelBelongedDTO.getId());
+        }
+
+        for(LabelDTO labelDTO: labelDTOS) {
+            if(existLabelIds.contains(labelDTO)) {
+                existLabelIds.remove(labelDTO.getId());
+                continue;
+            }else {
+                newLabelBelongedDTO.setLabelId(labelDTO.getId());
+                labelBelongedService.addLabelBelonged(newLabelBelongedDTO);
+            }
+        }
+        // 删除旧标签
+        for(Long labelId: existLabelIds) {
+            long labelBelongedId = mapLabelBelonged.get(labelId);
+            labelBelongedService.deleteLabelBelongedById(labelBelongedId);
+        }
+        return ResponseView.success("", "添加成功");
     }
 }
