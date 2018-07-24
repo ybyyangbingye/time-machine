@@ -11,4 +11,6 @@ public interface MilestoneEventService {
 
     boolean addMilestoneEvent(MilestoneEventDTO milestoneEventDTO);
 
+    MilestoneEventDTO getMilestoneEventByMilestoneId(long milestoneId);
+
 }

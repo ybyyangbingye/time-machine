@@ -17,18 +17,24 @@ public class MilestoneEventVO {
     private Long id;
 
     private Long milestoneId;
-    // 1-里程碑
-    private Integer type;
 
     private String location;
 
     private Date time;
 
-    private List<String> images;
+    private List<String> resources;
+    // 1-图片；2-视频
+    private Integer resourceType;
+    // 1-里程碑; 2-朋友圈
+    private Integer groupType;
 
     private List<User> remindedUsers;
 
     private List<LabelDTO> labelDTOS;
+
+    private Date gmtCreate;
+
+    private Date gmtModified;
 
 
 }

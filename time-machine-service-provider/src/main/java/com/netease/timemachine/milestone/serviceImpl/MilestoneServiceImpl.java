@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author zhongweichang
@@ -19,9 +20,26 @@ public class MilestoneServiceImpl implements MilestoneService{
     @Autowired
     private MilestoneDao milestoneDao;
 
+    /**
+     * 添加里程碑
+     * @param milestoneDTO
+     * @return
+     */
     @Override
     public boolean addMilestone(MilestoneDTO milestoneDTO) {
         milestoneDTO.setGmtCreate(new Date());
         return milestoneDao.addMilestone(milestoneDTO);
     }
+
+    /**
+     * 获取里程碑列表
+     * @param childId
+     * @return
+     */
+    @Override
+    public List<MilestoneDTO> getMilestoneList(long childId) {
+        return  milestoneDao.getMilestoneList(childId);
+    }
+
+
 }

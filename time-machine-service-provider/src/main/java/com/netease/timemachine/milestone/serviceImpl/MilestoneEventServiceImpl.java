@@ -18,8 +18,23 @@ public class MilestoneEventServiceImpl implements MilestoneEventService{
     @Autowired
     private MilestoneEventDao milestoneEventDao;
 
+    /**
+     * 添加里程碑事件
+     * @param milestoneEventDTO
+     * @return
+     */
     @Override
     public boolean addMilestoneEvent(MilestoneEventDTO milestoneEventDTO) {
         return milestoneEventDao.addMilestoneEvent(milestoneEventDTO);
+    }
+
+    /**
+     * 根据里程碑id获取里程碑事件
+     * @param milestoneId
+     * @return
+     */
+    @Override
+    public MilestoneEventDTO getMilestoneEventByMilestoneId(long milestoneId) {
+        return milestoneEventDao.getMilestoneEventByMilestoneId(milestoneId);
     }
 }

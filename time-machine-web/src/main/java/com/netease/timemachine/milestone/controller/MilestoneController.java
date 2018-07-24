@@ -5,10 +5,7 @@ import com.netease.timemachine.milestone.dto.MilestoneDTO;
 import com.netease.timemachine.milestone.service.MilestoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,9 +21,26 @@ public class MilestoneController {
     @Autowired
     private MilestoneService milestoneService;
 
+    /**
+     * 创建里程碑
+     * @param request
+     * @param milestoneDTO
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity submitFeedback(HttpServletRequest request, @RequestBody MilestoneDTO milestoneDTO) {
+    public ResponseEntity addMilestone(HttpServletRequest request, @RequestBody MilestoneDTO milestoneDTO) {
         milestoneService.addMilestone(milestoneDTO);
         return ResponseView.success("", "添加成功");
+    }
+
+    /**
+     * 获取里程碑列表
+     * @param request
+     * @param childId
+     * @return
+     */
+    @RequestMapping(value = "/{child_id}", method = RequestMethod.GET)
+    public ResponseEntity getMilestoneList(HttpServletRequest request, @PathVariable("child_id") long childId) {
+        return ResponseView.success(milestoneService.getMilestoneList(childId));
     }
 }

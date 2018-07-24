@@ -1,18 +1,17 @@
 package com.netease.timemachine.milestone.controller;
 
+import com.google.common.collect.Lists;
 import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.common.dto.ResourceDTO;
 import com.netease.timemachine.common.service.ResourceService;
+import com.netease.timemachine.define.GroupTypeEnum;
 import com.netease.timemachine.milestone.dto.MilestoneEventDTO;
 import com.netease.timemachine.milestone.service.MilestoneEventService;
 import com.netease.timemachine.milestone.vo.MilestoneEventVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -34,12 +33,19 @@ public class MilestoneEventController {
     @Autowired
     private ResourceService milestoneEventImageService;
 
+    /**
+     * 添加里程碑事件
+     * @param request
+     * @param milestoneEventVO
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
     public ResponseEntity addMilestoneEvent(HttpServletRequest request, @RequestBody MilestoneEventVO milestoneEventVO) {
         // 添加事件到主表
         MilestoneEventDTO milestoneEventDTO = new MilestoneEventDTO();
         milestoneEventDTO.setMilestoneId(milestoneEventVO.getMilestoneId());
+        // TODO: 位置信息格式需要和前端确认
         milestoneEventDTO.setLocation(milestoneEventVO.getLocation());
         milestoneEventDTO.setTime(milestoneEventVO.getTime());
         milestoneEventDTO.setGmtCreate(new Date());
@@ -47,14 +53,47 @@ public class MilestoneEventController {
 
         // 添加事件关联的图片
         ResourceDTO milestoneEventImageDTO = new ResourceDTO();
-        milestoneEventImageDTO.setParentId(milestoneEventDTO.getId());
+        milestoneEventImageDTO.setResourceType(milestoneEventVO.getResourceType());
+        milestoneEventImageDTO.setGroupId(milestoneEventDTO.getId());
+        milestoneEventImageDTO.setGroupType(GroupTypeEnum.MILESTONE.getType());
         milestoneEventImageDTO.setGmtCreate(new Date());
-        milestoneEventImageDTO.setType(milestoneEventVO.getType());
-        List<String> images = milestoneEventVO.getImages();
-        for(String image: images) {
-            milestoneEventImageDTO.setResourceObj(image);
+        List<String> resources = milestoneEventVO.getResources();
+        for(String resource: resources) {
+            milestoneEventImageDTO.setResourceObj(resource);
             milestoneEventImageService.addResource(milestoneEventImageDTO);
         }
+
+        // TODO : 添加被提醒人和标签
         return ResponseView.success("", "添加成功");
+    }
+
+    /**
+     * 获取里程碑事件
+     * @param request
+     * @param milestoneId
+     * @return
+     */
+    @RequestMapping(value = "/{milestone_id}", method = RequestMethod.GET)
+    public ResponseEntity getMilestoneEvent(HttpServletRequest request, @PathVariable("milestone_id") long milestoneId) {
+        MilestoneEventVO milestoneEventVO = new MilestoneEventVO();
+
+        MilestoneEventDTO milestoneEventDTO = milestoneEventService.getMilestoneEventByMilestoneId(milestoneId);
+        milestoneEventVO.setId(milestoneEventDTO.getId());
+        milestoneEventVO.setMilestoneId(milestoneEventDTO.getMilestoneId());
+        milestoneEventVO.setLocation(milestoneEventDTO.getLocation());
+        milestoneEventVO.setTime(milestoneEventDTO.getTime());
+        milestoneEventVO.setGmtCreate(milestoneEventDTO.getGmtCreate());
+        milestoneEventVO.setGmtModified(milestoneEventDTO.getGmtModified());
+
+        //获取图片、视频信息
+        List<String> resources = Lists.newArrayList();
+        List<ResourceDTO> resourceDTOS = milestoneEventImageService.getResourceByGroupIdAndGroupType(milestoneEventVO.getId(), GroupTypeEnum.MILESTONE.getType());
+        for(ResourceDTO resourceDTO: resourceDTOS) {
+            resources.add(resourceDTO.getResourceObj());
+            milestoneEventVO.setResourceType(resourceDTO.getResourceType());
+        }
+        milestoneEventVO.setResources(resources);
+        // TODO: 获取被提醒人信息和标签
+        return ResponseView.success(milestoneEventVO);
     }
 }

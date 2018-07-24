@@ -4,6 +4,7 @@ import com.netease.timemachine.milestone.dto.MilestoneEventDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @author zhongweichang
@@ -17,4 +18,7 @@ public interface MilestoneEventDao {
             "values(#{milestoneId}, #{location}, #{time}, #{gmtCreate})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean addMilestoneEvent(MilestoneEventDTO milestoneEventDTO);
+
+    @Select("select id, milestone_id, location, time, gmt_create, gmt_modified from milestone_event where milestone_id = #{milestoneId}")
+    MilestoneEventDTO getMilestoneEventByMilestoneId(long milestoneId);
 }
