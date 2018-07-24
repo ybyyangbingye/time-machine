@@ -6,8 +6,6 @@
  */
 package com.netease.timemachine.monitor;
 
-
-import com.alibaba.fastjson.JSON;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
@@ -17,7 +15,11 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSON;
+
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,15 +47,12 @@ public class Starter {
         dataStruct.setMaxMemory(Runtime.getRuntime().maxMemory()/1024/1024);
         dataStruct.setTotalMemory(Runtime.getRuntime().totalMemory()/1024/1024);
         Map<Thread, StackTraceElement[]> maps = Thread.getAllStackTraces();
-        Map<String,List<String>> target = new HashMap<>();
+        Map<String, StackTraceElement[]> target = new HashMap<>();
         maps.keySet().stream().forEach((t)->{
-            target.put(String.valueOf(t.getId()),Arrays.asList((StackTraceElement[])maps.get(t)).stream().map((ste)->{
-                return ste.getFileName();
-            }).collect(Collectors.toList()));
+            target.put(String.valueOf(t.getId())+";"+t.getName(),maps.get(t));
         });
         dataStruct.setThreadCount(maps.keySet().size());
         dataStruct.setThreads(target);
-
         if (stat == null) {
             client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/service/" + appName,JSON.toJSONString(dataStruct).getBytes());
         } else {

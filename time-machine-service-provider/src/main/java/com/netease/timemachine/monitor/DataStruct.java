@@ -20,13 +20,13 @@ public class DataStruct {
     private long totalMemory;
     private long maxMemory;
     private long time;
-    private Map<String,List<String>> threads;
+    private Map<String, StackTraceElement[]> threads;
 
-    public Map<String, List<String>> getThreads() {
+    public Map<String, StackTraceElement[]> getThreads() {
         return threads;
     }
 
-    public void setThreads(Map<String, List<String>> threads) {
+    public void setThreads(Map<String, StackTraceElement[]> threads) {
         this.threads = threads;
     }
 
