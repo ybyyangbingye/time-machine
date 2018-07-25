@@ -25,7 +25,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void insertComment(CommentDTO commentDTO) {
         Comment comment = CommentDtoToMeta.commentDtoToMeta(commentDTO);
-        comment.setCreateTime(new Date());
         commentDao.insertComment(comment);
     }
 

@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
     public void insertUser(UserDTO userDTO) {
         User user = UserDtoToMetaUtil.UserDtoToMeta(userDTO);
         user.setUserName(user.getPhone());
-        user.setCreateTime(new Date());
         userDao.insertUser(user);
     }
 
