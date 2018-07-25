@@ -1,4 +1,4 @@
-package com.netease.timemachine.momment.dto;
+package com.netease.timemachine.moment.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,21 +13,21 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
-public class MommentDTO implements Serializable {
+public class MomentDTO implements Serializable {
 
     private static final long serialVersionUID = -956037917886861599L;
 
-    private Long momment_id;
+    private Long momentId;
 
-    private Long creator_id;
+    private Long creatorId;
 
     private String description;
 
-    private Long tag_id;
+    private String location;
 
-    private Long child_id;
+    private Long childId;
 
-    private Date gmt_create;
+    private Date gmtCreate;
 
-    private Date gmt_modified;
+    private Date gmtModified;
 }

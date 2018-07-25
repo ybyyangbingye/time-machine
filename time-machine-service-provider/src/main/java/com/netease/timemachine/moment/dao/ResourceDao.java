@@ -1,4 +1,4 @@
-package com.netease.timemachine.momment.dao;
+package com.netease.timemachine.moment.dao;
 
 /**
  * @Author: WYT
