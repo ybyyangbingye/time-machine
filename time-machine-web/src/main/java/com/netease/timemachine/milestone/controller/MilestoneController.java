@@ -1,5 +1,7 @@
 package com.netease.timemachine.milestone.controller;
 
+import com.netease.timemachine.account.dto.ChildDTO;
+import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.milestone.dto.MilestoneDTO;
 import com.netease.timemachine.milestone.service.MilestoneService;
@@ -8,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author zhongweichang
@@ -20,6 +24,8 @@ public class MilestoneController {
 
     @Autowired
     private MilestoneService milestoneService;
+    @Autowired
+    private ChildService childService;
 
     /**
      * 创建里程碑
@@ -41,6 +47,14 @@ public class MilestoneController {
      */
     @RequestMapping(value = "/{child_id}", method = RequestMethod.GET)
     public ResponseEntity getMilestoneList(HttpServletRequest request, @PathVariable("child_id") long childId) {
-        return ResponseView.success(milestoneService.getMilestoneList(childId));
+        ChildDTO childDTO = childService.selectChildById(childId);
+        List<MilestoneDTO> milestoneDTOList = milestoneService.getMilestoneList(childId);
+        for(MilestoneDTO milestoneDTO: milestoneDTOList) {
+            Date nowDate = milestoneDTO.getTime();
+            int age = nowDate.getYear() - childDTO.getBirthDate().getYear();
+            milestoneDTO.setChildAge(age);
+        }
+
+        return ResponseView.success(milestoneDTOList);
     }
 }
