@@ -19,7 +19,7 @@ public class MomentDtoToMeta {
      * @param moments
      * @return
      */
-    public static List<MomentDTO> metaToDtoList(List<Moment> moments) {
+    public static List<MomentDTO> metaListToDtoList(List<Moment> moments) {
         if(moments == null) {
             return null;
         }

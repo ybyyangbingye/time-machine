@@ -1,5 +1,6 @@
 package com.netease.timemachine.moment.service;
 
+import com.netease.timemachine.moment.dto.LabelDTO;
 import com.netease.timemachine.moment.dto.MomentDTO;
 
 import java.util.List;
@@ -30,14 +31,12 @@ public interface MomentService {
 
     /**
      * 用户添加一条关于孩子的状态
-     * @param userId
-     * @param childId
-     * @param description
+     * @param moment
      * @param files
+     * @param labels
      * @return
      */
-    boolean addMoment(Long userId, Long childId, String description, String location,
-                       List<String> files);
+    boolean addMoment(MomentDTO moment,List<String> files, List<LabelDTO> labels);
 
 
     //boolean deleteMoment();

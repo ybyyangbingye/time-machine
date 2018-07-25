@@ -30,6 +30,8 @@ public class MomentVO implements Serializable {
 
     private List<String> files;
 
+    private List<LabelVO> labels;
+
     private Date gmtCreate;
 
     private Date gmtModified;

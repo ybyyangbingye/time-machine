@@ -1,5 +1,8 @@
 package com.netease.timemachine.moment.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,15 +12,17 @@ import java.util.Date;
  * @Date: 2018/7/25 14:39
  */
 
+@Data
+@NoArgsConstructor
 public class LabelDTO implements Serializable {
 
     private static final long serialVersionUID = -8106807216081609073L;
 
-    private Long lableId;
+    private Long labelId;
 
-    private String lableName;
+    private String labelName;
 
-    private Long lableType;
+    private Long labelType;
 
     private Long userId;
 

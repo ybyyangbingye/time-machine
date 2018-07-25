@@ -1,7 +1,9 @@
 package com.netease.timemachine.moment.serviceImpl;
 
 import com.netease.timemachine.moment.dao.MomentDao;
+import com.netease.timemachine.moment.dto.LabelDTO;
 import com.netease.timemachine.moment.dto.MomentDTO;
+import com.netease.timemachine.moment.meta.Label;
 import com.netease.timemachine.moment.meta.Moment;
 import com.netease.timemachine.moment.service.MomentService;
 import com.netease.timemachine.moment.util.MomentDtoToMeta;
@@ -33,7 +35,7 @@ public class MomentServiceImpl implements MomentService {
         Long start = currentPage * 5;
         Long end = start + 5;
         List<Moment> res = momentDao.getMoments(userId, childId, start, end);
-        return MomentDtoToMeta.metaToDtoList(res);
+        return MomentDtoToMeta.metaListToDtoList(res);
     }
 
     /**
@@ -47,18 +49,24 @@ public class MomentServiceImpl implements MomentService {
         return res;
     }
 
+
     /**
      *
-     * @param userId
-     * @param childId
-     * @param description
+     * @param momentDTO
      * @param files
+     * @param labels
      * @return
      */
-    @Override
-    public boolean addMoment(Long userId, Long childId, String description, String location,
-                       List<String> files) {
-
-        return false;
+    public boolean addMoment(MomentDTO momentDTO,List<String> files, List<LabelDTO> labels) {
+        momentDao.addMoment(MomentDtoToMeta.dtoToMeta(momentDTO));
+        for(String file : files) {
+            momentDao.addFile(file,momentDTO.getMomentId());
+        }
+        for(LabelDTO label : labels) {
+            momentDao.addLabel(momentDTO.getMomentId(), label.getLabelId());
+        }
+        return true;
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.netease.timemachine.moment.dao;
 
+import com.netease.timemachine.moment.meta.Label;
 import com.netease.timemachine.moment.meta.Moment;
 import org.apache.ibatis.annotations.*;
 
@@ -36,15 +37,32 @@ public interface MomentDao {
     @Select("select resource_obj from resource where group_id=#{groupId} and group_type=2")
     List<String> getMomentFiles(@Param("groupId")Long groupId);
 
+
     /**
-     *
-     * @param userId
-     * @param childId
-     * @param tagId
-     * @param description
-     * @param files
-     * @return
+     * 用户添加状态
+     * @param moment
      */
-    boolean addMomment(Long userId, Long childId, Long tagId, String description,
-                       List<String> files);
+    @Insert("insert into moment(creator_id,description,location,child_id) values" +
+    "(#{creatorId},#{description},#{location},#{childId})")
+    @Options(useGeneratedKeys = true, keyProperty = "momentId")
+    void addMoment(Moment moment);
+
+    /**
+     * 添加状态下的图片/视频
+     * todo: resource_type为1，默认插入的是图片，没处理视频
+     * @param file
+     * @param momentId
+     */
+    @Insert("insert into resource(resource_obj,resource_type,group_id,group_type) values"+
+    "(#{file},1,#{momentId},2)")
+    void addFile(@Param("file")String file,@Param("momentId")Long momentId);
+
+    /**
+     * 添加状态下的标签
+     * @param momentId
+     * @param labelId
+     */
+    @Insert("insert into label_belonged(label_id,group_type,group_id) values"+
+    "(#{labelId},2,#{momentId})")
+    void addLabel(@Param("momentId")Long momentId, @Param("labelId")Long labelId);
 }
