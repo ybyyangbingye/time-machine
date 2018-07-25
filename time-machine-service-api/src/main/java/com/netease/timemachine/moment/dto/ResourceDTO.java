@@ -1,4 +1,4 @@
-package com.netease.timemachine.momment.dto;
+package com.netease.timemachine.moment.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

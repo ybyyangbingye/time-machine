@@ -1,4 +1,4 @@
-package com.netease.timemachine.momment.serviceImpl;
+package com.netease.timemachine.moment.serviceImpl;
 
 /**
  * @Author: WYT

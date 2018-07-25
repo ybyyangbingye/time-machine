@@ -1,6 +1,6 @@
-package com.netease.timemachine.momment.service;
+package com.netease.timemachine.moment.service;
 
-import com.netease.timemachine.momment.dto.ResourceDTO;
+import com.netease.timemachine.moment.dto.ResourceDTO;
 
 /**
  * @Author: WYT

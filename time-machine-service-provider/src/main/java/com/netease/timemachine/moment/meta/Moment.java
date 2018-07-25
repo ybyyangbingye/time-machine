@@ -1,0 +1,44 @@
+package com.netease.timemachine.moment.meta;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * @Author: WYT
+ * @Description:
+ * @Date: 2018/7/24 10:58
+ */
+
+@Data
+@NoArgsConstructor
+public class Moment implements Serializable {
+
+    private static final long serialVersionUID = 4443232323446573693L;
+
+    private Long momentId;
+
+    private Long creatorId;
+
+    private String description;
+
+    private String location;
+
+    private Long childId;
+
+    private Date gmtCreate;
+
+    private Date gmtModified;
+
+    public Moment(Long momentId, Long creatorId, String description, String location, Long childId, Date gmtCreate, Date gmtModified) {
+        this.momentId = momentId;
+        this.creatorId = creatorId;
+        this.description = description;
+        this.location = location;
+        this.childId = childId;
+        this.gmtCreate = gmtCreate;
+        this.gmtModified = gmtModified;
+    }
+}

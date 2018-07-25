@@ -1,4 +1,4 @@
-package com.netease.timemachine.momment.util;
+package com.netease.timemachine.moment.util;
 
 /**
  * @Author: WYT

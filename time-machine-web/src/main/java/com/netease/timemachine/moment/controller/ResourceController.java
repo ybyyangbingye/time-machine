@@ -1,4 +1,4 @@
-package com.netease.timemachine.momment.controller;
+package com.netease.timemachine.moment.controller;
 
 /**
  * @Author: WYT

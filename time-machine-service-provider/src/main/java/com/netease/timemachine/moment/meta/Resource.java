@@ -1,4 +1,4 @@
-package com.netease.timemachine.momment.meta;
+package com.netease.timemachine.moment.meta;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
