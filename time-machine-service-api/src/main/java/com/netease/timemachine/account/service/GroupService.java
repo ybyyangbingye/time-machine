@@ -17,6 +17,12 @@ public interface GroupService {
      */
     void insertGroup(GroupDTO groupDTO);
 
+    /**
+     * 通过userId和childId查询用户信息
+     * @param userId
+     * @param childId
+     * @return
+     */
     GroupDTO selectByUserAndChildId(Long userId, Long childId);
 
     /**
@@ -35,7 +41,7 @@ public interface GroupService {
     void UpdateGroup(GroupDTO groupDTO);
 
     /**
-     * 获取管理childId的所有用户
+     * 获取关注childId的所有用户
      * @param childId
      */
     List<GroupDTO> selectGroupByChildId(Long childId);

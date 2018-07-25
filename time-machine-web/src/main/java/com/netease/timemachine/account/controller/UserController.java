@@ -44,7 +44,7 @@ public class UserController {
     @Autowired
     private RsaAlgorithm rsaAlgorithm;
 
-    @RequestMapping("/sms")
+    @RequestMapping(value = "/sms",method = RequestMethod.POST)
     public ResponseEntity smsByPhone(@RequestParam String phone){
         try{
             msService.sms(phone);
@@ -55,7 +55,7 @@ public class UserController {
         return ResponseView.success(null,"发送成功");
     }
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseEntity login(@RequestParam String phone, @RequestParam String code){
         try {
             msService.vms(phone, code);
