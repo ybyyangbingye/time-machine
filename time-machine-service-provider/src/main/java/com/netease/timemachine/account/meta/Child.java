@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author: wqh
@@ -25,9 +26,9 @@ public class Child implements Serializable {
     private String imgUrl;
 
     /**形如2018-07-17*/
-    private String birthDate;
+    private Date birthDate;
 
-    public Child(Integer gender, String childName, String imgUrl, String birthDate) {
+    public Child(Integer gender, String childName, String imgUrl, Date birthDate) {
         this.gender = gender;
         this.childName = childName;
         this.imgUrl = imgUrl;
