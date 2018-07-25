@@ -1,7 +1,9 @@
 package com.netease.timemachine.milestone.controller;
 
 import com.google.common.collect.Lists;
+import com.netease.timemachine.account.dto.GroupDTO;
 import com.netease.timemachine.account.dto.UserDTO;
+import com.netease.timemachine.account.service.GroupService;
 import com.netease.timemachine.account.service.UserService;
 import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.common.dto.LabelBelongedDTO;
@@ -51,6 +53,8 @@ public class MilestoneEventController {
     private LabelService labelService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private GroupService groupService;
 
     /**
      * 添加里程碑事件
@@ -186,7 +190,7 @@ public class MilestoneEventController {
     }
 
     /**
-     * 添加里程碑事件
+     * 修改里程碑事件
      * @param request
      * @param milestoneEventVO
      * @return
@@ -293,6 +297,25 @@ public class MilestoneEventController {
             long labelBelongedId = mapLabelBelonged.get(labelId);
             labelBelongedService.deleteLabelBelongedById(labelBelongedId);
         }
-        return ResponseView.success("", "添加成功");
+        return ResponseView.success("", "修改成功");
+    }
+
+    /**
+     * 获取候选的被提醒人列表
+     * @param request
+     * @param childId
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/candidate/{id}", method = RequestMethod.GET)
+    public ResponseEntity getToBeRemindedPeople(HttpServletRequest request, @PathVariable("id") long childId, @RequestParam("user_id") long userId) {
+        List<GroupDTO> groupDTOS = groupService.selectGroupByChildId(childId);
+        for(GroupDTO groupDTO: groupDTOS) {
+            if(groupDTO.getUserId() == userId) {
+                groupDTOS.remove(groupDTO);
+                break;
+            }
+        }
+        return ResponseView.success(groupDTOS);
     }
 }
