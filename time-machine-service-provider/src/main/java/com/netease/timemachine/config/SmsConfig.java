@@ -1,6 +1,5 @@
 package com.netease.timemachine.config;
 
-import com.netease.timemachine.config.SmsAutoConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -21,5 +20,4 @@ public class SmsConfig {
     public SmsAutoConfig getSmsAutozConfig(){
         return new SmsAutoConfig();
     }
-
 }
