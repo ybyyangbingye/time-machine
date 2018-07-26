@@ -18,6 +18,7 @@ import com.netease.timemachine.define.GroupTypeEnum;
 import com.netease.timemachine.milestone.dto.MilestoneEventDTO;
 import com.netease.timemachine.milestone.service.MilestoneEventService;
 import com.netease.timemachine.milestone.vo.MilestoneEventVO;
+import com.netease.timemachine.milestone.vo.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -41,7 +42,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value = "/milestone_event")
-public class MilestoneEventController {
+public class MilestoneEventController extends BaseController{
 
     @Autowired
     private MilestoneEventService milestoneEventService;
@@ -120,54 +121,62 @@ public class MilestoneEventController {
      * @param milestoneId
      * @return
      */
-    @Cacheable(value = "milestoneEvent", key = "#milestoneId")
     @RequestMapping(value = "/{milestone_id}", method = RequestMethod.GET)
-    public ResponseEntity getMilestoneEvent(HttpServletRequest request, @PathVariable("milestone_id") long milestoneId) {
-        MilestoneEventVO milestoneEventVO = new MilestoneEventVO();
+    @Cacheable(value = "milestoneEvent", key = "#milestoneId")
+    public ResponseResult getMilestoneEvent(HttpServletRequest request, @PathVariable("milestone_id") long milestoneId) {
 
-        MilestoneEventDTO milestoneEventDTO = milestoneEventService.getMilestoneEventByMilestoneId(milestoneId);
-        if(milestoneEventDTO == null) {
-            return ResponseView.fail(400, "参数有误!");
-        }
-        milestoneEventVO.setId(milestoneEventDTO.getId());
-        milestoneEventVO.setMilestoneId(milestoneEventDTO.getMilestoneId());
-        milestoneEventVO.setLocation(milestoneEventDTO.getLocation());
-        milestoneEventVO.setTime(milestoneEventDTO.getTime());
-        milestoneEventVO.setGmtCreate(milestoneEventDTO.getGmtCreate());
-        milestoneEventVO.setGmtModified(milestoneEventDTO.getGmtModified());
+        ResultDelegate delegate = new ResultDelegate() {
+            @Override
+            public Object getResultObject() throws Exception {
+                MilestoneEventVO milestoneEventVO = new MilestoneEventVO();
 
-        //获取图片、视频信息
-        List<String> resources = Lists.newArrayList();
-        List<ResourceDTO> resourceDTOS = milestoneEventImageService.getResourceByGroupIdAndGroupType(milestoneEventVO.getId(), GroupTypeEnum.MILESTONE.getType());
-        for(ResourceDTO resourceDTO: resourceDTOS) {
-            resources.add(resourceDTO.getResourceObj());
-            milestoneEventVO.setResourceType(resourceDTO.getResourceType());
-        }
-        milestoneEventVO.setResources(resources);
+                MilestoneEventDTO milestoneEventDTO = milestoneEventService.getMilestoneEventByMilestoneId(milestoneId);
+                if(milestoneEventDTO == null) {
+                    return "参数有误!";
+                }
+                milestoneEventVO.setId(milestoneEventDTO.getId());
+                milestoneEventVO.setMilestoneId(milestoneEventDTO.getMilestoneId());
+                milestoneEventVO.setLocation(milestoneEventDTO.getLocation());
+                milestoneEventVO.setTime(milestoneEventDTO.getTime());
+                milestoneEventVO.setGmtCreate(milestoneEventDTO.getGmtCreate());
+                milestoneEventVO.setGmtModified(milestoneEventDTO.getGmtModified());
 
-        // 获取被提醒人信息 如果性能不好，可对数据库做冗余处理
-        List<UserRemindedDTO> userRemindedDTOS = userRemindedService.getByGroupTypeAndGroupId(GroupTypeEnum.MILESTONE.getType(), milestoneEventDTO.getId());
-        List<Long> userIds = Lists.newArrayList();
-        for(UserRemindedDTO userRemindedDTO: userRemindedDTOS) {
-            userIds.add(userRemindedDTO.getId());
-        }
-        if(!CollectionUtils.isEmpty(userIds)) {
-            List<UserDTO> users = userService.listUsersByIds(userIds);
-            milestoneEventVO.setRemindedUsers(users);
-        }
+                //获取图片、视频信息
+                List<String> resources = Lists.newArrayList();
+                List<ResourceDTO> resourceDTOS = milestoneEventImageService.getResourceByGroupIdAndGroupType(milestoneEventVO.getId(), GroupTypeEnum.MILESTONE.getType());
+                for(ResourceDTO resourceDTO: resourceDTOS) {
+                    resources.add(resourceDTO.getResourceObj());
+                    milestoneEventVO.setResourceType(resourceDTO.getResourceType());
+                }
+                milestoneEventVO.setResources(resources);
 
-        // 获取标签
-        List<LabelBelongedDTO> labelBelongedDTOS = labelBelongedService.getByGroupTypeAndGroupId(GroupTypeEnum.MILESTONE.getType(), milestoneEventDTO.getId());
-        List<Long> labelIds = Lists.newArrayList();
-        for(LabelBelongedDTO belongedDTO: labelBelongedDTOS) {
-            labelIds.add(belongedDTO.getId());
-        }
-        if(!CollectionUtils.isEmpty(labelIds)) {
-            List<LabelDTO> labelDTOS = labelService.getLabelsByIds(labelIds);
-            milestoneEventVO.setLabels(labelDTOS);
-        }
+                // 获取被提醒人信息 如果性能不好，可对数据库做冗余处理
+                List<UserRemindedDTO> userRemindedDTOS = userRemindedService.getByGroupTypeAndGroupId(GroupTypeEnum.MILESTONE.getType(), milestoneEventDTO.getId());
+                List<Long> userIds = Lists.newArrayList();
+                for(UserRemindedDTO userRemindedDTO: userRemindedDTOS) {
+                    userIds.add(userRemindedDTO.getId());
+                }
+                if(!CollectionUtils.isEmpty(userIds)) {
+                    List<UserDTO> users = userService.listUsersByIds(userIds);
+                    milestoneEventVO.setRemindedUsers(users);
+                }
 
-        return ResponseView.success(milestoneEventVO);
+                // 获取标签
+                List<LabelBelongedDTO> labelBelongedDTOS = labelBelongedService.getByGroupTypeAndGroupId(GroupTypeEnum.MILESTONE.getType(), milestoneEventDTO.getId());
+                List<Long> labelIds = Lists.newArrayList();
+                for(LabelBelongedDTO belongedDTO: labelBelongedDTOS) {
+                    labelIds.add(belongedDTO.getId());
+                }
+                if(!CollectionUtils.isEmpty(labelIds)) {
+                    List<LabelDTO> labelDTOS = labelService.getLabelsByIds(labelIds);
+                    milestoneEventVO.setLabels(labelDTOS);
+                }
+
+                return milestoneEventVO;
+            }
+        };
+
+        return getResponseResult(request, delegate);
     }
 
     /**

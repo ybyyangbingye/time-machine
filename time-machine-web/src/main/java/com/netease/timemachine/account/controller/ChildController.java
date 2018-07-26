@@ -3,12 +3,8 @@ package com.netease.timemachine.account.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.dto.ChildDTO;
 import com.netease.timemachine.account.dto.GroupDTO;
-import com.netease.timemachine.account.dto.UserDTO;
-import com.netease.timemachine.account.meta.Group;
-import com.netease.timemachine.account.meta.User;
 import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.service.GroupService;
-import com.netease.timemachine.account.service.UserService;
 import com.netease.timemachine.account.util.ChildVoToDtoUtil;
 import com.netease.timemachine.account.util.GroupVoToDtoUtil;
 import com.netease.timemachine.account.util.ResponseView;
@@ -17,10 +13,8 @@ import com.netease.timemachine.account.vo.GroupVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

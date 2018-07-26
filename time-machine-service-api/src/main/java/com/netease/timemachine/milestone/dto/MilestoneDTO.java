@@ -4,6 +4,7 @@ import com.netease.timemachine.common.dto.BaseDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
-public class MilestoneDTO extends BaseDTO {
+public class MilestoneDTO extends BaseDTO implements Serializable {
 
     private String name;
 

@@ -5,7 +5,9 @@ import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.milestone.dto.MilestoneDTO;
 import com.netease.timemachine.milestone.service.MilestoneService;
+import com.netease.timemachine.milestone.vo.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/milestone")
-public class MilestoneController {
+public class MilestoneController extends BaseController{
 
     @Autowired
     private MilestoneService milestoneService;
@@ -46,15 +48,22 @@ public class MilestoneController {
      * @return
      */
     @RequestMapping(value = "/{child_id}", method = RequestMethod.GET)
-    public ResponseEntity getMilestoneList(HttpServletRequest request, @PathVariable("child_id") long childId) {
-        ChildDTO childDTO = childService.selectChildById(childId);
-        List<MilestoneDTO> milestoneDTOList = milestoneService.getMilestoneList(childId);
-        for(MilestoneDTO milestoneDTO: milestoneDTOList) {
-            Date nowDate = milestoneDTO.getTime();
-            int age = nowDate.getYear() - childDTO.getBirthDate().getYear();
-            milestoneDTO.setChildAge(age);
-        }
+    @Cacheable(value = "milestone")
+    public ResponseResult getMilestoneList(HttpServletRequest request, @PathVariable("child_id") long childId) {
+        ResultDelegate delegate = new ResultDelegate() {
+            @Override
+            public Object getResultObject() throws Exception {
+                ChildDTO childDTO = childService.selectChildById(childId);
+                List<MilestoneDTO> milestoneDTOList = milestoneService.getMilestoneList(childId);
+                for(MilestoneDTO milestoneDTO: milestoneDTOList) {
+                    Date nowDate = milestoneDTO.getTime();
+                    int age = nowDate.getYear() - childDTO.getBirthDate().getYear();
+                    milestoneDTO.setChildAge(age);
+                }
+                return milestoneDTOList;
+            }
+        };
 
-        return ResponseView.success(milestoneDTOList);
+        return getResponseResult(request, delegate);
     }
 }
