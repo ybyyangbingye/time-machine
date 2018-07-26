@@ -11,7 +11,7 @@ import java.util.Date;
  * @date 2018/7/23 下午6:46
  */
 @Data
-public class MilestoneEventDTO extends BaseDTO{
+public class MilestoneEventDTO extends BaseDTO {
 
     private Long milestoneId;
 

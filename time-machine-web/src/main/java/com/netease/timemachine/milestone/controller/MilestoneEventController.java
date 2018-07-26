@@ -19,6 +19,8 @@ import com.netease.timemachine.milestone.dto.MilestoneEventDTO;
 import com.netease.timemachine.milestone.service.MilestoneEventService;
 import com.netease.timemachine.milestone.vo.MilestoneEventVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -118,6 +120,7 @@ public class MilestoneEventController {
      * @param milestoneId
      * @return
      */
+    @Cacheable(value = "milestoneEvent", key = "#milestoneId")
     @RequestMapping(value = "/{milestone_id}", method = RequestMethod.GET)
     public ResponseEntity getMilestoneEvent(HttpServletRequest request, @PathVariable("milestone_id") long milestoneId) {
         MilestoneEventVO milestoneEventVO = new MilestoneEventVO();
@@ -171,12 +174,15 @@ public class MilestoneEventController {
      * 根据里程碑中事件id删除事件及其资源
      *
      * @param request
-     * @param milestoneEventId
+     * @param milestoneId
      * @return
      */
     @RequestMapping(value = "/{milestone_event_id}", method = RequestMethod.DELETE)
     @Transactional
-    public ResponseEntity deleteMilestoneEvent(HttpServletRequest request, @PathVariable("milestone_event_id") long milestoneEventId) {
+    @CacheEvict(value = "milestoneEvent", key = "#milestoneId")
+    public ResponseEntity deleteMilestoneEvent(HttpServletRequest request, @PathVariable("milestone_id") long milestoneId) {
+        MilestoneEventDTO milestoneEventDTO = milestoneEventService.getMilestoneEventByMilestoneId(milestoneId);
+        long milestoneEventId = milestoneEventDTO.getId();
         // 删除主表
         milestoneEventService.deleteMilestoneEventById(milestoneEventId);
         // 删除资源表
@@ -197,6 +203,7 @@ public class MilestoneEventController {
      */
     @RequestMapping(method = RequestMethod.PATCH)
     @Transactional
+    @CacheEvict(value = "milestoneEvent", key = "#milestoneEventVO.milestoneId")
     public ResponseEntity modifyMilestoneEvent(HttpServletRequest request, @RequestBody MilestoneEventVO milestoneEventVO) {
         // 修改事件主表
         MilestoneEventDTO milestoneEventDTO = milestoneEventService.getMilestoneEventById(milestoneEventVO.getId());
