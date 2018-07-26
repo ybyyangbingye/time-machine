@@ -11,51 +11,51 @@ package com.netease.timemachine.nos.dto;
  */
 public class NosDTO {
 
-    String bucket;
-    String object;
-    String expires;
-    Long objectSizeMin;
-    Long objectSizeMax;
+    String Bucket;
+    String Object;
+    Integer Expires;
+    Long ObjectSizeMin;
+    Long ObjectSizeMax;
     String mimeLimit;
 
     public String getBucket() {
-        return bucket;
+        return Bucket;
     }
 
     public void setBucket(String bucket) {
-        this.bucket = bucket;
+        Bucket = bucket;
     }
 
     public String getObject() {
-        return object;
+        return Object;
     }
 
     public void setObject(String object) {
-        this.object = object;
+        Object = object;
     }
 
-    public String getExpires() {
-        return expires;
+    public Integer getExpires() {
+        return Expires;
     }
 
-    public void setExpires(String expires) {
-        this.expires = expires;
+    public void setExpires(Integer expires) {
+        Expires = expires;
     }
 
     public Long getObjectSizeMin() {
-        return objectSizeMin;
+        return ObjectSizeMin;
     }
 
     public void setObjectSizeMin(Long objectSizeMin) {
-        this.objectSizeMin = objectSizeMin;
+        ObjectSizeMin = objectSizeMin;
     }
 
     public Long getObjectSizeMax() {
-        return objectSizeMax;
+        return ObjectSizeMax;
     }
 
     public void setObjectSizeMax(Long objectSizeMax) {
-        this.objectSizeMax = objectSizeMax;
+        ObjectSizeMax = objectSizeMax;
     }
 
     public String getMimeLimit() {
