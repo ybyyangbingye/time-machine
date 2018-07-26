@@ -30,7 +30,7 @@ public interface MomentService {
     List<String> getMomentFiles(Long momentId);
 
     /**
-     * 用户添加一条关于孩子的状态
+     * 用户添加一条关于宝宝的状态
      * @param moment
      * @param files
      * @param labels
@@ -38,6 +38,10 @@ public interface MomentService {
      */
     boolean addMoment(MomentDTO moment,List<String> files, List<LabelDTO> labels);
 
-
-    //boolean deleteMoment();
+    /**
+     * 用户删除宝宝的状态
+     * @param momentId
+     * @return
+     */
+    boolean deleteMoment(Long momentId);
 }

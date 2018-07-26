@@ -53,4 +53,13 @@ public class MomentController {
                 momentVO.getFiles(),
                 LabelVoToDto.voListToDtoList(momentVO.getLabels()));
     }
+
+    /**
+     *
+     * @param momentId
+     */
+    @RequestMapping(value = "/deleteMoment", method = RequestMethod.POST)
+    public void deleteMoment(@RequestParam Long momentId) {
+        momentService.deleteMoment(momentId);
+    }
 }

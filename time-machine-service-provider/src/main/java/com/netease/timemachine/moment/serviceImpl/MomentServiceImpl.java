@@ -3,7 +3,6 @@ package com.netease.timemachine.moment.serviceImpl;
 import com.netease.timemachine.moment.dao.MomentDao;
 import com.netease.timemachine.moment.dto.LabelDTO;
 import com.netease.timemachine.moment.dto.MomentDTO;
-import com.netease.timemachine.moment.meta.Label;
 import com.netease.timemachine.moment.meta.Moment;
 import com.netease.timemachine.moment.service.MomentService;
 import com.netease.timemachine.moment.util.MomentDtoToMeta;
@@ -57,17 +56,27 @@ public class MomentServiceImpl implements MomentService {
      * @param labels
      * @return
      */
+    @Override
     public boolean addMoment(MomentDTO momentDTO,List<String> files, List<LabelDTO> labels) {
-
-        momentDao.addMoment(MomentDtoToMeta.dtoToMeta(momentDTO));
+        Moment moment = MomentDtoToMeta.dtoToMeta(momentDTO);
+        momentDao.addMoment(moment);
         for(String file : files) {
-            momentDao.addFile(file,momentDTO.getMomentId());
+            momentDao.addFile(file,moment.getMomentId());
         }
         for(LabelDTO label : labels) {
-            momentDao.addLabel(momentDTO.getMomentId(), label.getLabelId());
+            momentDao.addLabel(moment.getMomentId(), label.getLabelId());
         }
         return true;
     }
 
-
+    /**
+     *
+     * @param momentId
+     * @return
+     */
+    @Override
+    public boolean deleteMoment(Long momentId) {
+        momentDao.deleteMoment(momentId);
+        return true;
+    }
 }
