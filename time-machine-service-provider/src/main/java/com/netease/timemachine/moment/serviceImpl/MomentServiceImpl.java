@@ -58,6 +58,7 @@ public class MomentServiceImpl implements MomentService {
      * @return
      */
     public boolean addMoment(MomentDTO momentDTO,List<String> files, List<LabelDTO> labels) {
+
         momentDao.addMoment(MomentDtoToMeta.dtoToMeta(momentDTO));
         for(String file : files) {
             momentDao.addFile(file,momentDTO.getMomentId());

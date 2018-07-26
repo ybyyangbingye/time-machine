@@ -10,19 +10,17 @@ import com.alibaba.fastjson.JSONArray;
 public interface LocationService {
     /**
      * 定位，显示周围位置信息
-     * @param key 腾讯地图开发key
      * @param location 经纬度
      * @param page_size 每页显示数量
      * @param page_index 当前页，1开始
      * @return
      * @throws Exception
      */
-    public JSONArray searchPosByPoint(String key,String location,
-                                      Integer page_size, Integer page_index) throws Exception;
+    public JSONArray searchPosByPoint(String location, Integer page_size,
+                                      Integer page_index) throws Exception;
 
     /**
      * 根据搜索显示定位信息
-     * @param key 腾讯地图开发key
      * @param location 经纬度
      * @param keyword 搜索关键词
      * @param page_size 每页显示数量
@@ -30,6 +28,6 @@ public interface LocationService {
      * @return
      * @throws Exception
      */
-    public JSONArray searchPosByKeyWord(String key,String location,String keyword,
+    public JSONArray searchPosByKeyWord(String location,String keyword,
                                         Integer page_size,Integer page_index) throws Exception;
 }
