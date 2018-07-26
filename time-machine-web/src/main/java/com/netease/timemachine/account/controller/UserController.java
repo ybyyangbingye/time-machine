@@ -19,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.acl.LastOwnerException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +76,7 @@ public class UserController {
         map.put("phone", phone);
         String token = rsaAlgorithm.create(null, map);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("user", userVo);
+        jsonObject.put("userId", userVo.getUserId());
         jsonObject.put("token", token);
         return ResponseView.success(jsonObject,"登录成功");
     }
@@ -90,6 +91,14 @@ public class UserController {
         groupService.updateGroupImg(userVO.getImgUrl(), userVO.getUserId());
         return ResponseView.success("", "更新成功");
     }
+
+    @RequestMapping(value = "/detail")
+    public ResponseEntity selectUserById(@RequestParam Long userId){
+        UserDTO userDTO = userService.selectById(userId);
+        UserVO userVO = UserVoToDtoUtil.UserDtoToVo(userDTO);
+        return ResponseView.success(userVO);
+    }
+
 
     @RequestMapping("/ownChildren")
     public ResponseEntity showChildren(@RequestParam Long userId){
