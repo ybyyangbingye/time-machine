@@ -19,7 +19,7 @@ public class MomentVoToDto {
      * @param moments
      * @return
      */
-    public static List<MomentVO> dtoListToVo(List<MomentDTO> moments) {
+    public static List<MomentVO> dtoListToVoList(List<MomentDTO> moments) {
         if(moments == null) {
             return null;
         }

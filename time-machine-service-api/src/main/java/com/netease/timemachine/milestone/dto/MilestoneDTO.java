@@ -23,6 +23,8 @@ public class MilestoneDTO extends BaseDTO {
 
     private Long userId;
 
+    private Integer childAge;
+
     public Date getTime() {
         return time;
     }

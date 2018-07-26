@@ -8,6 +8,7 @@ package com.netease.timemachine.define;
  * @date 2018/7/24 上午9:53
  */
 public enum GroupTypeEnum {
+
     // 里程碑
     MILESTONE(1),
     // 朋友圈

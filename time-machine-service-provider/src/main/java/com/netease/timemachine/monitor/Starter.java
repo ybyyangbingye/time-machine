@@ -36,6 +36,8 @@ public class Starter {
     @Value("${monitor.name}")
     String appName;
 
+    @Value("${env}")
+    String env;
     @Autowired CuratorFramework client;
 
     @Scheduled(cron = "0/5 * * * * ? ")
@@ -56,7 +58,7 @@ public class Starter {
         if (stat == null) {
             client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/service/" + appName,JSON.toJSONString(dataStruct).getBytes());
         } else {
-            client.setData().forPath("/service/" + appName,JSON.toJSONString(dataStruct).getBytes());
+            client.setData().forPath("/service/"+ appName,JSON.toJSONString(dataStruct).getBytes());
         }
     }
 }
