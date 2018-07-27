@@ -38,4 +38,9 @@ public class ResourceServiceImpl implements ResourceService{
     public boolean deleteResourceById(long id) {
         return resourceDao.deleteResourceById(id);
     }
+
+    @Override
+    public ResourceDTO getResourceByMilestoneId(long milestoneId) {
+        return resourceDao.getResourceByMilestoneId(milestoneId);
+    }
 }

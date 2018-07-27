@@ -44,4 +44,8 @@ public interface ResourceDao {
      */
     @Delete("delete from resource where id = #{id}")
     boolean deleteResourceById(@Param("id") long id);
+
+    @Select("select r.id, r.resource_obj, r.resource_type, r.group_id, r.group_type, r.gmt_create, r.gmt_modified " +
+            "from resource r, milestone_event me where me.milestone_id = #{milestoneId} and me.id = r.group_id limit 1")
+    ResourceDTO getResourceByMilestoneId(long milestoneId);
 }
