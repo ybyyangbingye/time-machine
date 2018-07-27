@@ -26,15 +26,18 @@ public class Label implements Serializable {
 
     private Long userId;
 
+    private Long childId;
+
     private Date gmtCreate;
 
     private Date gmtModified;
 
-    public Label(Long labelId, String labelName, Long labelType, Long userId, Date gmtCreate, Date gmtModified) {
+    public Label(Long labelId, String labelName, Long labelType, Long userId, Long childId, Date gmtCreate, Date gmtModified) {
         this.labelId = labelId;
         this.labelName = labelName;
         this.labelType = labelType;
         this.userId = userId;
+        this.childId = childId;
         this.gmtCreate = gmtCreate;
         this.gmtModified = gmtModified;
     }

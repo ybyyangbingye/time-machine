@@ -26,6 +26,8 @@ public class LabelVO implements Serializable {
 
     private Long userId;
 
+    private Long childId;
+
     private Date gmtCreate;
 
     private Date gmtModified;

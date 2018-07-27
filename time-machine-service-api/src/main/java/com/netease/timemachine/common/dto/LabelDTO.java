@@ -17,4 +17,6 @@ public class LabelDTO extends BaseDTO {
     private Integer type;
 
     private Long userId;
+
+    private Long childId;
 }

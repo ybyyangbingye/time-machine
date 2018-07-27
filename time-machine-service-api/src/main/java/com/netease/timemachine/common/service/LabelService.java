@@ -12,4 +12,36 @@ import java.util.List;
 public interface LabelService {
 
     List<LabelDTO> getLabelsByIds(List<Long> ids);
+
+    /**
+     * 获得历史标签
+     * @param userId
+     * @param childId
+     * @return
+     */
+    List<String> getHistoryLabels(Long userId, Long childId);
+
+    /**
+     * 获得家人标签
+     * @param userId
+     * @param childId
+     * @return
+     */
+    List<String> getFamilyLabels(Long userId, Long childId);
+
+    /**
+     * 获得推荐标签
+     * @param userId
+     * @param childId
+     * @return
+     */
+    List<String> getRecommendLabels(Long userId, Long childId);
+
+    /**
+     * 添加标签
+     * @param userId
+     * @param childId
+     * @param labels
+     */
+    void addLabels(Long userId, Long childId, List<String> labels);
 }
