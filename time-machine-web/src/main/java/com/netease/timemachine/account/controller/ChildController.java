@@ -3,8 +3,13 @@ package com.netease.timemachine.account.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.dto.ChildDTO;
 import com.netease.timemachine.account.dto.GroupDTO;
+import com.netease.timemachine.account.dto.UserDTO;
+import com.netease.timemachine.account.meta.Group;
+import com.netease.timemachine.account.meta.User;
 import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.service.GroupService;
+import com.netease.timemachine.account.service.UserService;
+import com.netease.timemachine.account.util.ChildBirthDay;
 import com.netease.timemachine.account.util.ChildVoToDtoUtil;
 import com.netease.timemachine.account.util.GroupVoToDtoUtil;
 import com.netease.timemachine.account.util.ResponseView;
@@ -13,8 +18,10 @@ import com.netease.timemachine.account.vo.GroupVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +55,9 @@ public class ChildController {
     @RequestMapping(value = "/select")
     public ResponseEntity selectChildById(@RequestParam Long childId){
         ChildDTO childDTO = childService.selectChildById(childId);
-        return ResponseView.success(ChildVoToDtoUtil.childDtoToVo(childDTO));
+        ChildVO childVO = ChildVoToDtoUtil.childDtoToVo(childDTO);
+        childVO.setAge(ChildBirthDay.getAge(childVO.getBirthDate()));
+        return ResponseView.success(childVO);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -79,7 +88,7 @@ public class ChildController {
      * 展示某孩子某管理者的具体信息（身份、昵称、权限）
      * @param userId
      * @param childId
-     * @return展示某孩子某管理者的具体信息（身份、昵称、权限）
+     * @return
      */
     @RequestMapping("/manager/detail")
     public ResponseEntity detailManager(@RequestParam("userId")Long userId,

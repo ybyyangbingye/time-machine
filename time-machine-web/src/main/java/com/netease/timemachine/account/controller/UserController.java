@@ -3,9 +3,11 @@ package com.netease.timemachine.account.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.dto.ChildDTO;
 import com.netease.timemachine.account.dto.UserDTO;
+import com.netease.timemachine.account.meta.Child;
 import com.netease.timemachine.account.service.GroupService;
 import com.netease.timemachine.account.service.MsService;
 import com.netease.timemachine.account.service.UserService;
+import com.netease.timemachine.account.util.ChildBirthDay;
 import com.netease.timemachine.account.util.ChildVoToDtoUtil;
 import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.account.util.UserVoToDtoUtil;
@@ -19,6 +21,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.acl.LastOwnerException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +84,12 @@ public class UserController {
         return ResponseView.success(jsonObject,"登录成功");
     }
 
+    /**
+     * 更新用户时，记得用户的图片要同步更新到group表里面
+     * @param userVO
+     * @param request
+     * @return
+     */
     @JWTVerify
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity updateUser(@RequestBody UserVO userVO, HttpServletRequest request){
@@ -104,7 +114,12 @@ public class UserController {
         List<ChildDTO> childDTOList = userService.selectOwnChildren(userId);
         if(!CollectionUtils.isEmpty(childDTOList)) {
             List<ChildVO> childVOList = ChildVoToDtoUtil.childDtoToVoList(childDTOList);
-            return ResponseView.success(childVOList);
+            List<ChildVO> res = new ArrayList<>();
+            for(ChildVO childVO : childVOList){
+                childVO.setAge(ChildBirthDay.getAge(childVO.getBirthDate()));
+                res.add(childVO);
+            }
+            return ResponseView.success(res);
         }
         return ResponseView.success(null, "您还没有添加过孩子哦");
     }
