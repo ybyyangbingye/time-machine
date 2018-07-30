@@ -79,4 +79,13 @@ public class MomentServiceImpl implements MomentService {
         momentDao.deleteMoment(momentId);
         return true;
     }
+
+    /**
+     * 增加状态下某张图片的浏览量
+     * @param resourceObj
+     */
+    @Override
+    public void incrementViews(String resourceObj) {
+        momentDao.incrementViews(resourceObj);
+    }
 }

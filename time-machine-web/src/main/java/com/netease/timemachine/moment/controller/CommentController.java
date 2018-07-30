@@ -58,7 +58,7 @@ public class CommentController {
             commentVO.setReplyNickName(reply.getNickName());
             commentList.add(commentVO);
         }
-        return ResponseView.success(commentList, "查询成功");
+        return ResponseView.success(commentList);
     }
 
     @RequestMapping("/delete")

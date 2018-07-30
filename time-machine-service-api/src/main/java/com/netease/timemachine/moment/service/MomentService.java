@@ -44,4 +44,11 @@ public interface MomentService {
      * @return
      */
     boolean deleteMoment(Long momentId);
+
+    /**
+     * 更新状态下的某张图片的浏览量
+     * @param resourceObj
+     */
+
+    void incrementViews(String resourceObj);
 }

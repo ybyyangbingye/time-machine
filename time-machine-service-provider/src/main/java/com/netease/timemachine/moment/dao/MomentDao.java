@@ -71,4 +71,11 @@ public interface MomentDao {
      */
     @Delete("delete from moment where moment_id=#{momentId}")
     void deleteMoment(@Param("momentId")Long momentId);
+
+    /**
+     * 更新状态下的某张图片的浏览量
+     * @param resourceObj
+     */
+    @Update("update resource set views = views+1 where resource_obj = #{resourceObj} and  resource_type = 1")
+    void incrementViews(String resourceObj);
 }

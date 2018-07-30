@@ -9,10 +9,7 @@ import com.netease.timemachine.account.meta.User;
 import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.service.GroupService;
 import com.netease.timemachine.account.service.UserService;
-import com.netease.timemachine.account.util.ChildBirthDay;
-import com.netease.timemachine.account.util.ChildVoToDtoUtil;
-import com.netease.timemachine.account.util.GroupVoToDtoUtil;
-import com.netease.timemachine.account.util.ResponseView;
+import com.netease.timemachine.account.util.*;
 import com.netease.timemachine.account.vo.ChildVO;
 import com.netease.timemachine.account.vo.GroupVO;
 import org.apache.ibatis.annotations.Param;
@@ -49,7 +46,9 @@ public class ChildController {
         /**插入新的group记录*/
         GroupDTO groupDTO = new GroupDTO(childId, userId, identification, null, 0, imgUrl);
         groupService.insertGroup(groupDTO);
-        return ResponseView.success(null, "添加成功");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("invitationCode", ChildInvitationCode.inviCodeGenerator(childId));
+        return ResponseView.success(jsonObject, "添加成功");
     }
 
     @RequestMapping(value = "/select")
@@ -65,6 +64,20 @@ public class ChildController {
         ChildDTO childDTO = ChildVoToDtoUtil.childVoToDto(childVO);
         childService.updateChild(childDTO);
         return ResponseView.success(null, "更新成功");
+    }
+
+    /**
+     * 根据邀请码获取孩子信息
+     * @param invitationCode
+     * @return
+     */
+    @RequestMapping(value = "/detailByCode", method = RequestMethod.POST)
+    public ResponseEntity childDetailByCode(@RequestParam String invitationCode){
+        Long childId = ChildInvitationCode.inviDecoding(invitationCode);
+        ChildDTO childDTO = childService.selectChildById(childId);
+        ChildVO childVO = ChildVoToDtoUtil.childDtoToVo(childDTO);
+        childVO.setAge(ChildBirthDay.getAge(childVO.getBirthDate()));
+        return ResponseView.success(childVO);
     }
 
     /**
@@ -116,5 +129,13 @@ public class ChildController {
                                         @RequestParam("childId")Long childId){
         groupService.deleteGroup(userId, childId);
         return ResponseView.success(null, "删除成功");
+    }
+
+    @RequestMapping(value = "/getCode", method = RequestMethod.POST)
+    public ResponseEntity getChildCode(@RequestParam Long childId){
+        String invitationCode = ChildInvitationCode.inviCodeGenerator(childId);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("invitationCode", invitationCode);
+        return ResponseView.success(jsonObject);
     }
 }
