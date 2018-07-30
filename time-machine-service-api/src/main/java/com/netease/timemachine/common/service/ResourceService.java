@@ -41,4 +41,6 @@ public interface ResourceService {
     boolean deleteResourceById(long id);
 
     ResourceDTO getResourceByMilestoneId(long milestoneId);
+
+    boolean updateViewsByGroupIdAndResourceId(long groupId, String resourceObj);
 }

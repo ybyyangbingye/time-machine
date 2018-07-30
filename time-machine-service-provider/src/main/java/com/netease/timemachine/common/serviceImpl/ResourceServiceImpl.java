@@ -43,4 +43,9 @@ public class ResourceServiceImpl implements ResourceService{
     public ResourceDTO getResourceByMilestoneId(long milestoneId) {
         return resourceDao.getResourceByMilestoneId(milestoneId);
     }
+
+    @Override
+    public boolean updateViewsByGroupIdAndResourceId(long groupId, String resourceObj) {
+        return resourceDao.updateViewsByGroupIdAndResourceId(groupId, resourceObj);
+    }
 }

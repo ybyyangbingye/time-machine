@@ -48,4 +48,13 @@ public interface ResourceDao {
     @Select("select r.id, r.resource_obj, r.resource_type, r.group_id, r.group_type, r.gmt_create, r.gmt_modified " +
             "from resource r, milestone_event me where me.milestone_id = #{milestoneId} and me.id = r.group_id limit 1")
     ResourceDTO getResourceByMilestoneId(long milestoneId);
+
+    /**
+     * 更新浏览量
+     * @param groupId
+     * @param resourceObj
+     * @return
+     */
+    @Update("update resource set views = views + 1 where group_id = #{groupId} and resource_obj = #{resourceObj}")
+    boolean updateViewsByGroupIdAndResourceId(@Param("groupId") long groupId, @Param("resourceObj") String resourceObj);
 }
