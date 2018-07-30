@@ -19,13 +19,13 @@ import java.util.List;
 @Mapper
 public interface TimeSetDao {
 
-    @Select("select city, count(*) as amount from moment group by city where child_id=#{childId}")
+    @Select("select city, count(*) as amount from moment group by city where child_id=#{childId} and creator_id=#{userId}")
 //    @Results({
 //            @Result(property = "city",column = "city",javaType = String.class),
 //            @Result(property = "amount",column = "amount",javaType = Long.class)
 //    })
     @ResultType(HashMap.class)
-    List<HashMap> getCities(Long childId);
+    List<HashMap> getCities(@Param("childId") Long childId, @Param("userId") Long userId);
 
     @Select("select moment_id from moment where city=#{city}")
     List<Long> getMomentsByCity(String city);

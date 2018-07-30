@@ -7,6 +7,8 @@ import com.netease.timemachine.moment.service.GivealikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -22,27 +24,34 @@ public class GivealikeImpl implements GivealikeService {
 
     @Override
     public String getNickname(GivealikeDTO givealikeDTO) {
-        Long momentId=givealikeDTO.getMomentId();
-        Long childId=givealikeDao.getChildId(momentId);
-        Long userId=givealikeDTO.getUserId();
+        long momentId=givealikeDTO.getMomentId();
+        long childId=givealikeDao.getChildId(momentId);
+        long userId=givealikeDTO.getUserId();
         String nickname= givealikeDao.getNickname(childId,userId);
         return nickname;
     }
 
     @Override
     public void addGivealike(GivealikeDTO givealikeDTO) {
-        Long momentId=givealikeDTO.getMomentId();
-        Long userId=givealikeDTO.getUserId();
+        long momentId=givealikeDTO.getMomentId();
+        long userId=givealikeDTO.getUserId();
         String nickname=getNickname(givealikeDTO);
         givealikeDao.insertGivealike(new Givealike(userId,momentId,nickname));
     }
 
     @Override
     public void deletealike(GivealikeDTO givealikeDTO) {
-        Long momentId=givealikeDTO.getMomentId();
-        Long userId=givealikeDTO.getUserId();
+        long momentId=givealikeDTO.getMomentId();
+        long userId=givealikeDTO.getUserId();
         givealikeDao.deleteGivealike(userId,momentId);
     }
+
+    @Override
+    public List<String> getAll(Long momentId) {
+        return givealikeDao.getAll(momentId);
+    }
+
+
 
     @Override
     public boolean isGivealike(GivealikeDTO givealikeDTO) {

@@ -43,5 +43,5 @@ public interface LabelService {
      * @param childId
      * @param labels
      */
-    void addLabels(Long userId, Long childId, List<String> labels);
+    void addLabels(Long userId, Long childId, Long momentId, List<String> labels);
 }

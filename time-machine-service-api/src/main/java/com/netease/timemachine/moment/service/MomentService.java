@@ -23,20 +23,34 @@ public interface MomentService {
     List<MomentDTO> getMoments(Long userId, Long childId, Long currentPage);
 
     /**
-     * 获取某个评论下的所有照片或视频（文件）
+     * 获取某个状态下的所有照片或视频（文件）
      * @param momentId
      * @return
      */
     List<String> getMomentFiles(Long momentId);
 
     /**
+     * 获取某个状态下的所有标签
+     * @param momentId
+     * @return
+     */
+    List<String> getMomentLabels(Long momentId);
+
+    /**
+     * 获取昵称
+     * @param childId
+     * @param userId
+     * @return
+     */
+    String getNickName(Long childId, Long userId);
+
+    /**
      * 用户添加一条关于宝宝的状态
      * @param moment
      * @param files
-     * @param labels
      * @return
      */
-    boolean addMoment(MomentDTO moment,List<String> files, List<LabelDTO> labels);
+    Long addMoment(MomentDTO moment,List<String> files);
 
     /**
      * 用户删除宝宝的状态

@@ -2,9 +2,12 @@ package com.netease.timemachine.common.serviceImpl;
 
 import com.netease.timemachine.common.dao.LabelDao;
 import com.netease.timemachine.common.dto.LabelDTO;
+import com.netease.timemachine.common.meta.Label;
 import com.netease.timemachine.common.service.LabelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
 
 import java.util.List;
 
@@ -15,6 +18,8 @@ import java.util.List;
  */
 @Service
 public class LabelServiceImpl implements LabelService{
+
+    private static String [] recommendLabels = {"过生日","可爱","写真"};
 
     @Autowired
     private LabelDao labelDao;
@@ -43,17 +48,23 @@ public class LabelServiceImpl implements LabelService{
      */
     @Override
     public List<String> getFamilyLabels(Long userId, Long childId) {
-        List<String> res1 = labelDao.getFamilyLabelsFromLabel(userId, childId);
-        List<String> res2 = labelDao.getFamilyLabelsFromUCG(childId);
-        if(res1.size() == res2.size()) {
-            return res1;
-        }
-        for(String s : res2) {
-            if(!res1.contains(s)) {
-                labelDao.insertFamilyLabel(userId,childId,s);
-            }
-        }
-        return res2;
+//        List<String> res1 = labelDao.getFamilyLabelsFromLabel(userId, childId);
+        List<String> res = labelDao.getFamilyLabelsFromUCG(childId);
+//        if(res1.size() == res2.size()) {
+//            return res1;
+//        }
+//        for(String s : res2) {
+//            if(!res1.contains(s)) {
+//                Label label = new Label();
+//                label.setUserId(userId);
+//                label.setChildId(childId);
+//                label.setLabelName(s);
+//                label.setLabelType(2L);
+//                labelDao.insertFamilyLabel(label);
+//                labelDao.addLabelBelonged(label.getLabelId(),);
+//            }
+//        }
+        return res;
     }
 
     /**
@@ -64,6 +75,12 @@ public class LabelServiceImpl implements LabelService{
      */
     @Override
     public List<String> getRecommendLabels(Long userId, Long childId) {
+        List<String> res = labelDao.getRecommendLabels(userId, childId);
+        if(CollectionUtils.isEmpty(res)) {
+            for(String s : recommendLabels) {
+                labelDao.insertRecommendLabels(s,childId,userId);
+            }
+        }
         return labelDao.getRecommendLabels(userId, childId);
     }
 
@@ -74,15 +91,38 @@ public class LabelServiceImpl implements LabelService{
      * @param labels
      */
     @Override
-    public void addLabels(Long userId, Long childId, List<String> labels) {
+    public void addLabels(Long userId, Long childId, Long momentId, List<String> labels) {
+        List<String> names = getFamilyLabels(userId, childId);
         for(String s : labels) {
             List<Long> type = labelDao.searchLabel(userId,childId,s);
-            if(type == null) {
-                labelDao.addLabel(userId,childId,s);
+            if(type.size() == 0) {
+                Label label = new Label();
+                label.setUserId(userId);
+                label.setChildId(childId);
+                label.setLabelName(s);
+                if(names.contains(s)) {
+                    // 插入不存在的家人标签
+                    label.setLabelType(2L);
+                    labelDao.insertFamilyLabel(label);
+                }
+                else {
+                    // 插入用户自定义标签
+                    label.setLabelType(1L);
+                    labelDao.addLabel(label);
+                }
+                labelDao.addLabelBelonged(label.getLabelId(), momentId);
             }
+            // 插入的是历史标签，即已经存在的推荐标签或家人标签
             else if(type.size() == 1){
-                labelDao.addHistoryLabel(userId,childId,s);
+                Label label = new Label();
+                label.setUserId(userId);
+                label.setChildId(childId);
+                label.setLabelName(s);
+                label.setLabelType(1L);
+                labelDao.addHistoryLabel(label);
+                labelDao.addLabelBelonged(label.getLabelId(), momentId);
             }
+            // type.size() == 2 则更新已经插入的历史标签
             else {
                 labelDao.updateLabel(userId,childId,s);
             }

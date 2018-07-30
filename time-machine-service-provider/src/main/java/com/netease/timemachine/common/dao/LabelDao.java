@@ -1,6 +1,7 @@
 package com.netease.timemachine.common.dao;
 
 import com.netease.timemachine.common.dto.LabelDTO;
+import com.netease.timemachine.common.meta.Label;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -37,26 +38,37 @@ public interface LabelDao {
      * @param childId
      * @return
      */
-    @Select("select name from label where user_id=#{userId} and child_id=#{childId} and type=1 order by gmt_modified limit 5")
+    @Select("select name from label where user_id=#{userId} and child_id=#{childId} and type=1 order by gmt_modified desc limit 5")
     List<String> getHistoryLabels(@Param("userId") Long userId, @Param("childId")Long childId);
 
 
     /**
      * 获得家人标签，如果label表中存在则直接获得，如果不存在则先查询user_child_group表再插入label表
-     * @param userId
      * @param childId
      * @return
      */
 
-    @Select("select name from label where user_id=#{userId} and child_id=#{childId} and type=2")
-    List<String> getFamilyLabelsFromLabel(@Param("userId") Long userId,
-                                          @Param("childId")Long childId);
+//    @Select("select name from label where user_id=#{userId} and child_id=#{childId} and type=2")
+//    List<String> getFamilyLabelsFromLabel(@Param("userId") Long userId,
+//                                          @Param("childId")Long childId);
 
     @Select("select nick_name from user_child_group where child_id=#{childId}")
     List<String> getFamilyLabelsFromUCG(@Param("childId")Long childId);
 
-    @Select("insert into label(name,type,user_id,child_id) values(#{name},2,#{userId},#{childId})")
-    void insertFamilyLabel(@Param("userId")Long userId, @Param("childId")Long childId,@Param("name")String name);
+    @Select("insert into label(name,type,user_id,child_id) values(#{name},#{labelType},#{userId},#{childId})")
+    @Options(useGeneratedKeys = true,keyProperty = "labelId")
+    //Long insertFamilyLabel(@Param("userId")Long userId, @Param("childId")Long childId,@Param("name")String name);
+    void insertFamilyLabel(Label label);
+
+
+    /**
+     * 每次获得推荐标签都要先向数据库插入推荐标签
+     * @param labelName
+     * @param childId
+     * @param userId
+     */
+    @Insert("insert into label(name,type,child_id,user_id) values(#{labelName},3,#{childId},#{userId})")
+    void insertRecommendLabels(@Param("labelName")String labelName, @Param("childId")Long childId, @Param("userId") Long userId);
 
     /**
      * 获得推荐标签
@@ -79,24 +91,28 @@ public interface LabelDao {
     List<Long> searchLabel(@Param("userId")Long userId, @Param("childId")Long childId, @Param("name")String name);
 
     /**
-     * 如果为用户自己输入的标签，则插入标签表
-     * @param userId
-     * @param childId
-     * @param labelName
+     * 如果为用户自己输入的标签，则标记为历史标签并插入
      */
-    @Insert("insert into label(user_id,child_id,name,type) values(#{userId},#{childId},#{labelName},4)")
-    void addLabel(@Param("userId") Long userId, @Param("childId")Long childId,
-                  @Param("labelName")String labelName);
+    @Insert("insert into label(user_id,child_id,name,type) values(#{userId},#{childId},#{labelName},#{labelType})")
+    @Options(useGeneratedKeys = true,keyProperty = "labelId")
+//    Long addLabel(@Param("userId") Long userId, @Param("childId")Long childId,
+//                  @Param("labelName")String labelName);
+    void addLabel(Label label);
 
     /**
      * 如果该标签为家人或推荐标签，但是该标签没被插入过，则插入历史标签
-     * @param userId
-     * @param childId
-     * @param labelName
      */
-    @Insert("insert into label(user_id,child_id,name,type) values(#{userId},#{childId},#{labelName},1)")
-    void addHistoryLabel(@Param("userId") Long userId, @Param("childId")Long childId,
-                         @Param("labelName")String labelName);
+    @Insert("insert into label(user_id,child_id,name,type) values(#{userId},#{childId},#{labelName},#{labelType})")
+    @Options(useGeneratedKeys = true,keyProperty = "labelId")
+//    Long addHistoryLabel(@Param("userId") Long userId, @Param("childId")Long childId,
+//                         @Param("labelName")String labelName);
+    void addHistoryLabel(Label label);
+
+    /**
+     * 用户添加过标签后，插入到label_belonged表里并标记为2，代表状态的标签
+     */
+    @Insert("insert into label_belonged(label_id,group_type,group_id) values(#{labelId},2,#{groupId})")
+    void addLabelBelonged(@Param("labelId") Long labelId, @Param("groupId")Long groupId);
 
     /**
      * 如果该标签为历史标签，则更新历史标签的时间

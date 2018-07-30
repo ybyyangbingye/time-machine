@@ -22,4 +22,5 @@ public class TimeSetServiceImpl implements TimeSetService {
     public List<HashMap> searchLastMonthByViews(Long childId) {
         return timeSetDao.searchLastMonthByViews(childId);
     }
+
 }

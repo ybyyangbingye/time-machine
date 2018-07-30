@@ -1,5 +1,6 @@
 package com.netease.timemachine.moment.serviceImpl;
 
+import com.netease.timemachine.moment.dao.GivealikeDao;
 import com.netease.timemachine.moment.dao.MomentDao;
 import com.netease.timemachine.moment.dto.LabelDTO;
 import com.netease.timemachine.moment.dto.MomentDTO;
@@ -22,8 +23,9 @@ public class MomentServiceImpl implements MomentService {
 
     @Autowired
     private MomentDao momentDao;
+
     /**
-     *
+     * 获取用户的5条状态
      * @param userId
      * @param childId
      * @param currentPage
@@ -38,7 +40,7 @@ public class MomentServiceImpl implements MomentService {
     }
 
     /**
-     *
+     * 获取状态下的文件
      * @param moment_id
      * @return
      */
@@ -48,25 +50,37 @@ public class MomentServiceImpl implements MomentService {
         return res;
     }
 
+    /**
+     * 获取状态下的标签
+     * @param momentId
+     * @return
+     */
+    @Override
+    public List<String> getMomentLabels(Long momentId) {
+        List<String> res = momentDao.getMomentLabels(momentId);
+        return res;
+    }
+
+    @Override
+    public String getNickName(Long childId, Long userId) {
+        String nickName = momentDao.getNickname(childId, userId);
+        return nickName;
+    }
 
     /**
      *
      * @param momentDTO
      * @param files
-     * @param labels
      * @return
      */
     @Override
-    public boolean addMoment(MomentDTO momentDTO,List<String> files, List<LabelDTO> labels) {
+    public Long addMoment(MomentDTO momentDTO,List<String> files) {
         Moment moment = MomentDtoToMeta.dtoToMeta(momentDTO);
         momentDao.addMoment(moment);
         for(String file : files) {
             momentDao.addFile(file,moment.getMomentId());
         }
-        for(LabelDTO label : labels) {
-            momentDao.addLabel(moment.getMomentId(), label.getLabelId());
-        }
-        return true;
+        return moment.getMomentId();
     }
 
     /**
@@ -88,4 +102,6 @@ public class MomentServiceImpl implements MomentService {
     public void incrementViews(String resourceObj) {
         momentDao.incrementViews(resourceObj);
     }
+
+
 }

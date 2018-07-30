@@ -38,6 +38,23 @@ public interface MomentDao {
 
 
     /**
+     * 获取一条状态下的所有标签
+     * @param groupId
+     * @return
+     */
+    @Select("select l.name from label l,label_belonged lb where l.id=lb.label_id and lb.group_id=#{groupId} and lb.group_type=2")
+    List<String> getMomentLabels(@Param("groupId")Long groupId);
+
+    /**
+     * 获取昵称
+     * @param childId
+     * @param userId
+     * @return
+     */
+    @Select("select nick_name from user_child_group where child_id=#{childId} and user_id=#{userId}")
+    String getNickname(@Param("childId") Long childId, @Param("userId") Long userId);
+
+    /**
      * 用户添加状态
      * @param moment
      */
@@ -55,15 +72,6 @@ public interface MomentDao {
     @Insert("insert into resource(resource_obj,resource_type,group_id,group_type) values"+
     "(#{file},1,#{momentId},2)")
     void addFile(@Param("file")String file,@Param("momentId")Long momentId);
-
-    /**
-     * 添加状态下的标签
-     * @param momentId
-     * @param labelId
-     */
-    @Insert("insert into label_belonged(label_id,group_type,group_id) values"+
-    "(#{labelId},2,#{momentId})")
-    void addLabel(@Param("momentId")Long momentId, @Param("labelId")Long labelId);
 
     /**
      * 用户删除某条状态

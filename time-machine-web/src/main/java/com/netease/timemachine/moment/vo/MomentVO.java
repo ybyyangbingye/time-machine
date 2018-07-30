@@ -22,6 +22,10 @@ public class MomentVO implements Serializable {
 
     private Long creatorId;
 
+    private String nickName;
+
+    private String childAge;
+
     private String description;
 
     private String location;
@@ -30,7 +34,11 @@ public class MomentVO implements Serializable {
 
     private List<String> files;
 
-    private List<LabelVO> labels;
+    private List<String> labels;
+
+    private List<String> giveALike;
+
+    private List<CommentVO> comments;
 
     private Date gmtCreate;
 
