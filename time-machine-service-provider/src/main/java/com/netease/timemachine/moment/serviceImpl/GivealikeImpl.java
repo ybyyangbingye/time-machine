@@ -35,8 +35,7 @@ public class GivealikeImpl implements GivealikeService {
         long momentId=givealikeDTO.getMomentId();
         long userId=givealikeDTO.getUserId();
         String nickname=getNickname(givealikeDTO);
-        Date gmtCreate=givealikeDTO.getGmtCreate();
-        givealikeDao.insertGivealike(new Givealike(0,userId,momentId,nickname,gmtCreate));
+        givealikeDao.insertGivealike(new Givealike(userId,momentId,nickname));
     }
 
     @Override

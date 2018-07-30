@@ -33,8 +33,8 @@ public interface GivealikeDao {
      * @param givealike
      * @return
      */
-    @Insert("insert into givealike(user_id, moment_id, nickname,gmt_create) " +
-            "values(#{userId}, #{momentId}, #{nickname}, #{gmtCreate})")
+    @Insert("insert into givealike(user_id, moment_id, nickname) " +
+            "values(#{userId}, #{momentId}, #{nickname})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertGivealike(Givealike givealike);
 

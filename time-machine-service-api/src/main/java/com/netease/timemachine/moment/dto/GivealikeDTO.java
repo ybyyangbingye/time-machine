@@ -18,5 +18,4 @@ public class GivealikeDTO implements Serializable {
     private static final long serialVersionUID = -2901094656712762124L;
     private long userId;
     private long momentId;
-    private Date gmtCreate;
 }

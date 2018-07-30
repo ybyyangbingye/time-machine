@@ -22,4 +22,10 @@ public class Givealike implements Serializable{
     private long momentId;
     private String nickname;
     private Date gmtCreate;
+
+    public Givealike(long userId, long momentId, String nickname) {
+        this.userId = userId;
+        this.momentId = momentId;
+        this.nickname = nickname;
+    }
 }
