@@ -1,11 +1,9 @@
 package com.netease.timemachine.moment.dto;
 
-import com.netease.timemachine.common.dto.BaseDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @Author: ZLS
@@ -16,6 +14,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class GivealikeDTO implements Serializable {
     private static final long serialVersionUID = -2901094656712762124L;
-    private long userId;
-    private long momentId;
+    private Long userId;
+    private Long momentId;
 }

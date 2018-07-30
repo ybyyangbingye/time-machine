@@ -22,10 +22,10 @@ public class GivealikeController {
     GivealikeService givealikeService;
 
     @RequestMapping("/givealike")
-    public GivealikeVO getGivealikeVO(HttpServletRequest request, @RequestBody GivealikeDTO givealikeDTO){
-        String nickname=givealikeService.getNickname(givealikeDTO);
+    public GivealikeVO getGivealikeVO(HttpServletRequest request, @RequestBody GivealikeDTO givealikeDTO) {
+        String nickname = givealikeService.getNickname(givealikeDTO);
         givealikeService.addGivealike(givealikeDTO);
-        return new GivealikeVO(givealikeDTO.getUserId(),nickname);
+        return new GivealikeVO(givealikeDTO.getUserId(), nickname);
     }
 
     @RequestMapping("/deletealike")

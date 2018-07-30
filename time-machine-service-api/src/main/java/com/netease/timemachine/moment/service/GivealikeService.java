@@ -11,4 +11,5 @@ public interface GivealikeService {
     String getNickname(GivealikeDTO givealikeDTO);
     void addGivealike(GivealikeDTO givealikeDTO);
     void deletealike(GivealikeDTO givealikeDTO);
+    boolean isGivealike(GivealikeDTO givealikeDTO);
 }

@@ -1,8 +1,8 @@
 package com.netease.timemachine.moment.dao;
 
-import com.netease.timemachine.moment.dto.GivealikeDTO;
 import com.netease.timemachine.moment.meta.Givealike;
 import org.apache.ibatis.annotations.*;
+
 
 /**
  * @Author: ZLS
@@ -17,7 +17,7 @@ public interface GivealikeDao {
      * @return
      */
     @Select("select child_id from moment where moment_id=#{momentId}")
-    Long getChildId(long momentId);
+    Long getChildId(Long momentId);
 
     /**
      *
@@ -45,5 +45,14 @@ public interface GivealikeDao {
      * @return
      */
     @Delete("delete from givealike where user_id=#{userId} and moment_id=#{momentId}")
-    boolean deleteGivealike(@Param("userId") Long userId,@Param("momentId") Long momentId);
+    boolean deleteGivealike(@Param("userId") Long userId, @Param("momentId") Long momentId);
+
+    /**
+     *
+     * @param userId
+     * @param momentId
+     * @return
+     */
+    @Select("select count(*) from givealike where user_id=#{userId} and moment_id=#{momentId}")
+    Long isGivealike(@Param("userId") Long userId,@Param("momentId") Long momentId);
 }
