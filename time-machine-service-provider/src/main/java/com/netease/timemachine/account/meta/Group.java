@@ -30,5 +30,6 @@ public class Group implements Serializable {
     /**权限（创建者：0，管理者：1，记录：2，查看：3），默认为2记录*/
     private Integer permission;
 
+    /**用户的图像*/
     private String imgUrl;
 }

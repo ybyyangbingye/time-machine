@@ -1,6 +1,5 @@
 package com.netease.timemachine.moment.dao;
 
-import com.netease.timemachine.moment.meta.Label;
 import com.netease.timemachine.moment.meta.Moment;
 import org.apache.ibatis.annotations.*;
 
@@ -65,4 +64,18 @@ public interface MomentDao {
     @Insert("insert into label_belonged(label_id,group_type,group_id) values"+
     "(#{labelId},2,#{momentId})")
     void addLabel(@Param("momentId")Long momentId, @Param("labelId")Long labelId);
+
+    /**
+     * 用户删除某条状态
+     * @param momentId
+     */
+    @Delete("delete from moment where moment_id=#{momentId}")
+    void deleteMoment(@Param("momentId")Long momentId);
+
+    /**
+     * 更新状态下的某张图片的浏览量
+     * @param resourceObj
+     */
+    @Update("update resource set views = views+1 where resource_obj = #{resourceObj} and  resource_type = 1")
+    void incrementViews(String resourceObj);
 }

@@ -1,10 +1,12 @@
 package com.netease.timemachine.moment.controller;
 
+import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.moment.service.MomentService;
 import com.netease.timemachine.moment.util.LabelVoToDto;
 import com.netease.timemachine.moment.util.MomentVoToDto;
 import com.netease.timemachine.moment.vo.MomentVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -52,5 +54,20 @@ public class MomentController {
         momentService.addMoment(MomentVoToDto.voToDto(momentVO),
                 momentVO.getFiles(),
                 LabelVoToDto.voListToDtoList(momentVO.getLabels()));
+    }
+
+    /**
+     *
+     * @param momentId
+     */
+    @RequestMapping(value = "/deleteMoment", method = RequestMethod.POST)
+    public void deleteMoment(@RequestParam Long momentId) {
+        momentService.deleteMoment(momentId);
+    }
+
+    @RequestMapping(value = "/incrementViews", method = RequestMethod.POST)
+    public ResponseEntity incrementViews(@RequestParam String resourceObj){
+        momentService.incrementViews(resourceObj);
+        return ResponseView.success(null, "浏览量更新成功");
     }
 }

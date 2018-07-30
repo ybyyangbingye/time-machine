@@ -13,7 +13,7 @@ public class NosDTO {
 
     String bucket;
     String object;
-    String expires;
+    Integer expires;
     Long objectSizeMin;
     Long objectSizeMax;
     String mimeLimit;
@@ -34,11 +34,11 @@ public class NosDTO {
         this.object = object;
     }
 
-    public String getExpires() {
+    public Integer getExpires() {
         return expires;
     }
 
-    public void setExpires(String expires) {
+    public void setExpires(Integer expires) {
         this.expires = expires;
     }
 

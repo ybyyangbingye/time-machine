@@ -39,4 +39,6 @@ public interface ResourceService {
      * @return
      */
     boolean deleteResourceById(long id);
+
+    ResourceDTO getResourceByMilestoneId(long milestoneId);
 }

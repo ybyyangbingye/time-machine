@@ -34,5 +34,11 @@ public class ChildVO implements Serializable {
     /**同上，插入表时用*/
     private String identification;
 
+    /**获取孩子当前生日多少天，规则：
+     * 从出生到1个月：第1天、第2天、第3天。。。
+     * 从第1个月到1周岁：3个月，3个月1天，3个月2天。。。
+     * 1周岁以后：1周岁，1岁1天。。1岁1个月，1岁1个月1天，1岁1个月2天。。
+     */
+    private String age;
 
 }

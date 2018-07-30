@@ -1,10 +1,7 @@
 package com.netease.timemachine.moment.dao;
 
 import com.netease.timemachine.moment.meta.Comment;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -36,4 +33,5 @@ public interface CommentDao {
      */
     @Delete("delete from comment where comment_id = #{commentId}")
     void deleteComment(Long commentId);
+
 }

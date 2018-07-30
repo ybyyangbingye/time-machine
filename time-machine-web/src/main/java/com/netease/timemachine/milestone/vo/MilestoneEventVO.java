@@ -4,6 +4,7 @@ import com.netease.timemachine.account.dto.UserDTO;
 import com.netease.timemachine.common.dto.LabelDTO;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @date 2018/7/23 下午5:57
  */
 @Data
-public class MilestoneEventVO {
+public class MilestoneEventVO implements Serializable{
     // 里程碑事件id
     private Long id;
     // 里程碑id
