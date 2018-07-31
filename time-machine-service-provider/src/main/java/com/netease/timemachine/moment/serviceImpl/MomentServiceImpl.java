@@ -24,16 +24,15 @@ public class MomentServiceImpl implements MomentService {
 
     /**
      * 获取用户的5条状态
-     * @param userId
      * @param childId
      * @param currentPage
      * @return
      */
     @Override
-    public List<MomentDTO> getMoments(Long userId, Long childId, Long currentPage) {
+    public List<MomentDTO> getMoments(Long childId, Long currentPage) {
         Long start = currentPage * 5;
         Long end = start + 5;
-        List<Moment> res = momentDao.getMoments(userId, childId, start, end);
+        List<Moment> res = momentDao.getMoments(childId, start, end);
         return MomentDtoToMeta.metaListToDtoList(res);
     }
 

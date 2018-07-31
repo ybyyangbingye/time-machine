@@ -14,5 +14,5 @@ public interface GivealikeService {
     void addGivealike(GivealikeDTO givealikeDTO);
     void deletealike(GivealikeDTO givealikeDTO);
     List<String> getAll(Long momentId);
-    boolean isGivealike(GivealikeDTO givealikeDTO);
+    boolean isGivealike(Long userId, Long momentId);
 }

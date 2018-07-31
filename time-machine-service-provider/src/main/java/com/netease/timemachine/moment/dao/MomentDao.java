@@ -16,15 +16,13 @@ public interface MomentDao {
 
     /**
      * 根据页码获取用户宝宝的五条状态
-     * @param userId
      * @param childId
      * @param start
      * @param end
      * @return
      */
-    @Select("select * from moment where creator_id = #{userId} and child_id=#{childId} limit #{start},#{end}")
-    List<Moment> getMoments(@Param("userId")Long userId,
-                             @Param("childId")Long childId,
+    @Select("select * from moment where child_id=#{childId} limit #{start},#{end}")
+    List<Moment> getMoments( @Param("childId")Long childId,
                              @Param("start")Long start,
                              @Param("end")Long end);
 
@@ -58,8 +56,8 @@ public interface MomentDao {
      * 用户添加状态
      * @param moment
      */
-    @Insert("insert into moment(creator_id,description,location,child_id) values" +
-    "(#{creatorId},#{description},#{location},#{childId})")
+    @Insert("insert into moment(creator_id,description,location,child_id,gmt_create) values" +
+    "(#{creatorId},#{description},#{location},#{childId},#{gmtCreate})")
     @Options(useGeneratedKeys = true, keyProperty = "momentId")
     void addMoment(Moment moment);
 

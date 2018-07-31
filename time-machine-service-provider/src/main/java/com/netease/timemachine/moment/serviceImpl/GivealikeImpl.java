@@ -54,9 +54,7 @@ public class GivealikeImpl implements GivealikeService {
 
 
     @Override
-    public boolean isGivealike(GivealikeDTO givealikeDTO) {
-        Long momentId=givealikeDTO.getMomentId();
-        Long userId=givealikeDTO.getUserId();
+    public boolean isGivealike(Long userId, Long momentId) {
         if(givealikeDao.isGivealike(userId,momentId)!=0) {
             return true;
         }

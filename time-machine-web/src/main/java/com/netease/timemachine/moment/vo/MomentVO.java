@@ -38,6 +38,8 @@ public class MomentVO implements Serializable {
 
     private List<String> giveALike;
 
+    private Boolean hasLike;
+
     private List<CommentVO> comments;
 
     private Date gmtCreate;
