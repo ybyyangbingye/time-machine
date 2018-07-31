@@ -17,7 +17,7 @@ import org.springframework.context.annotation.PropertySource;
 public class SmsConfig {
     @Bean
     @ConfigurationProperties(prefix = "sms")
-    public SmsAutoConfig getSmsAutozConfig(){
+    public SmsAutoConfig smsAutozConfig(){
         return new SmsAutoConfig();
     }
 }

@@ -49,6 +49,11 @@ public interface GivealikeDao {
     @Delete("delete from givealike where user_id=#{userId} and moment_id=#{momentId}")
     boolean deleteGivealike(@Param("userId") Long userId,@Param("momentId") Long momentId);
 
+    /**
+     * 获取所有点赞人的nickname
+     * @param momentId
+     * @return
+     */
     @Select("select nickname from givealike where moment_id=#{momentId}")
     List<String> getAll(Long momentId);
 

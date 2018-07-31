@@ -29,8 +29,9 @@ public class GivealikeController {
     }
 
     @RequestMapping("/deletealike")
-    public void deletealike(HttpServletRequest request, @RequestBody GivealikeDTO givealikeDTO){
+    public String deletealike(HttpServletRequest request, @RequestBody GivealikeDTO givealikeDTO){
         givealikeService.deletealike(givealikeDTO);
+        return "取消点赞";
     }
 
 }
