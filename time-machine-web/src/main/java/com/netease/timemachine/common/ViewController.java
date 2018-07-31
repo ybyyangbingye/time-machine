@@ -25,11 +25,10 @@ public class ViewController {
      * 更新浏览量
      * @param request
      * @param resourceObj 资源key值
-     * @param groupId 所属动态id
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET)
-    public boolean recordView(HttpServletRequest request,@RequestParam("groupId") long groupId, @RequestParam("resourceObj") String resourceObj) {
-        return resourceService.updateViewsByGroupIdAndResourceId(groupId, resourceObj);
+    @RequestMapping(method = RequestMethod.PATCH)
+    public boolean updateViews(HttpServletRequest request, @RequestParam("resourceObj") String resourceObj) {
+        return resourceService.updateViewsByResourceObj(resourceObj);
     }
 }

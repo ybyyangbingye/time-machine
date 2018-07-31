@@ -51,10 +51,9 @@ public interface ResourceDao {
 
     /**
      * 更新浏览量
-     * @param groupId
      * @param resourceObj
      * @return
      */
-    @Update("update resource set views = views + 1 where group_id = #{groupId} and resource_obj = #{resourceObj}")
-    boolean updateViewsByGroupIdAndResourceId(@Param("groupId") long groupId, @Param("resourceObj") String resourceObj);
+    @Update("update resource set views = views + 1 where resource_obj = #{resourceObj}")
+    boolean updateViewsByResourceObj(@Param("resourceObj") String resourceObj);
 }

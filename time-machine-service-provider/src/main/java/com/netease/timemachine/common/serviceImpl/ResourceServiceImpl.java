@@ -45,7 +45,7 @@ public class ResourceServiceImpl implements ResourceService{
     }
 
     @Override
-    public boolean updateViewsByGroupIdAndResourceId(long groupId, String resourceObj) {
-        return resourceDao.updateViewsByGroupIdAndResourceId(groupId, resourceObj);
+    public boolean updateViewsByResourceObj(String resourceObj) {
+        return resourceDao.updateViewsByResourceObj(resourceObj);
     }
 }

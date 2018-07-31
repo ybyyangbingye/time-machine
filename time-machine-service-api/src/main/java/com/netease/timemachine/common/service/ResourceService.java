@@ -42,5 +42,5 @@ public interface ResourceService {
 
     ResourceDTO getResourceByMilestoneId(long milestoneId);
 
-    boolean updateViewsByGroupIdAndResourceId(long groupId, String resourceObj);
+    boolean updateViewsByResourceObj(String resourceObj);
 }
