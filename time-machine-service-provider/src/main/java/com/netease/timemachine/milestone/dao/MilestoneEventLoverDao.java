@@ -1,4 +1,4 @@
-package com.netease.timemachine.common.dao;
+package com.netease.timemachine.milestone.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

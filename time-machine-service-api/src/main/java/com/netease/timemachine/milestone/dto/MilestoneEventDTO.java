@@ -15,6 +15,8 @@ public class MilestoneEventDTO extends BaseDTO {
 
     private Long milestoneId;
 
+    private String content;
+
     private String location;
 
     private Date time;

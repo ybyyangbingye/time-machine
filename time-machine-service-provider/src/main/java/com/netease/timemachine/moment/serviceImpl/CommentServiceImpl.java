@@ -8,7 +8,6 @@ import com.netease.timemachine.moment.util.CommentDtoToMeta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,5 +36,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteComment(Long commentId) {
         commentDao.deleteComment(commentId);
+    }
+
+    @Override
+    public int getCommentCountByCommentId(long commentId) {
+        return commentDao.getCommentCountByCommentId(commentId);
     }
 }

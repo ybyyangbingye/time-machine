@@ -1,4 +1,4 @@
-package com.netease.timemachine.mine.dto;
+package com.netease.timemachine.milestone.dto;
 
 import com.netease.timemachine.common.dto.BaseDTO;
 import lombok.Data;

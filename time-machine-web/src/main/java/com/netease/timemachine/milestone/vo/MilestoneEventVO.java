@@ -19,6 +19,8 @@ public class MilestoneEventVO implements Serializable{
     private Long id;
     // 里程碑id
     private Long milestoneId;
+    // 动态文字内容
+    private String content;
 
     private String location;
 

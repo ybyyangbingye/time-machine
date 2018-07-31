@@ -1,4 +1,4 @@
-package com.netease.timemachine.moment.service;
+package com.netease.timemachine.milestone.service;
 
 /**
  * @author zhongweichang

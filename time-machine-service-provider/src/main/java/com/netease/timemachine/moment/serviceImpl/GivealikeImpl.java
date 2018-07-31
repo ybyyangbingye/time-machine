@@ -64,4 +64,9 @@ public class GivealikeImpl implements GivealikeService {
             return false;
         }
     }
+
+    @Override
+    public int getLoverCountByCommentId(long commentId) {
+        return givealikeDao.getLoverCountByCommentId(commentId);
+    }
 }

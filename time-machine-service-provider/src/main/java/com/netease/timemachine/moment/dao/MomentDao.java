@@ -1,5 +1,6 @@
 package com.netease.timemachine.moment.dao;
 
+import com.netease.timemachine.moment.dto.MomentDTO;
 import com.netease.timemachine.moment.meta.Moment;
 import org.apache.ibatis.annotations.*;
 
@@ -86,4 +87,12 @@ public interface MomentDao {
      */
     @Update("update resource set views = views+1 where resource_obj = #{resourceObj} and  resource_type = 1")
     void incrementViews(String resourceObj);
+
+    /**
+     * 根据用户id获取用户的所有动态
+     * @param creatorId
+     * @return
+     */
+    @Select("select moment_id, description where creator_id = #{creatorId}")
+    List<MomentDTO> listMomentByUserId(long creatorId);
 }

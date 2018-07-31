@@ -2,6 +2,8 @@ package com.netease.timemachine.milestone.service;
 
 import com.netease.timemachine.milestone.dto.MilestoneEventDTO;
 
+import java.util.List;
+
 /**
  * @author zhongweichang
  * @email 15090552277@163.com
@@ -33,5 +35,12 @@ public interface MilestoneEventService {
     boolean modifyMilestoneEventById(MilestoneEventDTO milestoneEventDTO);
 
     boolean deleteMilestoneEventById(long milestoneEventId);
+
+    /**
+     * 根据用户id获取其创建的里程碑
+     * @param userId
+     * @return
+     */
+    List<MilestoneEventDTO> listMilestoneEventByUserId(long userId);
 
 }

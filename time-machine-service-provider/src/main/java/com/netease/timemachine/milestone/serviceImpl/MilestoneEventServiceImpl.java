@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author zhongweichang
  * @email 15090552277@163.com
@@ -59,5 +61,10 @@ public class MilestoneEventServiceImpl implements MilestoneEventService{
     @Transactional
     public boolean deleteMilestoneEventById(long milestoneEventId) {
         return milestoneEventDao.deleteMilestoneEventById(milestoneEventId);
+    }
+
+    @Override
+    public List<MilestoneEventDTO> listMilestoneEventByUserId(long userId) {
+        return milestoneEventDao.listMilestoneEventByUserId(userId);
     }
 }

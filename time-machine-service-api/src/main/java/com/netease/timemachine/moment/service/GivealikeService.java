@@ -15,4 +15,6 @@ public interface GivealikeService {
     void deletealike(GivealikeDTO givealikeDTO);
     List<String> getAll(Long momentId);
     boolean isGivealike(GivealikeDTO givealikeDTO);
+
+    int getLoverCountByCommentId(long commentId);
 }

@@ -43,4 +43,12 @@ public interface ResourceService {
     ResourceDTO getResourceByMilestoneId(long milestoneId);
 
     boolean updateViewsByResourceObj(String resourceObj);
+
+    /**
+     * 根据组类型和组id集合查询数据
+     * @param groupIds
+     * @param groupType
+     * @return
+     */
+    List<ResourceDTO> listByGroupIdAndGroupType(List<Long> groupIds, int groupType);
 }

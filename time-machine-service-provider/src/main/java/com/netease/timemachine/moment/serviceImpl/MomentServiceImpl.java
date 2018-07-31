@@ -92,4 +92,9 @@ public class MomentServiceImpl implements MomentService {
         return true;
     }
 
+    @Override
+    public List<MomentDTO> listMomentByUserId(long userId) {
+        return momentDao.listMomentByUserId(userId);
+    }
+
 }

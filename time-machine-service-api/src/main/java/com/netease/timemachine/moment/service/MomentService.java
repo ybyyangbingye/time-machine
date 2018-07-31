@@ -1,6 +1,5 @@
 package com.netease.timemachine.moment.service;
 
-import com.netease.timemachine.moment.dto.LabelDTO;
 import com.netease.timemachine.moment.dto.MomentDTO;
 
 import java.util.List;
@@ -58,5 +57,12 @@ public interface MomentService {
      * @return
      */
     boolean deleteMoment(Long momentId);
+
+    /**
+     * 根据用户id获取用户所有的动态
+     * @param userId
+     * @return
+     */
+    List<MomentDTO> listMomentByUserId(long userId);
 
 }

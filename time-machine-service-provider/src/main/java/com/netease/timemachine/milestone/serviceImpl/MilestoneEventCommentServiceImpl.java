@@ -1,6 +1,6 @@
-package com.netease.timemachine.common.serviceImpl;
+package com.netease.timemachine.milestone.serviceImpl;
 
-import com.netease.timemachine.common.dao.MilestoneEventCommentDao;
+import com.netease.timemachine.milestone.dao.MilestoneEventCommentDao;
 import com.netease.timemachine.milestone.service.MilestoneEventCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

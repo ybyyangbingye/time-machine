@@ -1,6 +1,5 @@
 package com.netease.timemachine.moment.dao;
 
-import com.netease.timemachine.moment.dto.GivealikeDTO;
 import com.netease.timemachine.moment.meta.Givealike;
 import org.apache.ibatis.annotations.*;
 
@@ -60,4 +59,12 @@ public interface GivealikeDao {
      */
     @Select("select count(*) from givealike where user_id=#{userId} and moment_id=#{momentId}")
     Long isGivealike(@Param("userId") Long userId,@Param("momentId") Long momentId);
+
+    /**
+     * 根据动态id获取喜欢动态的人数
+     * @param commentId
+     * @return
+     */
+    @Select("select count(*) from givealike where comment_id = #{commentId}")
+    int getLoverCountByCommentId(long commentId);
 }

@@ -73,6 +73,7 @@ public class MilestoneEventController extends BaseController{
         MilestoneEventDTO milestoneEventDTO = new MilestoneEventDTO();
         milestoneEventDTO.setMilestoneId(milestoneEventVO.getMilestoneId());
         // TODO: 位置信息格式需要和前端确认
+        milestoneEventDTO.setContent(milestoneEventVO.getContent());
         milestoneEventDTO.setLocation(milestoneEventVO.getLocation());
         milestoneEventDTO.setTime(milestoneEventVO.getTime());
         milestoneEventDTO.setGmtCreate(new Date());

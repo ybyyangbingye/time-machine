@@ -48,4 +48,9 @@ public class ResourceServiceImpl implements ResourceService{
     public boolean updateViewsByResourceObj(String resourceObj) {
         return resourceDao.updateViewsByResourceObj(resourceObj);
     }
+
+    @Override
+    public List<ResourceDTO> listByGroupIdAndGroupType(List<Long> groupIds, int groupType) {
+        return resourceDao.listByGroupIdAndGroupType(groupIds, groupType);
+    }
 }

@@ -34,4 +34,11 @@ public interface CommentDao {
     @Delete("delete from comment where comment_id = #{commentId}")
     void deleteComment(Long commentId);
 
+    /**
+     * 根据动态id获取评论数量
+     * @param commentId
+     * @return
+     */
+    @Select("select count(*) from comment where comment_id = #{commentId}")
+    int getCommentCountByCommentId(long commentId);
 }

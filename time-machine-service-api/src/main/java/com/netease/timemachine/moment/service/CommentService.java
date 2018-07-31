@@ -1,4 +1,4 @@
-package com.netease.timemachine.common.service;
+package com.netease.timemachine.moment.service;
 
 import com.netease.timemachine.moment.dto.CommentDTO;
 

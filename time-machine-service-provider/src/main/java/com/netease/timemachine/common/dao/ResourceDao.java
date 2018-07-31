@@ -56,4 +56,23 @@ public interface ResourceDao {
      */
     @Update("update resource set views = views + 1 where resource_obj = #{resourceObj}")
     boolean updateViewsByResourceObj(@Param("resourceObj") String resourceObj);
+
+    /**
+     * 根据组类型和组id集合查询数据
+     * @param groupIds
+     * @param goupType
+     * @return
+     */
+    @Select({
+            "<script>",
+            "select",
+            "id, resource_obj, grout_id, group_type",
+            "from resource",
+            "where group_type = #{groupType} and group_id in",
+            "<foreach collection='groupIds' item='groupId' open='(' separator=',' close=')'>",
+            "#{groupId}",
+            "</foreach>",
+            "</script>"
+    })
+    List<ResourceDTO> listByGroupIdAndGroupType(@Param("groupIds") List<Long> groupIds, @Param("groupType") int goupType);
 }
