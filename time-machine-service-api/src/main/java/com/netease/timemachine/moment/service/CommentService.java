@@ -15,14 +15,15 @@ public interface CommentService {
      * 添加一条评论
      * @param commentDTO
      */
-    void insertComment(CommentDTO commentDTO);
+    Long insertComment(CommentDTO commentDTO);
 
     /**
      * 获取该条状态下的所有评论
+     * @param childId
      * @param momentId
      * @return
      */
-    List<CommentDTO> selectComments(Long momentId);
+    List<CommentDTO> selectComments(Long childId,Long momentId);
 
     /**
      * 删除某条状态下的某个评论
@@ -32,8 +33,15 @@ public interface CommentService {
 
     /**
      * 根据动态id获取动态的评论数量
+     * @param momentId
+     * @return
+     */
+    int getCommentCountByMomentId(long momentId);
+
+    /*
+     * 通过commentId查询一条评论信息
      * @param commentId
      * @return
      */
-    int getCommentCountByCommentId(long commentId);
+    CommentDTO selectByCommentId(Long commentId);
 }

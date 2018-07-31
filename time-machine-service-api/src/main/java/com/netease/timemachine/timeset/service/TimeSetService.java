@@ -1,5 +1,6 @@
 package com.netease.timemachine.timeset.service;
 
+import com.netease.timemachine.common.dto.ResourceDTO;
 import com.netease.timemachine.timeset.dto.TimeSetDTO;
 
 import java.util.HashMap;
@@ -29,11 +30,10 @@ public interface TimeSetService {
     Map<String, List<String>> searchLastMonthByLabels(Long childId);
 
     /**
-     * 添加时光集文件
-     * @param file
-     * @param setId
+     * 添加时光集音频文件
+     *      * @param resource_obj
      */
-    void addTimeSetFile(String file,Long setId);
+    void addTimeSetFile(String resource_obj);
 
     /**
      * 添加一条时光集
@@ -47,4 +47,10 @@ public interface TimeSetService {
      * @return
      */
     boolean isExist(String setName);
+
+    /**
+     * 随机获取一个时光集
+     * @return
+     */
+    String resourceRanByTimeSet();
 }

@@ -51,12 +51,8 @@ public class GivealikeImpl implements GivealikeService {
         return givealikeDao.getAll(momentId);
     }
 
-
-
     @Override
-    public boolean isGivealike(GivealikeDTO givealikeDTO) {
-        Long momentId=givealikeDTO.getMomentId();
-        Long userId=givealikeDTO.getUserId();
+    public boolean isGivealike(Long userId, Long momentId) {
         if(givealikeDao.isGivealike(userId,momentId)!=0) {
             return true;
         }
@@ -66,7 +62,7 @@ public class GivealikeImpl implements GivealikeService {
     }
 
     @Override
-    public int getLoverCountByCommentId(long commentId) {
-        return givealikeDao.getLoverCountByCommentId(commentId);
+    public int getLoverCountByMomentId(long momentId) {
+        return givealikeDao.getLoverCountByMomentId(momentId);
     }
 }

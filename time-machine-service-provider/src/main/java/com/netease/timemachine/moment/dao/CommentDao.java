@@ -16,8 +16,9 @@ public interface CommentDao {
      * 添加一条评论
      * @param comment
      */
-    @Insert("insert into comment (moment_id,content,reply_id,parent_id,create_time) values (#{momentId}," +
-            "#{content},#{replyId},#{parentId},#{createTime})")
+    @Insert("insert into comment (moment_id,content,reply_id,parent_id) values (#{momentId}," +
+            "#{content},#{replyId},#{parentId})")
+    @Options(useGeneratedKeys=true, keyProperty="commentId", keyColumn="comment_id")
     void insertComment(Comment comment);
 
     /**
@@ -36,9 +37,17 @@ public interface CommentDao {
 
     /**
      * 根据动态id获取评论数量
+     * @param momentId
+     * @return
+     */
+    @Select("select count(*) from comment where moment_id = #{momentId}")
+    int getCommentCountByMomentId(long momentId);
+
+    /*
+     * 通过commentId查询一条评论信息
      * @param commentId
      * @return
      */
-    @Select("select count(*) from comment where comment_id = #{commentId}")
-    int getCommentCountByCommentId(long commentId);
+    @Select("select * from comment where comment_id = #{commentId}")
+    Comment selectByCommentId(Long commentId);
 }

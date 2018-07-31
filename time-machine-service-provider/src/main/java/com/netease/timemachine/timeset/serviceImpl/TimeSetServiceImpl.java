@@ -18,12 +18,19 @@ import java.util.*;
  **/
 @Service
 public class TimeSetServiceImpl implements TimeSetService {
+
+    private static final Integer MAX_PICS = 12;
+
     @Autowired
     private TimeSetDao timeSetDao;
 
     @Override
     public List<HashMap> searchLastMonthByViews(Long childId) {
-        return timeSetDao.searchLastMonthByViews(childId);
+        List<HashMap> listByTime = timeSetDao.searchLastMonthByViews(childId);
+        if(!CollectionUtils.isEmpty(listByTime) && listByTime.size() >= MAX_PICS){
+            return listByTime.subList(0, MAX_PICS);
+        }
+        return null;
     }
 
     @Override
@@ -51,7 +58,7 @@ public class TimeSetServiceImpl implements TimeSetService {
             Iterator<Map.Entry<String, List<Resource>>> it = listMap.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<String, List<Resource>> entry = it.next();
-                if (entry.getValue().size() < 12) {
+                if (entry.getValue().size() < MAX_PICS) {
                     it.remove();
                 }
             }
@@ -67,7 +74,7 @@ public class TimeSetServiceImpl implements TimeSetService {
             for (int i = 0; i < size; i++) {
                 List<Resource> resources = list.get(i).getValue();
                 Collections.sort(resources);
-                resources.removeAll(resources.subList(12, resources.size()));
+                resources = resources.subList(0, MAX_PICS);
                 List<String> stringList = new ArrayList<>();
                 for (int j = 0; j < resources.size(); j++) {
                     stringList.add(resources.get(j).getResource_obj());
@@ -79,8 +86,8 @@ public class TimeSetServiceImpl implements TimeSetService {
     }
 
     @Override
-    public void addTimeSetFile(String file, Long setId) {
-        timeSetDao.addTimeSetFile(file, setId);
+    public void addTimeSetFile(String resource_obj) {
+        timeSetDao.addTimeSetFile(resource_obj);
     }
 
     @Override
@@ -91,5 +98,10 @@ public class TimeSetServiceImpl implements TimeSetService {
     @Override
     public boolean isExist(String setName) {
         return timeSetDao.isExist(setName);
+    }
+
+    @Override
+    public String resourceRanByTimeSet() {
+        return timeSetDao.resourceRanByTimeSet();
     }
 }

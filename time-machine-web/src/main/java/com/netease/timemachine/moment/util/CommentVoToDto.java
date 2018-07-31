@@ -22,7 +22,9 @@ public class CommentVoToDto {
         commentDTO.setMomentId(commentVO.getMomentId());
         commentDTO.setContent(commentVO.getContent());
         commentDTO.setParentId(commentVO.getParentId());
+        commentDTO.setParentNickName(commentVO.getParentNickName());
         commentDTO.setReplyId(commentVO.getReplyId());
+        commentDTO.setReplyNickName(commentVO.getReplyNickName());
         commentDTO.setCreateTime(commentVO.getCreateTime());
         return commentDTO;
     }
@@ -36,7 +38,9 @@ public class CommentVoToDto {
         commentVO.setContent(commentDTO.getContent());
         commentVO.setMomentId(commentDTO.getMomentId());
         commentVO.setParentId(commentDTO.getParentId());
+        commentVO.setParentNickName(commentDTO.getParentNickName());
         commentVO.setReplyId(commentDTO.getReplyId());
+        commentVO.setReplyNickName(commentDTO.getReplyNickName());
         commentVO.setCreateTime(commentDTO.getCreateTime());
         return commentVO;
     }

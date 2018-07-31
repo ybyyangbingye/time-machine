@@ -3,22 +3,16 @@ package com.netease.timemachine.account.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.dto.ChildDTO;
 import com.netease.timemachine.account.dto.GroupDTO;
-import com.netease.timemachine.account.dto.UserDTO;
-import com.netease.timemachine.account.meta.Group;
-import com.netease.timemachine.account.meta.User;
 import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.service.GroupService;
-import com.netease.timemachine.account.service.UserService;
 import com.netease.timemachine.account.util.*;
 import com.netease.timemachine.account.vo.ChildVO;
 import com.netease.timemachine.account.vo.GroupVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,6 +41,7 @@ public class ChildController {
         GroupDTO groupDTO = new GroupDTO(childId, userId, identification, null, 0, imgUrl);
         groupService.insertGroup(groupDTO);
         JSONObject jsonObject = new JSONObject();
+        jsonObject.put("child", childVO);
         jsonObject.put("invitationCode", ChildInvitationCode.inviCodeGenerator(childId));
         return ResponseView.success(jsonObject, "添加成功");
     }
@@ -133,6 +128,9 @@ public class ChildController {
 
     @RequestMapping(value = "/getCode", method = RequestMethod.POST)
     public ResponseEntity getChildCode(@RequestParam Long childId){
+        if(childId == 888L){
+            return ResponseView.fail(100, "請求失敗");
+        }
         String invitationCode = ChildInvitationCode.inviCodeGenerator(childId);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("invitationCode", invitationCode);

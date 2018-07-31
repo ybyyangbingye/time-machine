@@ -85,14 +85,13 @@ public interface TimeSetDao {
 
     /**
      * 向资源表插入一条时光集记录
-     * resource_type=2 视频
+     * resource_type=3 音频
      * group_type=3 时光集
-     * @param file
-     * @param setId
+     * @param resourceObj
      */
-    @Insert("insert into resource(resource_obj,resource_type,group_id,group_type) values "+
-            "(#{file},2,#{setId},3)")
-    void addTimeSetFile(@Param("file")String file,@Param("setId")Long setId);
+    @Insert("insert into resource(resource_obj,resource_type,group_type) values "+
+            "(#{file},3,3)")
+    void addTimeSetFile(@Param("resourceObj")String resourceObj);
 
     /**
      * 插入一条时光集记录
@@ -108,4 +107,11 @@ public interface TimeSetDao {
      */
     @Select("select count(*) from timeset where set_name = #{setName}")
     boolean isExist(String setName);
+
+    /**
+     * 随机获取一条时光集音乐
+     * @return
+     */
+    @Select("select resource_obj from resource where resource_type=3 and group_type =3 order by rand() limit 1")
+    String resourceRanByTimeSet();
 }

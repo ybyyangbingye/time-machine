@@ -14,12 +14,11 @@ public interface MomentService {
 
     /**
      * 获取用户某个宝宝的5条状态
-     * @param userId
      * @param childId
      * @param currentPage
      * @return
      */
-    List<MomentDTO> getMoments(Long userId, Long childId, Long currentPage);
+    List<MomentDTO> getMoments(Long childId, Long currentPage);
 
     /**
      * 获取某个状态下的所有照片或视频（文件）

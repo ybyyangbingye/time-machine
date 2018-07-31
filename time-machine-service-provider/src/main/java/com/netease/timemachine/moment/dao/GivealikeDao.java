@@ -48,6 +48,11 @@ public interface GivealikeDao {
     @Delete("delete from givealike where user_id=#{userId} and moment_id=#{momentId}")
     boolean deleteGivealike(@Param("userId") Long userId,@Param("momentId") Long momentId);
 
+    /**
+     * 获取所有点赞人的nickname
+     * @param momentId
+     * @return
+     */
     @Select("select nickname from givealike where moment_id=#{momentId}")
     List<String> getAll(Long momentId);
 
@@ -58,13 +63,13 @@ public interface GivealikeDao {
      * @return
      */
     @Select("select count(*) from givealike where user_id=#{userId} and moment_id=#{momentId}")
-    Long isGivealike(@Param("userId") Long userId,@Param("momentId") Long momentId);
+    int isGivealike(@Param("userId") Long userId,@Param("momentId") Long momentId);
 
     /**
      * 根据动态id获取喜欢动态的人数
-     * @param commentId
+     * @param momentId
      * @return
      */
-    @Select("select count(*) from givealike where comment_id = #{commentId}")
-    int getLoverCountByCommentId(long commentId);
+    @Select("select count(*) from givealike where moment_id = #{momentId}")
+    int getLoverCountByMomentId(long momentId);
 }

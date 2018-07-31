@@ -25,7 +25,11 @@ public class CommentDTO implements Serializable {
 
     private Long replyId;
 
+    private String replyNickName;
+
     private Long parentId;
+
+    private String parentNickName;
 
     private Date createTime;
 }
