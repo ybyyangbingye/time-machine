@@ -1,4 +1,4 @@
-package com.netease.timemachine.moment.service;
+package com.netease.timemachine.common.service;
 
 import com.netease.timemachine.moment.dto.CommentDTO;
 
@@ -29,4 +29,11 @@ public interface CommentService {
      * @param commentId
      */
     void deleteComment(Long commentId);
+
+    /**
+     * 根据动态id获取动态的评论数量
+     * @param commentId
+     * @return
+     */
+    int getCommentCountByCommentId(long commentId);
 }
