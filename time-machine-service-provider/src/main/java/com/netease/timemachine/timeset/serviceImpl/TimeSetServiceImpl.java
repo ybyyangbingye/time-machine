@@ -18,12 +18,19 @@ import java.util.*;
  **/
 @Service
 public class TimeSetServiceImpl implements TimeSetService {
+
+    private static final Integer MAX_PICS = 12;
+
     @Autowired
     private TimeSetDao timeSetDao;
 
     @Override
-    public List<HashMap> searchLastMonthByViews(Long childId) {
-        return timeSetDao.searchLastMonthByViews(childId);
+    public List<String> searchLastMonthByViews(Long childId) {
+        List<String> listByTime = timeSetDao.searchLastMonthByViews(childId);
+        if(!CollectionUtils.isEmpty(listByTime) && listByTime.size() >= MAX_PICS){
+            return listByTime.subList(0, MAX_PICS);
+        }
+        return null;
     }
 
     @Override
@@ -51,7 +58,7 @@ public class TimeSetServiceImpl implements TimeSetService {
             Iterator<Map.Entry<String, List<Resource>>> it = listMap.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<String, List<Resource>> entry = it.next();
-                if (entry.getValue().size() < 12) {
+                if (entry.getValue().size() < MAX_PICS) {
                     it.remove();
                 }
             }
@@ -67,7 +74,7 @@ public class TimeSetServiceImpl implements TimeSetService {
             for (int i = 0; i < size; i++) {
                 List<Resource> resources = list.get(i).getValue();
                 Collections.sort(resources);
-                resources.removeAll(resources.subList(12, resources.size()));
+                resources = resources.subList(0, MAX_PICS);
                 List<String> stringList = new ArrayList<>();
                 for (int j = 0; j < resources.size(); j++) {
                     stringList.add(resources.get(j).getResource_obj());

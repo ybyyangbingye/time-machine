@@ -39,7 +39,7 @@ public interface TimeSetDao {
      * @param childId
      * @return
      */
-    @Select("(select r.resource_obj, r.views from moment m " +
+    @Select("(select r.resource_obj from moment m " +
             "INNER JOIN resource r on m.moment_id=r.group_id " +
             "where m.child_id = #{childId} and r.resource_type = 1 " +
             "and period_diff(date_format(now(),'%Y%m') , date_format(m.gmt_create, '%Y%m')) =1 ORDER BY r.views desc) " +
@@ -49,8 +49,7 @@ public interface TimeSetDao {
             "as x where r.group_id= x.id " +
             "and r.resource_type = 1 " +
             "ORDER BY r.views desc) order by views desc")
-    @ResultType(HashMap.class)
-    List<HashMap> searchLastMonthByViews(Long childId);
+    List<String> searchLastMonthByViews(Long childId);
 
 
     /**

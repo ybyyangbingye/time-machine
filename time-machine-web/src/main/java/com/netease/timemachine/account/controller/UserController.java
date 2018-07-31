@@ -79,11 +79,11 @@ public class UserController {
         }
         UserVO userVo = UserVoToDtoUtil.UserDtoToVo(userDTO);
         Map<String, Object> map = new HashMap<>(2);
-        map.put("user", userVo);
+        map.put("userId", userVo.getUserId());
         map.put("phone", phone);
         String token = rsaAlgorithm.create(null, map);
         JSONObject json= new JSONObject();
-        json.put("userId", userVo.getUserId());
+        json.put("user", userVo);
         json.put("token", token);
         return ResponseView.success(json,"登录成功");
     }

@@ -19,10 +19,11 @@ public interface CommentService {
 
     /**
      * 获取该条状态下的所有评论
+     * @param childId
      * @param momentId
      * @return
      */
-    List<CommentDTO> selectComments(Long momentId);
+    List<CommentDTO> selectComments(Long childId,Long momentId);
 
     /**
      * 删除某条状态下的某个评论

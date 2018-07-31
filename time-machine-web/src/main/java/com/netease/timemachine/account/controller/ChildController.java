@@ -47,6 +47,7 @@ public class ChildController {
         GroupDTO groupDTO = new GroupDTO(childId, userId, identification, null, 0, imgUrl);
         groupService.insertGroup(groupDTO);
         JSONObject jsonObject = new JSONObject();
+        jsonObject.put("child", childVO);
         jsonObject.put("invitationCode", ChildInvitationCode.inviCodeGenerator(childId));
         return ResponseView.success(jsonObject, "添加成功");
     }

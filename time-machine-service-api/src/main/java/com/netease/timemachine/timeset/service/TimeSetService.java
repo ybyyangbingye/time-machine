@@ -18,7 +18,7 @@ public interface TimeSetService {
      * @param childId
      * @return
      */
-    List<HashMap> searchLastMonthByViews(Long childId);
+    List<String> searchLastMonthByViews(Long childId);
 
     /**
      * 每月21号生成上个月不同标签的时光集壳子，生成时抓取上个月上传数量最多的3个标签（前提是上传照片满12张）。

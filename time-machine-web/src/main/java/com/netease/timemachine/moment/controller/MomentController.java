@@ -64,7 +64,7 @@ public class MomentController {
             Date date = childService.selectChildById(childId).getBirthDate();
             moment.setChildAge(ChildBirthDay.getAge(date));
             moment.setNickName(momentService.getNickName(childId,userId));
-            List<CommentDTO> comments = commentService.selectComments(moment.getMomentId());
+            List<CommentDTO> comments = commentService.selectComments(childId, moment.getMomentId());
             moment.setComments(CommentVoToDto.commentDtoToVoList(comments));
             moment.setGiveALike(givealikeService.getAll(moment.getMomentId()));
             res.add(moment);
