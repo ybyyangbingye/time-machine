@@ -1,6 +1,7 @@
 package com.netease.timemachine.milestone.serviceImpl;
 
 import com.netease.timemachine.milestone.dao.MilestoneEventCommentDao;
+import com.netease.timemachine.milestone.dto.MilestoneEventCommentDTO;
 import com.netease.timemachine.milestone.service.MilestoneEventCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,10 @@ public class MilestoneEventCommentServiceImpl implements MilestoneEventCommentSe
     @Override
     public int getCommentCountByGroupId(long groupId) {
         return milestoneEventCommentDao.getCommentCountByGroupId(groupId);
+    }
+
+    @Override
+    public boolean addMilestoneEventComment(MilestoneEventCommentDTO milestoneEventCommentDTO) {
+        return milestoneEventCommentDao.addMilestoneEventComment(milestoneEventCommentDTO);
     }
 }

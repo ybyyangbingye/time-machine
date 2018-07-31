@@ -15,8 +15,10 @@ import com.netease.timemachine.common.service.LabelService;
 import com.netease.timemachine.common.service.ResourceService;
 import com.netease.timemachine.common.service.UserRemindedService;
 import com.netease.timemachine.define.GroupTypeEnum;
+import com.netease.timemachine.milestone.dto.MilestoneEventCommentDTO;
 import com.netease.timemachine.milestone.dto.MilestoneEventDTO;
 import com.netease.timemachine.milestone.dto.MilestoneEventLoverDTO;
+import com.netease.timemachine.milestone.service.MilestoneEventCommentService;
 import com.netease.timemachine.milestone.service.MilestoneEventLoverService;
 import com.netease.timemachine.milestone.service.MilestoneEventService;
 import com.netease.timemachine.milestone.vo.MilestoneEventVO;
@@ -62,6 +64,8 @@ public class MilestoneEventController extends BaseController{
     private GroupService groupService;
     @Autowired
     private MilestoneEventLoverService milestoneEventLoverService;
+    @Autowired
+    private MilestoneEventCommentService milestoneEventCommentService;
 
     /**
      * 添加里程碑事件
@@ -353,6 +357,24 @@ public class MilestoneEventController extends BaseController{
             public Object getResultObject() throws Exception {
                 milestoneEventLoverDTO.setGmtCreate(new Date());
                 return milestoneEventLoverService.addMilestoneEventLover(milestoneEventLoverDTO);
+            }
+        };
+        return getResponseResult(request, delegate);
+    }
+
+    /**
+     * 评论
+     * @param request
+     * @param milestoneEventCommentDTO
+     * @return
+     */
+    @RequestMapping(value = "/comment", method = RequestMethod.POST)
+    public ResponseResult addComment(HttpServletRequest request, @RequestBody MilestoneEventCommentDTO milestoneEventCommentDTO) {
+        ResultDelegate delegate = new ResultDelegate() {
+            @Override
+            public Object getResultObject() throws Exception {
+                milestoneEventCommentDTO.setGmtCreate(new Date());
+                return milestoneEventCommentService.addMilestoneEventComment(milestoneEventCommentDTO);
             }
         };
         return getResponseResult(request, delegate);

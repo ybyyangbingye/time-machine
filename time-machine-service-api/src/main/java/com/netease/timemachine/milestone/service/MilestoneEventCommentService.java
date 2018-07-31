@@ -1,5 +1,7 @@
 package com.netease.timemachine.milestone.service;
 
+import com.netease.timemachine.milestone.dto.MilestoneEventCommentDTO;
+
 /**
  * @author zhongweichang
  * @email 15090552277@163.com
@@ -13,4 +15,11 @@ public interface MilestoneEventCommentService {
      * @return
      */
     int getCommentCountByGroupId(long groupId);
+
+    /**
+     * 评论
+     * @param milestoneEventCommentDTO
+     * @return
+     */
+    boolean addMilestoneEventComment(MilestoneEventCommentDTO milestoneEventCommentDTO);
 }
