@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class MilestoneEventLoverDTO extends BaseDTO{
     // 喜欢动态的用户的id
-    private Long userId;
+    private Long from;
     // 动态id
     private Long groupId;
 }

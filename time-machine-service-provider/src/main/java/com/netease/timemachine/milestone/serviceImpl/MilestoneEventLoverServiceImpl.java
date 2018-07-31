@@ -1,6 +1,7 @@
 package com.netease.timemachine.milestone.serviceImpl;
 
 import com.netease.timemachine.milestone.dao.MilestoneEventLoverDao;
+import com.netease.timemachine.milestone.dto.MilestoneEventLoverDTO;
 import com.netease.timemachine.milestone.service.MilestoneEventLoverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,10 @@ public class MilestoneEventLoverServiceImpl implements MilestoneEventLoverServic
     @Override
     public int getLoverCountByGroupId(long groupId) {
         return milestoneEventLoverDao.getLoverCountByGroupId(groupId);
+    }
+
+    @Override
+    public boolean addMilestoneEventLover(MilestoneEventLoverDTO milestoneEventLoverDTO) {
+        return milestoneEventLoverDao.addMilestoneEventLover(milestoneEventLoverDTO);
     }
 }

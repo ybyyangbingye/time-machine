@@ -1,5 +1,7 @@
 package com.netease.timemachine.milestone.service;
 
+import com.netease.timemachine.milestone.dto.MilestoneEventLoverDTO;
+
 /**
  * @author zhongweichang
  * @email 15090552277@163.com
@@ -12,4 +14,11 @@ public interface MilestoneEventLoverService {
      * @return
      */
     int getLoverCountByGroupId(long groupId);
+
+    /**
+     * 添加点赞信息
+     * @param milestoneEventLoverDTO
+     * @return
+     */
+    boolean addMilestoneEventLover(MilestoneEventLoverDTO milestoneEventLoverDTO);
 }

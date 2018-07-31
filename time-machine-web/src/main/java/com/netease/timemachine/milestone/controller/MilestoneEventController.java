@@ -16,6 +16,8 @@ import com.netease.timemachine.common.service.ResourceService;
 import com.netease.timemachine.common.service.UserRemindedService;
 import com.netease.timemachine.define.GroupTypeEnum;
 import com.netease.timemachine.milestone.dto.MilestoneEventDTO;
+import com.netease.timemachine.milestone.dto.MilestoneEventLoverDTO;
+import com.netease.timemachine.milestone.service.MilestoneEventLoverService;
 import com.netease.timemachine.milestone.service.MilestoneEventService;
 import com.netease.timemachine.milestone.vo.MilestoneEventVO;
 import com.netease.timemachine.milestone.vo.ResponseResult;
@@ -58,6 +60,8 @@ public class MilestoneEventController extends BaseController{
     private UserService userService;
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private MilestoneEventLoverService milestoneEventLoverService;
 
     /**
      * 添加里程碑事件
@@ -334,5 +338,23 @@ public class MilestoneEventController extends BaseController{
             }
         }
         return ResponseView.success(groupDTOS);
+    }
+
+    /**
+     * 点赞
+     * @param request
+     * @param milestoneEventLoverDTO
+     * @return
+     */
+    @RequestMapping(value = "/love", method = RequestMethod.POST)
+    public ResponseResult addLover(HttpServletRequest request, @RequestBody MilestoneEventLoverDTO milestoneEventLoverDTO) {
+        ResultDelegate delegate = new ResultDelegate() {
+            @Override
+            public Object getResultObject() throws Exception {
+                milestoneEventLoverDTO.setGmtCreate(new Date());
+                return milestoneEventLoverService.addMilestoneEventLover(milestoneEventLoverDTO);
+            }
+        };
+        return getResponseResult(request, delegate);
     }
 }
