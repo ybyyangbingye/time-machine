@@ -15,7 +15,7 @@ public interface CommentService {
      * 添加一条评论
      * @param commentDTO
      */
-    void insertComment(CommentDTO commentDTO);
+    Long insertComment(CommentDTO commentDTO);
 
     /**
      * 获取该条状态下的所有评论
@@ -30,4 +30,11 @@ public interface CommentService {
      * @param commentId
      */
     void deleteComment(Long commentId);
+
+    /**
+     * 通过commentId查询一条评论信息
+     * @param commentId
+     * @return
+     */
+    CommentDTO selectByCommentId(Long commentId);
 }

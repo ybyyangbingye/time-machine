@@ -33,4 +33,7 @@ public class CommentVO implements Serializable {
 
     private Date createTime;
 
+    /**添加一条新的评论时，传递一个新的childId查询昵称*/
+    private Long childId;
+
 }

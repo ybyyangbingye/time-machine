@@ -39,7 +39,7 @@ public interface TimeSetDao {
      * @param childId
      * @return
      */
-    @Select("(select r.resource_obj from moment m " +
+    @Select("(select r.resource_obj, r.views from moment m " +
             "INNER JOIN resource r on m.moment_id=r.group_id " +
             "where m.child_id = #{childId} and r.resource_type = 1 " +
             "and period_diff(date_format(now(),'%Y%m') , date_format(m.gmt_create, '%Y%m')) =1 ORDER BY r.views desc) " +
@@ -49,7 +49,8 @@ public interface TimeSetDao {
             "as x where r.group_id= x.id " +
             "and r.resource_type = 1 " +
             "ORDER BY r.views desc) order by views desc")
-    List<String> searchLastMonthByViews(Long childId);
+    @ResultType(HashMap.class)
+    List<HashMap> searchLastMonthByViews(Long childId);
 
 
     /**
@@ -84,14 +85,13 @@ public interface TimeSetDao {
 
     /**
      * 向资源表插入一条时光集记录
-     * resource_type=2 视频
+     * resource_type=3 音频
      * group_type=3 时光集
-     * @param file
-     * @param setId
+     * @param resourceObj
      */
-    @Insert("insert into resource(resource_obj,resource_type,group_id,group_type) values "+
-            "(#{file},2,#{setId},3)")
-    void addTimeSetFile(@Param("file")String file,@Param("setId")Long setId);
+    @Insert("insert into resource(resource_obj,resource_type,group_type) values "+
+            "(#{file},3,3)")
+    void addTimeSetFile(@Param("resourceObj")String resourceObj);
 
     /**
      * 插入一条时光集记录
@@ -107,4 +107,11 @@ public interface TimeSetDao {
      */
     @Select("select count(*) from timeset where set_name = #{setName}")
     boolean isExist(String setName);
+
+    /**
+     * 随机获取一条时光集音乐
+     * @return
+     */
+    @Select("select resource_obj from resource where resource_type=3 and group_type =3 order by rand() limit 1")
+    String resourceRanByTimeSet();
 }

@@ -1,9 +1,12 @@
 package com.netease.timemachine.timeset.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.timeset.service.TimeSetService;
 import com.netease.timemachine.timeset.util.CalendarYearMonth;
+import com.netease.timemachine.timeset.util.TimeSetUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -29,22 +32,35 @@ public class TimeSetController {
     @Autowired
     private TimeSetService timeSetService;
 
+    /**
+     * 申请，查询是否有相应的
+     * @param childId
+     * @return
+     */
     @RequestMapping("/generateTimeSet")
     public ResponseEntity generateTimeSet(@RequestParam Long childId){
         String yearMonth = CalendarYearMonth.yearAndMonth();
         JSONObject jsonObject = new JSONObject();
-        List<String> listByTime = timeSetService.searchLastMonthByViews(childId);
+        List<HashMap> listByTime = timeSetService.searchLastMonthByViews(childId);
         if(listByTime != null && !timeSetService.isExist(yearMonth)){
-            jsonObject.put(yearMonth, listByTime);
+            String music = timeSetService.resourceRanByTimeSet();
+            JSONObject time = TimeSetUtil.generateTimeSet(yearMonth, music, TimeSetUtil.listMapToString(listByTime));
+            jsonObject.put("time", time);
         }
         Map<String,List<String>> mapByLabel = timeSetService.searchLastMonthByLabels(childId);
-        Iterator<Map.Entry<String,List<String>>> it = mapByLabel.entrySet().iterator();
-        while (it.hasNext()){
-            Map.Entry<String, List<String>> entry = it.next();
-            String setName = entry.getKey() + yearMonth;
-            if(!timeSetService.isExist(setName)){
-                jsonObject.put(setName, entry.getValue());
+        if(!CollectionUtils.isEmpty(mapByLabel)){
+            Iterator<Map.Entry<String,List<String>>> it = mapByLabel.entrySet().iterator();
+            JSONArray jsonArray = new JSONArray();
+            while (it.hasNext()){
+                Map.Entry<String, List<String>> entry = it.next();
+                String labelName = entry.getKey() + yearMonth;
+                if(!timeSetService.isExist(labelName)){
+                    String music = timeSetService.resourceRanByTimeSet();
+                    JSONObject label = TimeSetUtil.generateTimeSet(labelName, music, entry.getValue());
+                    jsonArray.add(label);
+                }
             }
+            jsonObject.put("label", jsonArray);
         }
         return ResponseView.success(jsonObject);
     }

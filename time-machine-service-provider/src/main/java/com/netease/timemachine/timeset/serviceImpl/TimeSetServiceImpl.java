@@ -25,8 +25,8 @@ public class TimeSetServiceImpl implements TimeSetService {
     private TimeSetDao timeSetDao;
 
     @Override
-    public List<String> searchLastMonthByViews(Long childId) {
-        List<String> listByTime = timeSetDao.searchLastMonthByViews(childId);
+    public List<HashMap> searchLastMonthByViews(Long childId) {
+        List<HashMap> listByTime = timeSetDao.searchLastMonthByViews(childId);
         if(!CollectionUtils.isEmpty(listByTime) && listByTime.size() >= MAX_PICS){
             return listByTime.subList(0, MAX_PICS);
         }
@@ -86,8 +86,8 @@ public class TimeSetServiceImpl implements TimeSetService {
     }
 
     @Override
-    public void addTimeSetFile(String file, Long setId) {
-        timeSetDao.addTimeSetFile(file, setId);
+    public void addTimeSetFile(String resource_obj) {
+        timeSetDao.addTimeSetFile(resource_obj);
     }
 
     @Override
@@ -98,5 +98,10 @@ public class TimeSetServiceImpl implements TimeSetService {
     @Override
     public boolean isExist(String setName) {
         return timeSetDao.isExist(setName);
+    }
+
+    @Override
+    public String resourceRanByTimeSet() {
+        return timeSetDao.resourceRanByTimeSet();
     }
 }

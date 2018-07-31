@@ -31,9 +31,10 @@ public class CommentServiceImpl implements CommentService {
     private GroupDao groupDao;
 
     @Override
-    public void insertComment(CommentDTO commentDTO) {
+    public Long insertComment(CommentDTO commentDTO) {
         Comment comment = CommentDtoToMeta.commentDtoToMeta(commentDTO);
         commentDao.insertComment(comment);
+        return comment.getCommentId();
     }
 
     @Override
@@ -56,5 +57,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteComment(Long commentId) {
         commentDao.deleteComment(commentId);
+    }
+
+    @Override
+    public CommentDTO selectByCommentId(Long commentId) {
+        Comment comment = commentDao.selectByCommentId(commentId);
+        return CommentDtoToMeta.commentMetaToDto(comment);
     }
 }
