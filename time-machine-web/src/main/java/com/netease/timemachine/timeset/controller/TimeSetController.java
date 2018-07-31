@@ -1,6 +1,5 @@
 package com.netease.timemachine.timeset.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.util.ResponseView;
