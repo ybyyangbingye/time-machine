@@ -1,8 +1,6 @@
 package com.netease.timemachine.moment.serviceImpl;
 
-import com.netease.timemachine.moment.dao.GivealikeDao;
 import com.netease.timemachine.moment.dao.MomentDao;
-import com.netease.timemachine.moment.dto.LabelDTO;
 import com.netease.timemachine.moment.dto.MomentDTO;
 import com.netease.timemachine.moment.meta.Moment;
 import com.netease.timemachine.moment.service.MomentService;
@@ -93,15 +91,5 @@ public class MomentServiceImpl implements MomentService {
         momentDao.deleteMoment(momentId);
         return true;
     }
-
-    /**
-     * 增加状态下某张图片的浏览量
-     * @param resourceObj
-     */
-    @Override
-    public void incrementViews(String resourceObj) {
-        momentDao.incrementViews(resourceObj);
-    }
-
 
 }

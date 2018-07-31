@@ -79,7 +79,7 @@ public class UserController {
         }
         UserVO userVo = UserVoToDtoUtil.UserDtoToVo(userDTO);
         Map<String, Object> map = new HashMap<>(2);
-        map.put("userId", userVo.getUserId());
+        map.put("user", userVo);
         map.put("phone", phone);
         String token = rsaAlgorithm.create(null, map);
         JSONObject json= new JSONObject();

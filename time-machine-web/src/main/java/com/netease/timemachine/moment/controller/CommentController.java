@@ -9,6 +9,7 @@ import com.netease.timemachine.moment.util.CommentVoToDto;
 import com.netease.timemachine.moment.vo.CommentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,12 +52,14 @@ public class CommentController {
         List<CommentDTO> commentDTOList = commentService.selectComments(momentId);
         List<CommentVO> commentVOList = CommentVoToDto.commentDtoToVoList(commentDTOList);
         List<CommentVO> commentList = new ArrayList<>();
-        for (CommentVO commentVO : commentVOList){
-            GroupDTO parent = groupService.selectByUserAndChildId(commentVO.getParentId(), childId);
-            commentVO.setParentNickName(parent.getNickName());
-            GroupDTO reply = groupService.selectByUserAndChildId(commentVO.getReplyId(), childId);
-            commentVO.setReplyNickName(reply.getNickName());
-            commentList.add(commentVO);
+        if(!CollectionUtils.isEmpty(commentVOList)){
+            for (CommentVO commentVO : commentVOList){
+                GroupDTO parent = groupService.selectByUserAndChildId(commentVO.getParentId(), childId);
+                commentVO.setParentNickName(parent.getNickName());
+                GroupDTO reply = groupService.selectByUserAndChildId(commentVO.getReplyId(), childId);
+                commentVO.setReplyNickName(reply.getNickName());
+                commentList.add(commentVO);
+            }
         }
         return ResponseView.success(commentList);
     }

@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-public class Resource implements Serializable {
+public class Resource implements Serializable, Comparable<Resource>{
 
     private static final long serialVersionUID = -5130970531109096859L;
 
@@ -32,5 +32,15 @@ public class Resource implements Serializable {
 
     private Date gmt_modified;
 
+    private Long views;
 
+    /**
+     * 定义比较器
+     * @param o 比较对象
+     * @return
+     */
+    @Override
+    public int compareTo(Resource o) {
+        return (int)(o.getViews()-this.views);
+    }
 }

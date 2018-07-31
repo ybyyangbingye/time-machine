@@ -12,7 +12,6 @@ import java.util.GregorianCalendar;
  **/
 public class ChildBirthDay {
     public static void main(String[] args) throws Exception{
-        System.out.println(getAge(new Date()));
     }
 
     public static String getAge(Date date) {

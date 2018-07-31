@@ -20,5 +20,5 @@ public class ResourceDTO extends BaseDTO{
 
     private Integer groupType;
 
-
+    private Long views;
 }

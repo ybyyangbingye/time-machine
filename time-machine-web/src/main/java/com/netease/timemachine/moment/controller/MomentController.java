@@ -78,9 +78,6 @@ public class MomentController {
      */
     @RequestMapping(value = "/addMoment", method = RequestMethod.POST)
     public void addMoment(@RequestBody MomentVO momentVO) {
-//        momentService.addMoment(MomentVoToDto.voToDto(momentVO),
-//                momentVO.getFiles(),
-//                LabelVoToDto.voListToDtoList(momentVO.getLabels()));
         Long momentId = momentService.addMoment(MomentVoToDto.voToDto(momentVO),momentVO.getFiles());
         labelService.addLabels(momentVO.getCreatorId(), momentVO.getChildId(),
                 momentId, momentVO.getLabels());
@@ -95,9 +92,4 @@ public class MomentController {
         momentService.deleteMoment(momentId);
     }
 
-    @RequestMapping(value = "/incrementViews", method = RequestMethod.POST)
-    public ResponseEntity incrementViews(@RequestParam String resourceObj){
-        momentService.incrementViews(resourceObj);
-        return ResponseView.success(null, "浏览量更新成功");
-    }
 }
