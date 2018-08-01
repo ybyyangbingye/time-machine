@@ -1,5 +1,6 @@
 package com.netease.timemachine.account.serviceImpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.service.MsService;
 import com.netease.timemachine.account.util.CheckSumBuilder;
 import com.netease.timemachine.config.SmsAutoConfig;
@@ -29,14 +30,11 @@ public class MsServiceImpl implements MsService {
     SmsAutoConfig smsAutoConfig;
 
     @Override
-    public String sms(String phoneNumber) throws Exception {
+    public JSONObject sms(String phoneNumber) throws Exception {
         HttpClient httpClient=new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(smsAutoConfig.getServerUrl());
-        String curTime = String.valueOf((new Date()).getTime() / 1000L);  //时间戳
-        /*
-         * 参考计算CheckSum的java代码，在上述文档的参数列表中，有CheckSum的计算文档示例
-         */
-        String checkSum = CheckSumBuilder.getCheckSum(smsAutoConfig.getAppSecret(), smsAutoConfig.getNonce(), curTime);  //sha1
+        String curTime = String.valueOf((new Date()).getTime() / 1000L);
+        String checkSum = CheckSumBuilder.getCheckSum(smsAutoConfig.getAppSecret(), smsAutoConfig.getNonce(), curTime);
 
         // 设置请求的header
         httpPost.addHeader("AppKey", smsAutoConfig.getAppKey());
@@ -64,17 +62,16 @@ public class MsServiceImpl implements MsService {
          * 1.打印执行结果，打印结果一般会200、315、403、404、413、414、500
          * 2.具体的code有问题的可以参考官网的Code状态表
          */
-        return EntityUtils.toString(response.getEntity(), "utf-8");    }
+        String res = EntityUtils.toString(response.getEntity(), "utf-8");
+        return JSONObject.parseObject(res);
+    }
 
     @Override
-    public String vms(String phoneNumber, String code) throws Exception {
+    public JSONObject vms(String phoneNumber, String code) throws Exception {
             HttpClient httpClient=new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(smsAutoConfig.getVerifyUrl());
-            String curTime = String.valueOf((new Date()).getTime() / 1000L);  //时间戳
-            /*
-             * 参考计算CheckSum的java代码，在上述文档的参数列表中，有CheckSum的计算文档示例
-             */
-            String checkSum = CheckSumBuilder.getCheckSum(smsAutoConfig.getAppSecret(), smsAutoConfig.getNonce(), curTime);  //sha1
+            String curTime = String.valueOf((new Date()).getTime() / 1000L);
+            String checkSum = CheckSumBuilder.getCheckSum(smsAutoConfig.getAppSecret(), smsAutoConfig.getNonce(), curTime);
 
             // 设置请求的header
             httpPost.addHeader("AppKey", smsAutoConfig.getAppKey());
@@ -101,7 +98,8 @@ public class MsServiceImpl implements MsService {
              * 1.打印执行结果，打印结果一般会200、315、403、404、413、414、500
              * 2.具体的code有问题的可以参考官网的Code状态表
              */
-        return EntityUtils.toString(response.getEntity(), "utf-8");
+        String res = EntityUtils.toString(response.getEntity(), "utf-8");
+        return  JSONObject.parseObject(res);
         }
 }
 

@@ -8,6 +8,7 @@ import com.netease.timemachine.moment.meta.Comment;
 import com.netease.timemachine.moment.service.CommentService;
 import com.netease.timemachine.moment.util.CommentVoToDto;
 import com.netease.timemachine.moment.vo.CommentVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -43,7 +44,7 @@ public class CommentController {
         Long commentId = commentService.insertComment(commentDTO);
         /**前端直接插入该条评论，无需刷新首页*/
         commentVO.setCommentId(commentId);
-        commentVO.setCreateTime(commentService.selectByCommentId(commentId).getCreateTime());
+        commentVO.setCreateTime(commentService.selectByCommentIdType(commentId, commentVO.getGroupType()).getCreateTime());
         GroupDTO parent = groupService.selectByUserAndChildId(commentVO.getParentId(), commentVO.getChildId());
         commentVO.setParentNickName(parent.getNickName());
         GroupDTO reply = groupService.selectByUserAndChildId(commentVO.getReplyId(), commentVO.getChildId());
@@ -52,21 +53,24 @@ public class CommentController {
     }
 
     /**
-     * 测试用
+     * 单独测试用
      * @param childId
-     * @param momentId
+     * @param groupId
+     * @param groupType
      * @return
      */
     @RequestMapping(value = "/allComments",method = RequestMethod.POST)
     public ResponseEntity selectComments1(@RequestParam("childId") Long childId,
-                                         @RequestParam("momentId") Long momentId){
-        List<CommentDTO> commentDTOList = commentService.selectComments(childId,momentId);
+                                         @RequestParam("groupId") Long groupId,
+                                         @RequestParam("groupType") Integer groupType){
+        List<CommentDTO> commentDTOList = commentService.selectComments(childId,groupId,groupType);
         return ResponseView.success(CommentVoToDto.commentDtoToVoList(commentDTOList));
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public ResponseEntity deleteComment(@RequestParam Long commentId){
-        commentService.deleteComment(commentId);
+    public ResponseEntity deleteComment(@RequestParam("commentId") Long commentId,
+                                        @RequestParam("groupType") Integer groupType){
+        commentService.deleteComment(commentId, groupType);
         return ResponseView.success(null, "删除成功");
     }
 }

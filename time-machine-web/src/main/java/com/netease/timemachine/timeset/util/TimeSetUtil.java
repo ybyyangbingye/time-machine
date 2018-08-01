@@ -1,10 +1,9 @@
 package com.netease.timemachine.timeset.util;
 
-import com.alibaba.fastjson.JSONObject;
-import com.netease.timemachine.timeset.service.TimeSetService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author: wqh
@@ -13,14 +12,11 @@ import java.util.*;
  **/
 public class TimeSetUtil{
 
-    public static JSONObject generateTimeSet(String name, String music, List<String> picList){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("name", name);
-        jsonObject.put("music", music);
-        jsonObject.put("pictures", picList);
-        return jsonObject;
-    }
-    
+    /**
+     * map集合转string集合
+     * @param list
+     * @return
+     */
     public static List<String> listMapToString(List<HashMap> list){
         List<String> res = new ArrayList<>(list.size());
         for(HashMap map : list){

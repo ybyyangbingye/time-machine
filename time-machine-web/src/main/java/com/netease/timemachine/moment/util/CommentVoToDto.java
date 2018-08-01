@@ -19,7 +19,8 @@ public class CommentVoToDto {
         }
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setCommentId(commentVO.getCommentId());
-        commentDTO.setMomentId(commentVO.getMomentId());
+        commentDTO.setGroupId(commentVO.getGroupId());
+        commentDTO.setGroupType(commentVO.getGroupType());
         commentDTO.setContent(commentVO.getContent());
         commentDTO.setParentId(commentVO.getParentId());
         commentDTO.setParentNickName(commentVO.getParentNickName());
@@ -36,7 +37,8 @@ public class CommentVoToDto {
         CommentVO commentVO = new CommentVO();
         commentVO.setCommentId(commentDTO.getCommentId());
         commentVO.setContent(commentDTO.getContent());
-        commentVO.setMomentId(commentDTO.getMomentId());
+        commentVO.setGroupId(commentDTO.getGroupId());
+        commentVO.setGroupType(commentDTO.getGroupType());
         commentVO.setParentId(commentDTO.getParentId());
         commentVO.setParentNickName(commentDTO.getParentNickName());
         commentVO.setReplyId(commentDTO.getReplyId());

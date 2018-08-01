@@ -108,7 +108,7 @@ public class MyResourceController extends BaseController {
                     }else if(groupType == GroupTypeEnum.FRIEND_CIRCLE.getType()) {
                         momentDTO = groupIdMomentMap.get(resourceDTO.getGroupId());
                         myResourceVO.setContent(momentDTO.getDescription());
-                        commentCount = commentService.getCommentCountByMomentId(resourceDTO.getGroupId());
+                        commentCount = commentService.getCommentCountByGroupIdType(resourceDTO.getGroupId(), resourceDTO.getGroupType());
                         myResourceVO.setCommentCount(commentCount);
                         loverCount = givealikeService.getLoverCountByMomentId(resourceDTO.getGroupId());
                         myResourceVO.setLoverCount(loverCount);

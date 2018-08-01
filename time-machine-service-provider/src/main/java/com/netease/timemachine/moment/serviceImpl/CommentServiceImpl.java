@@ -1,7 +1,6 @@
 package com.netease.timemachine.moment.serviceImpl;
 
 import com.netease.timemachine.account.dao.GroupDao;
-import com.netease.timemachine.account.dto.GroupDTO;
 import com.netease.timemachine.account.meta.Group;
 import com.netease.timemachine.moment.dao.CommentDao;
 import com.netease.timemachine.moment.dto.CommentDTO;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,8 +36,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDTO> selectComments(Long childId, Long momentId) {
-        List<Comment> commentList = commentDao.selectComments(momentId);
+    public List<CommentDTO> selectComments(Long childId, Long groupId, Integer groupType) {
+        List<Comment> commentList = commentDao.selectComments(groupId, groupType);
         List<CommentDTO> res = new ArrayList<>();
         List<CommentDTO>  commentDTOList = CommentDtoToMeta.commentMetaToDtoList(commentList);
         if(!CollectionUtils.isEmpty(commentDTOList)){
@@ -55,17 +53,18 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Long commentId) {
-        commentDao.deleteComment(commentId);
+    public void deleteComment(Long commentId, Integer groupType) {
+        commentDao.deleteComment(commentId, groupType);
     }
 
     @Override
-    public int getCommentCountByMomentId(long momentId) {
-        return commentDao.getCommentCountByMomentId(momentId);
+    public int getCommentCountByGroupIdType(Long groupId, Integer groupType) {
+        return commentDao.getCommentCountByGroupIdType(groupId, groupType);
     }
 
-    public CommentDTO selectByCommentId(Long commentId) {
-        Comment comment = commentDao.selectByCommentId(commentId);
+    @Override
+    public CommentDTO selectByCommentIdType(Long commentId, Integer groupType) {
+        Comment comment = commentDao.selectByCommentIdType(commentId, groupType);
         return CommentDtoToMeta.commentMetaToDto(comment);
     }
 }

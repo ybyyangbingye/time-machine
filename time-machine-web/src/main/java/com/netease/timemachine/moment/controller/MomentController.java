@@ -55,7 +55,8 @@ public class MomentController {
     @RequestMapping(value = "/getMoments", method = RequestMethod.POST)
     public ResponseEntity getMoments(@RequestParam Long userId,
                                   @RequestParam Long childId,
-                                  @RequestParam Long currentPage) {
+                                  @RequestParam Long currentPage,
+                                     @RequestParam Integer groupType) {
         List<MomentVO> moments = MomentVoToDto.dtoListToVoList(momentService.getMoments(childId, currentPage));
         List<MomentVO> res = new ArrayList<>();
         Date date = childService.selectChildById(childId).getBirthDate();
@@ -65,7 +66,7 @@ public class MomentController {
             moment.setLabels(momentService.getMomentLabels(moment.getMomentId()));
             moment.setChildAge(ChildBirthDay.getAge(date));
             moment.setNickName(momentService.getNickName(childId,userId));
-            List<CommentDTO> comments = commentService.selectComments(childId, moment.getMomentId());
+            List<CommentDTO> comments = commentService.selectComments(childId, moment.getMomentId(), groupType);
             moment.setComments(CommentVoToDto.commentDtoToVoList(comments));
             moment.setGiveALike(givealikeService.getAll(moment.getMomentId()));
             moment.setHasLike(givealikeService.isGivealike(userId,moment.getMomentId()));

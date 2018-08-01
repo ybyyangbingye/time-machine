@@ -54,7 +54,7 @@ public class TimeSetController {
         }
         /**去拉取已经生成的时光集*/
         List<TimeSetDTO> oldList = timeSetService.selectTimeSetDetail(childId);
-        if(!CollectionUtils.isEmpty(oldList)){
+        if(!CollectionUtils.isEmpty(oldList) && !CollectionUtils.isEmpty(list)){
             list.addAll(oldList);
         }
         return ResponseView.success(list);

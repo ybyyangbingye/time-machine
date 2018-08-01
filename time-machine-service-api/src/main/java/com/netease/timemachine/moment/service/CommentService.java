@@ -18,30 +18,34 @@ public interface CommentService {
     Long insertComment(CommentDTO commentDTO);
 
     /**
-     * 获取该条状态下的所有评论
+     * 获取该条状态或者里程牌下的所有评论
      * @param childId
-     * @param momentId
+     * @param groupId
+     * @param groupType
      * @return
      */
-    List<CommentDTO> selectComments(Long childId,Long momentId);
+    List<CommentDTO> selectComments(Long childId,Long groupId,Integer groupType);
 
     /**
-     * 删除某条状态下的某个评论
+     * 删除某条状态或者里程牌下的某个评论
      * @param commentId
+     * @param groupType
      */
-    void deleteComment(Long commentId);
+    void deleteComment(Long commentId,Integer groupType);
 
     /**
-     * 根据动态id获取动态的评论数量
-     * @param momentId
+     * 根据动态id获取状态或者里程牌的评论数量
+     * @param groupId
+     * @param groupType
      * @return
      */
-    int getCommentCountByMomentId(long momentId);
+    int getCommentCountByGroupIdType(Long groupId,Integer groupType);
 
-    /*
+    /**
      * 通过commentId查询一条评论信息
      * @param commentId
+     * @param groupType
      * @return
      */
-    CommentDTO selectByCommentId(Long commentId);
+    CommentDTO selectByCommentIdType(Long commentId,Integer groupType);
 }

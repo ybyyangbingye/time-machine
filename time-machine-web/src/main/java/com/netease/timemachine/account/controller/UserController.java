@@ -6,7 +6,10 @@ import com.netease.timemachine.account.dto.UserDTO;
 import com.netease.timemachine.account.service.GroupService;
 import com.netease.timemachine.account.service.MsService;
 import com.netease.timemachine.account.service.UserService;
-import com.netease.timemachine.account.util.*;
+import com.netease.timemachine.account.util.ChildBirthDay;
+import com.netease.timemachine.account.util.ChildVoToDtoUtil;
+import com.netease.timemachine.account.util.ResponseView;
+import com.netease.timemachine.account.util.UserVoToDtoUtil;
 import com.netease.timemachine.account.vo.ChildVO;
 import com.netease.timemachine.account.vo.UserVO;
 import com.netease.timemachine.auth.meta.RsaAlgorithm;
@@ -43,39 +46,40 @@ public class UserController {
 
     @RequestMapping(value = "/sms",method = RequestMethod.POST)
     public ResponseEntity smsByPhone(@RequestParam String phone){
-        String res = "";
         try{
-            res = msService.sms(phone);
+            JSONObject jsonObject = msService.sms(phone);
+            if(jsonObject.getInteger("code") != 200){
+                return ResponseView.fail(100, "发送失败");
+            }
         }catch (Exception e){
             e.printStackTrace();
             return ResponseView.fail(500, "服务器内部错误");
-        }
-        JSONObject jsonObject = JSONObject.parseObject(res);
-        if(jsonObject.getInteger("code") != 200){
-            return ResponseView.fail(100, "发送失败");
         }
         return ResponseView.success(null,"发送成功");
     }
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseEntity login(@RequestParam String phone, @RequestParam String code){
-        String res = "";
         try {
-            res = msService.vms(phone, code);
-        }catch (Exception e){
-            return ResponseView.fail(500, "验证失败");
-        }
-        System.out.println(res);
-        JSONObject jsonObject = JSONObject.parseObject(res);
-        if(jsonObject.getInteger("code") != 200){
+            JSONObject res = msService.sms(phone);
+            if(res.getInteger("code") != 200){
+                return ResponseView.fail(100, "发送失败");
+            }
+        }catch (Exception e) {
             return ResponseView.fail(500, "验证失败");
         }
         UserDTO userDTO = userService.selectByPhone(phone);
+        JSONObject jsonObject = new JSONObject();
         if(userDTO == null){
             userDTO = new UserDTO();
             userDTO.setPhone(phone);
             userService.insertUser(userDTO);
             userDTO = userService.selectByPhone(phone);
+        }else{
+            List<ChildDTO> childDTOList = userService.selectOwnChildren(userDTO.getUserId());
+            if(!CollectionUtils.isEmpty(childDTOList)){
+                jsonObject.put("child", ChildVoToDtoUtil.childDtoToVo(childDTOList.get(0)));
+            }
         }
         UserVO userVo = UserVoToDtoUtil.UserDtoToVo(userDTO);
         Map<String, Object> map = new HashMap<>(2);
