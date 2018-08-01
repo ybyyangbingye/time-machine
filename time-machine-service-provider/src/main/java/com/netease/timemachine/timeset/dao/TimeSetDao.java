@@ -1,14 +1,8 @@
 package com.netease.timemachine.timeset.dao;
 
-import com.netease.timemachine.common.dto.LabelBelongedDTO;
 import com.netease.timemachine.moment.meta.Resource;
 import com.netease.timemachine.timeset.dto.TimeSetDTO;
 import com.netease.timemachine.timeset.meta.TimeSetByLabel;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultType;
-import org.apache.ibatis.annotations.Select;
-import com.netease.timemachine.moment.meta.Moment;
 import org.apache.ibatis.annotations.*;
 
 import java.util.HashMap;
@@ -21,17 +15,6 @@ import java.util.List;
  **/
 @Mapper
 public interface TimeSetDao {
-
-    @Select("select city, count(*) as amount from moment group by city where child_id=#{childId} and creator_id=#{userId}")
-    @ResultType(HashMap.class)
-    List<HashMap> getCities(@Param("childId") Long childId, @Param("userId") Long userId);
-
-    @Select("select moment_id from moment where city=#{city}")
-    List<Long> getMomentsByCity(String city);
-
-    @Select("select count(*) from resource where group_id=#{momentId} and group_type=2 group by group_id")
-    Long countMomentFiles(Long momentId);
-
 
     /**
      * 通过孩子id来获取上个月状态、里程牌的图片，排序规则为浏览量
@@ -59,7 +42,7 @@ public interface TimeSetDao {
      * @return
      */
     @Select("select * from label as l, label_belonged as b " +
-            "where date_format(b.gmt_create, '%Y%m') = date_format(now(),'%Y%m') " +
+            "where period_diff(date_format(now(),'%Y%m') , date_format(b.gmt_create, '%Y%m')) =1 " +
             "and l.child_id=#{childId} and b.label_id=l.id")
     List<TimeSetByLabel> searchLastMonthByLabels(Long childId);
 
@@ -84,20 +67,11 @@ public interface TimeSetDao {
     List<Resource> searchByGroupIdAndType(@Param("groupId") Long groupId, @Param("groupType") Integer groupType);
 
     /**
-     * 向资源表插入一条时光集记录
-     * resource_type=3 音频
-     * group_type=3 时光集
-     * @param resourceObj
-     */
-    @Insert("insert into resource(resource_obj,resource_type,group_type) values "+
-            "(#{file},3,3)")
-    void addTimeSetFile(@Param("resourceObj")String resourceObj);
-
-    /**
-     * 插入一条时光集记录
+     * 插入一条时光集记录，返回主键
      * @param timeSetDTO
      */
-    @Insert("insert into timeset (set_name,set_type) values (#{setName},#{setType})")
+    @Insert("insert into timeset (set_name,child_id,musicUrl) values (#{setName},#{childId},#{musicUrl})")
+    @Options(useGeneratedKeys = true, keyProperty = "setId", keyColumn = "set_id")
     void addTimeSet(TimeSetDTO timeSetDTO);
 
     /**
@@ -105,13 +79,46 @@ public interface TimeSetDao {
      * @param setName
      * @return
      */
-    @Select("select count(*) from timeset where set_name = #{setName}")
-    boolean isExist(String setName);
+    @Select("select count(*) from timeset where set_name = #{setName} and child_id = #{childId}")
+    boolean isExist(@Param("setName") String setName, @Param("childId") Long childId);
 
     /**
      * 随机获取一条时光集音乐
      * @return
      */
     @Select("select resource_obj from resource where resource_type=3 and group_type =3 order by rand() limit 1")
-    String resourceRanByTimeSet();
+    String musicRanByTimeSet();
+
+    /**
+     * 新增一条时光集，然后一次向resource表插入多个数据
+     * resource_type=3 音频
+     * group_type=3 时光集
+     * @param pictures
+     * @param groupId
+     */
+    @Insert("<script>"
+    + "insert into resource "
+    + "(resource_obj,resource_type,group_id,group_type)"
+    + "VALUES"
+    + "<foreach item='item' index='index' collection='pictures' open='(' separator=',' close=')'>"
+    + "#{item},3,#{groupId},3"
+    + "</foreach>"
+    + "</script>")
+    void addTimeSetToResource(@Param("pictures") List<String> pictures, @Param("groupId") Long groupId);
+
+    /**
+     * 获取已经存在的时光集（时间降序）
+     * @param childId
+     * @return
+     */
+    @Select("select * from timeset where child_id = #{childId} order by create_time desc")
+    List<TimeSetDTO> selectTimeSetById(Long childId);
+
+    /**
+     * 查询某个时光集的所有图片
+     * @param setId
+     * @return
+     */
+    @Select("select resource_obj from resource where resource_type=3 and group_type=3 and group_id=#{setId}")
+    List<String> selectTimeSetResources(Long setId);
 }

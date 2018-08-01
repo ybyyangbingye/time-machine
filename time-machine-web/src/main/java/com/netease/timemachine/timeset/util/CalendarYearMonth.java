@@ -11,9 +11,13 @@ public class CalendarYearMonth {
 
     private static final Calendar cal = Calendar.getInstance();
 
+    /**
+     * 返回前一个月的年月信息
+     * @return
+     */
     public static String yearAndMonth(){
         int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH )+1;
+        int month = cal.get(Calendar.MONTH );
         return year + "年" + month + "月";
     }
 

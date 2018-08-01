@@ -86,22 +86,48 @@ public class TimeSetServiceImpl implements TimeSetService {
     }
 
     @Override
-    public void addTimeSetFile(String resource_obj) {
-        timeSetDao.addTimeSetFile(resource_obj);
-    }
-
-    @Override
-    public void addTimeSet(TimeSetDTO timeSetDTO) {
+    public Long addTimeSet(TimeSetDTO timeSetDTO) {
         timeSetDao.addTimeSet(timeSetDTO);
+        return timeSetDTO.getSetId();
     }
 
     @Override
-    public boolean isExist(String setName) {
-        return timeSetDao.isExist(setName);
+    public boolean isExist(String setName, Long childId) {
+        return timeSetDao.isExist(setName, childId);
     }
 
     @Override
-    public String resourceRanByTimeSet() {
-        return timeSetDao.resourceRanByTimeSet();
+    public String musicRanByTimeSet() {
+        return timeSetDao.musicRanByTimeSet();
+    }
+
+    @Override
+    public void addTimeSetToResource(List<String> pictures, Long groupId) {
+        timeSetDao.addTimeSetToResource(pictures, groupId);
+    }
+
+    @Override
+    public List<TimeSetDTO> selectTimeSetById(Long childId) {
+        return timeSetDao.selectTimeSetById(childId);
+    }
+
+    @Override
+    public List<String> selectTimeSetResources(Long setId) {
+        return timeSetDao.selectTimeSetResources(setId);
+    }
+
+    @Override
+    public List<TimeSetDTO> selectTimeSetDetail(Long childId) {
+        /**去拉取已经生成的时光集*/
+        List<TimeSetDTO> timeSetDTOList = timeSetDao.selectTimeSetById(childId);
+        List<TimeSetDTO> res = new ArrayList<>(timeSetDTOList.size());
+        if(!CollectionUtils.isEmpty(timeSetDTOList)){
+            for(TimeSetDTO timeSetDTO : timeSetDTOList){
+                List<String> pictures = timeSetDao.selectTimeSetResources(timeSetDTO.getSetId());
+                timeSetDTO.setPictures(pictures);
+                res.add(timeSetDTO);
+            }
+        }
+        return res;
     }
 }

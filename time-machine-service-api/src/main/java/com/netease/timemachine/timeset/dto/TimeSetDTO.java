@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: ZLS
@@ -28,8 +29,18 @@ public class TimeSetDTO implements Serializable {
      **/
     private String setName;
 
-    /**视频类型：1-时间，2-地点，3-标签*/
-    private Integer setType;
+    private Long childId;
+
+    private List<String> pictures;
+
+    private String musicUrl;
 
     private Date createTime;
+
+    public TimeSetDTO(String setName, Long childId, List<String> pictures, String musicUrl) {
+        this.setName = setName;
+        this.childId = childId;
+        this.pictures = pictures;
+        this.musicUrl = musicUrl;
+    }
 }

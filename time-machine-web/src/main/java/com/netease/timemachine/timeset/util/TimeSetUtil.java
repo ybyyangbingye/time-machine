@@ -24,8 +24,9 @@ public class TimeSetUtil{
     public static List<String> listMapToString(List<HashMap> list){
         List<String> res = new ArrayList<>(list.size());
         for(HashMap map : list){
-            Iterator iterator = map.keySet().iterator();
+            Iterator iterator = map.values().iterator();
             res.add((String)iterator.next());
+            break;
         }
         return res;
     }

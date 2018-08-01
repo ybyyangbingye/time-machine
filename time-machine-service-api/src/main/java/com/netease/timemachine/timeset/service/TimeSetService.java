@@ -1,6 +1,5 @@
 package com.netease.timemachine.timeset.service;
 
-import com.netease.timemachine.common.dto.ResourceDTO;
 import com.netease.timemachine.timeset.dto.TimeSetDTO;
 
 import java.util.HashMap;
@@ -30,27 +29,50 @@ public interface TimeSetService {
     Map<String, List<String>> searchLastMonthByLabels(Long childId);
 
     /**
-     * 添加时光集音频文件
-     *      * @param resource_obj
-     */
-    void addTimeSetFile(String resource_obj);
-
-    /**
      * 添加一条时光集
      * @param timeSetDTO
+     * @return 返回自增主键
      */
-    void addTimeSet(TimeSetDTO timeSetDTO);
+    Long addTimeSet(TimeSetDTO timeSetDTO);
 
     /**
      * 查询时光集是否已经生成
      * @param setName
      * @return
      */
-    boolean isExist(String setName);
+    boolean isExist(String setName, Long childId);
 
     /**
-     * 随机获取一个时光集
+     * 随机获取一个时光集配乐
      * @return
      */
-    String resourceRanByTimeSet();
+    String musicRanByTimeSet();
+
+    /**
+     * 新增一条时光集，然后多resource表插入多个数据
+     * resource_type=3 音频
+     * group_type=3 时光集
+     * @param pictures
+     * @param groupId
+     */
+    void addTimeSetToResource(List<String> pictures, Long groupId);
+
+    /**
+     * 获取已经存在的时光集（时间降序）
+     * @param childId
+     * @return
+     */
+    List<TimeSetDTO> selectTimeSetById(Long childId);
+
+    /**
+     * 查询某个时光集的所有图片
+     * @param setId
+     * @return
+     */
+    List<String> selectTimeSetResources(Long setId);
+
+    /**
+     * 获取所有时光集的详细信息（包含名字、图片集合）
+     */
+    List<TimeSetDTO> selectTimeSetDetail(Long childId);
 }

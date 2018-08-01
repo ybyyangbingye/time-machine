@@ -52,36 +52,12 @@ public class CommentController {
     }
 
     /**
-     * 目前不用
-     * @param childId
-     * @param momentId
-     * @return
-     */
-    @RequestMapping("/allComments")
-    public ResponseEntity selectComments(@RequestParam("childId") Long childId,
-                                         @RequestParam("momentId") Long momentId){
-        List<CommentDTO> commentDTOList = commentService.selectComments(childId,momentId);
-        List<CommentVO> commentVOList = CommentVoToDto.commentDtoToVoList(commentDTOList);
-        List<CommentVO> commentList = new ArrayList<>();
-        if(!CollectionUtils.isEmpty(commentVOList)){
-            for (CommentVO commentVO : commentVOList){
-                GroupDTO parent = groupService.selectByUserAndChildId(commentVO.getParentId(), childId);
-                commentVO.setParentNickName(parent.getNickName());
-                GroupDTO reply = groupService.selectByUserAndChildId(commentVO.getReplyId(), childId);
-                commentVO.setReplyNickName(reply.getNickName());
-                commentList.add(commentVO);
-            }
-        }
-        return ResponseView.success(commentList);
-    }
-
-    /**
      * 测试用
      * @param childId
      * @param momentId
      * @return
      */
-    @RequestMapping("/allComments1")
+    @RequestMapping(value = "/allComments",method = RequestMethod.POST)
     public ResponseEntity selectComments1(@RequestParam("childId") Long childId,
                                          @RequestParam("momentId") Long momentId){
         List<CommentDTO> commentDTOList = commentService.selectComments(childId,momentId);
