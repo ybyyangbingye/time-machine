@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class GivealikeVO {
+public class Givealikevo {
     private Long userId;
     private String nickname;
 //    private boolean isGivealike;

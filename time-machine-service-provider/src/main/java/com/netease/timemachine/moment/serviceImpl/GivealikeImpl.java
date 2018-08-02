@@ -2,13 +2,12 @@ package com.netease.timemachine.moment.serviceImpl;
 
 import com.netease.timemachine.moment.dao.GivealikeDao;
 import com.netease.timemachine.moment.dto.GivealikeDTO;
-import com.netease.timemachine.moment.dto.GivealikeVO;
+import com.netease.timemachine.moment.dto.Givealikevo;
 import com.netease.timemachine.moment.meta.Givealike;
 import com.netease.timemachine.moment.service.GivealikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -48,7 +47,7 @@ public class GivealikeImpl implements GivealikeService {
     }
 
     @Override
-    public List<GivealikeVO> getAll(Long groupId) {
+    public List<Givealikevo> getAll(Long groupId) {
         return givealikeDao.getAll(groupId);
     }
 
