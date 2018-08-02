@@ -1,5 +1,6 @@
 package com.netease.timemachine.moment.dao;
 
+import com.netease.timemachine.moment.dto.GivealikeVO;
 import com.netease.timemachine.moment.meta.Givealike;
 import org.apache.ibatis.annotations.*;
 
@@ -14,11 +15,11 @@ import java.util.List;
 public interface GivealikeDao {
     /**
      *
-     * @param momentId
+     * @param groupId
      * @return
      */
-    @Select("select child_id from moment where moment_id=#{momentId}")
-    Long getChildId(long momentId);
+    @Select("select child_id from moment where group_id=#{groupId}")
+    Long getChildId(long groupId);
 
     /**
      *
@@ -34,42 +35,42 @@ public interface GivealikeDao {
      * @param givealike
      * @return
      */
-    @Insert("insert into givealike(user_id, moment_id, nickname) " +
-            "values(#{userId}, #{momentId}, #{nickname})")
+    @Insert("insert into givealike(user_id, group_id, nickname) " +
+            "values(#{userId}, #{groupId}, #{nickname})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertGivealike(Givealike givealike);
 
     /**
      *
      * @param userId
-     * @param momentId
+     * @param groupId
      * @return
      */
-    @Delete("delete from givealike where user_id=#{userId} and moment_id=#{momentId}")
-    boolean deleteGivealike(@Param("userId") Long userId,@Param("momentId") Long momentId);
+    @Delete("delete from givealike where user_id=#{userId} and group_id=#{groupId}")
+    boolean deleteGivealike(@Param("userId") Long userId,@Param("groupId") Long groupId);
 
     /**
      * 获取所有点赞人的nickname
-     * @param momentId
+     * @param groupId
      * @return
      */
-    @Select("select nickname from givealike where moment_id=#{momentId}")
-    List<String> getAll(Long momentId);
+    @Select("select user_id,nickname from givealike where group_id=#{groupId}")
+    List<GivealikeVO> getAll(Long groupId);
 
     /**
      *
      * @param userId
-     * @param momentId
+     * @param groupId
      * @return
      */
-    @Select("select count(*) from givealike where user_id=#{userId} and moment_id=#{momentId}")
-    int isGivealike(@Param("userId") Long userId,@Param("momentId") Long momentId);
+    @Select("select count(*) from givealike where user_id=#{userId} and group_id=#{groupId}")
+    int isGivealike(@Param("userId") Long userId,@Param("groupId") Long groupId);
 
     /**
      * 根据动态id获取喜欢动态的人数
-     * @param momentId
+     * @param groupId
      * @return
      */
-    @Select("select count(*) from givealike where moment_id = #{momentId}")
-    int getLoverCountByMomentId(long momentId);
+    @Select("select count(*) from givealike where group_id = #{groupId}")
+    int getLoverCountByMomentId(long groupId);
 }

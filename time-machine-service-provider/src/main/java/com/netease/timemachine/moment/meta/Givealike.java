@@ -17,7 +17,7 @@ public class Givealike implements Serializable{
     private static final long serialVersionUID = 6401987480840121155L;
 
     private Long userId;
-    private Long momentId;
+    private Long groupId;
     private String nickname;
 
 }

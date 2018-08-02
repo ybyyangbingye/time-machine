@@ -1,8 +1,10 @@
 package com.netease.timemachine.moment.service;
 
 import com.netease.timemachine.moment.dto.GivealikeDTO;
+import com.netease.timemachine.moment.dto.GivealikeVO;
 
 import java.util.List;
+
 
 /**
  * @Author: ZLS
@@ -13,9 +15,9 @@ public interface GivealikeService {
     String getNickname(GivealikeDTO givealikeDTO);
     void addGivealike(GivealikeDTO givealikeDTO);
     void deletealike(GivealikeDTO givealikeDTO);
-    List<String> getAll(Long momentId);
+    List<GivealikeVO> getAll(Long groupId);
 
-    int getLoverCountByMomentId(long momentId);
+    int getLoverCountByMomentId(Long groupId);
 
-    boolean isGivealike(Long userId, Long momentId);
+    boolean isGivealike(Long userId, Long groupId);
 }

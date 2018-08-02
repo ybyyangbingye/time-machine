@@ -67,7 +67,7 @@ public class MomentController {
             moment.setNickName(momentService.getNickName(childId,userId));
             List<CommentDTO> comments = commentService.selectComments(childId, moment.getMomentId());
             moment.setComments(CommentVoToDto.commentDtoToVoList(comments));
-            moment.setGiveALike(givealikeService.getAll(moment.getMomentId()));
+            //moment.setGiveALike(givealikeService.getAll(moment.getMomentId()));
             moment.setHasLike(givealikeService.isGivealike(userId,moment.getMomentId()));
             res.add(moment);
         }

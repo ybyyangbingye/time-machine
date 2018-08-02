@@ -12,11 +12,7 @@
     <artifactId>time-machine-service-provider</artifactId>
     <packaging>jar</packaging>
     <dependencies>
-        <dependency>
-            <groupId>com.netease</groupId>
-            <artifactId>time-machine-service-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -69,6 +65,11 @@
             <artifactId>fastjson</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.netease</groupId>
+            <artifactId>time-machine-service-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

@@ -2,6 +2,7 @@ package com.netease.timemachine.moment.serviceImpl;
 
 import com.netease.timemachine.moment.dao.GivealikeDao;
 import com.netease.timemachine.moment.dto.GivealikeDTO;
+import com.netease.timemachine.moment.dto.GivealikeVO;
 import com.netease.timemachine.moment.meta.Givealike;
 import com.netease.timemachine.moment.service.GivealikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class GivealikeImpl implements GivealikeService {
 
     @Override
     public String getNickname(GivealikeDTO givealikeDTO) {
-        long momentId=givealikeDTO.getMomentId();
-        long childId=givealikeDao.getChildId(momentId);
+        long groupId=givealikeDTO.getGroupId();
+        long childId=givealikeDao.getChildId(groupId);
         long userId=givealikeDTO.getUserId();
         String nickname= givealikeDao.getNickname(childId,userId);
         return nickname;
@@ -33,27 +34,27 @@ public class GivealikeImpl implements GivealikeService {
 
     @Override
     public void addGivealike(GivealikeDTO givealikeDTO) {
-        long momentId=givealikeDTO.getMomentId();
+        long groupId=givealikeDTO.getGroupId();
         long userId=givealikeDTO.getUserId();
         String nickname=getNickname(givealikeDTO);
-        givealikeDao.insertGivealike(new Givealike(userId,momentId,nickname));
+        givealikeDao.insertGivealike(new Givealike(userId,groupId,nickname));
     }
 
     @Override
     public void deletealike(GivealikeDTO givealikeDTO) {
-        long momentId=givealikeDTO.getMomentId();
+        long groupId=givealikeDTO.getGroupId();
         long userId=givealikeDTO.getUserId();
-        givealikeDao.deleteGivealike(userId,momentId);
+        givealikeDao.deleteGivealike(userId,groupId);
     }
 
     @Override
-    public List<String> getAll(Long momentId) {
-        return givealikeDao.getAll(momentId);
+    public List<GivealikeVO> getAll(Long groupId) {
+        return givealikeDao.getAll(groupId);
     }
 
     @Override
-    public boolean isGivealike(Long userId, Long momentId) {
-        if(givealikeDao.isGivealike(userId,momentId)!=0) {
+    public boolean isGivealike(Long userId, Long groupId) {
+        if(givealikeDao.isGivealike(userId,groupId)!=0) {
             return true;
         }
         else {
@@ -62,7 +63,7 @@ public class GivealikeImpl implements GivealikeService {
     }
 
     @Override
-    public int getLoverCountByMomentId(long momentId) {
-        return givealikeDao.getLoverCountByMomentId(momentId);
+    public int getLoverCountByMomentId(Long groupId) {
+        return givealikeDao.getLoverCountByMomentId(groupId);
     }
 }
