@@ -19,20 +19,18 @@ public interface MomentDao {
      * 根据页码获取用户宝宝的五条状态
      * @param childId
      * @param start
-     * @param end
      * @return
      */
-    @Select("select * from moment where child_id=#{childId} limit #{start},#{end}")
+    @Select("select * from moment where child_id=#{childId} and group_type=2 order by gmt_create limit #{start},5")
     List<Moment> getMoments( @Param("childId")Long childId,
-                             @Param("start")Long start,
-                             @Param("end")Long end);
+                             @Param("start")Long start, @Param("type")Long type);
 
     /**
      * 获取一条状态下的所有图片或视频
      * @param groupId
      * @return
      */
-    @Select("select resource_obj from resource where group_id=#{groupId} and group_type=2")
+    @Select("select resource_obj from resource where group_id=#{groupId}")
     List<String> getMomentFiles(@Param("groupId")Long groupId);
 
 
@@ -41,7 +39,7 @@ public interface MomentDao {
      * @param groupId
      * @return
      */
-    @Select("select l.name from label l,label_belonged lb where l.id=lb.label_id and lb.group_id=#{groupId} and lb.group_type=2")
+    @Select("select name from label where group_id=#{groupId}")
     List<String> getMomentLabels(@Param("groupId")Long groupId);
 
     /**
@@ -57,8 +55,8 @@ public interface MomentDao {
      * 用户添加状态
      * @param moment
      */
-    @Insert("insert into moment(creator_id,description,location,child_id,gmt_create) values" +
-    "(#{creatorId},#{description},#{location},#{childId},#{gmtCreate})")
+    @Insert("insert into moment(group_type,creator_id,description,location,child_id) values" +
+    "(#{groupType},#{creatorId},#{description},#{location},#{childId})")
     @Options(useGeneratedKeys = true, keyProperty = "momentId")
     void addMoment(Moment moment);
 
@@ -69,8 +67,8 @@ public interface MomentDao {
      * @param momentId
      */
     @Insert("insert into resource(resource_obj,resource_type,group_id,group_type) values"+
-    "(#{file},1,#{momentId},2)")
-    void addFile(@Param("file")String file,@Param("momentId")Long momentId);
+    "(#{file},1,#{momentId},#{groupType})")
+    void addFile(@Param("file")String file,@Param("momentId")Long momentId, @Param("groupType")Long groupType);
 
     /**
      * 用户删除某条状态

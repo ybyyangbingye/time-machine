@@ -29,10 +29,9 @@ public class MomentServiceImpl implements MomentService {
      * @return
      */
     @Override
-    public List<MomentDTO> getMoments(Long childId, Long currentPage) {
+    public List<MomentDTO> getMoments(Long childId, Long currentPage, Long type) {
         Long start = currentPage * 5;
-        Long end = start + 5;
-        List<Moment> res = momentDao.getMoments(childId, start, end);
+        List<Moment> res = momentDao.getMoments(childId, start, type);
         return MomentDtoToMeta.metaListToDtoList(res);
     }
 
@@ -75,7 +74,7 @@ public class MomentServiceImpl implements MomentService {
         Moment moment = MomentDtoToMeta.dtoToMeta(momentDTO);
         momentDao.addMoment(moment);
         for(String file : files) {
-            momentDao.addFile(file,moment.getMomentId());
+            momentDao.addFile(file,moment.getMomentId(),moment.getGroupType());
         }
         return moment.getMomentId();
     }

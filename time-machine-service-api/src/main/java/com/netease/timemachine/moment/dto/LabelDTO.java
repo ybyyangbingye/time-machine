@@ -20,6 +20,8 @@ public class LabelDTO implements Serializable {
 
     private Long labelId;
 
+    private Long groupId;
+
     private String labelName;
 
     private Long labelType;

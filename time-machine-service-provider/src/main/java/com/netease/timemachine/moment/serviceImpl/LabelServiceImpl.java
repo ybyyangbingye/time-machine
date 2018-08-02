@@ -1,9 +1,9 @@
-package com.netease.timemachine.common.serviceImpl;
+package com.netease.timemachine.moment.serviceImpl;
 
-import com.netease.timemachine.common.dao.LabelDao;
-import com.netease.timemachine.common.dto.LabelDTO;
-import com.netease.timemachine.common.meta.Label;
-import com.netease.timemachine.common.service.LabelService;
+import com.netease.timemachine.moment.dao.LabelDao;
+import com.netease.timemachine.moment.dto.LabelDTO;
+import com.netease.timemachine.moment.service.LabelService;
+import com.netease.timemachine.moment.meta.Label;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -23,11 +23,6 @@ public class LabelServiceImpl implements LabelService{
 
     @Autowired
     private LabelDao labelDao;
-
-    @Override
-    public List<LabelDTO> getLabelsByIds(List<Long> ids) {
-        return labelDao.getLabelsByIds(ids);
-    }
 
     /**
      * 获得历史标签
@@ -110,7 +105,8 @@ public class LabelServiceImpl implements LabelService{
                     label.setLabelType(1L);
                     labelDao.addLabel(label);
                 }
-                labelDao.addLabelBelonged(label.getLabelId(), momentId);
+                //labelDao.addLabelBelonged(label.getLabelId(), momentId);
+                labelDao.updateId(momentId, label.getLabelId());
             }
             // 插入的是历史标签，即已经存在的推荐标签或家人标签
             else if(type.size() == 1){
@@ -120,7 +116,8 @@ public class LabelServiceImpl implements LabelService{
                 label.setLabelName(s);
                 label.setLabelType(1L);
                 labelDao.addHistoryLabel(label);
-                labelDao.addLabelBelonged(label.getLabelId(), momentId);
+                //labelDao.addLabelBelonged(label.getLabelId(), momentId);
+                labelDao.updateId(momentId, label.getLabelId());
             }
             // type.size() == 2 则更新已经插入的历史标签
             else {

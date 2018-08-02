@@ -6,9 +6,11 @@ import com.netease.timemachine.moment.vo.GivealikeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @Author: ZLS
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Date: 2018/7/25 21:59
  */
 @RestController
+@RequestMapping("/like")
 public class GivealikeController {
 
     @Autowired
@@ -26,6 +29,11 @@ public class GivealikeController {
         String nickname = givealikeService.getNickname(givealikeDTO);
         givealikeService.addGivealike(givealikeDTO);
         return new GivealikeVO(givealikeDTO.getUserId(), nickname);
+    }
+
+    @RequestMapping("/getAll")
+    public List<GivealikeDTO> getGivealikeVO(@RequestParam Long groupId) {
+        return givealikeService.getAll(groupId);
     }
 
     @RequestMapping("/deletealike")

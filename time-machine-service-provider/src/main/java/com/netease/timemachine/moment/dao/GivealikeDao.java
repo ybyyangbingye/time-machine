@@ -1,6 +1,6 @@
 package com.netease.timemachine.moment.dao;
 
-import com.netease.timemachine.moment.dto.Givealikevo;
+import com.netease.timemachine.moment.dto.GivealikeDTO;
 import com.netease.timemachine.moment.meta.Givealike;
 import org.apache.ibatis.annotations.*;
 
@@ -54,8 +54,8 @@ public interface GivealikeDao {
      * @param groupId
      * @return
      */
-    @Select("select user_id,nickname from givealike where group_id=#{groupId}")
-    List<Givealikevo> getAll(Long groupId);
+    @Select("select * from givealike where group_id=#{groupId}")
+    List<GivealikeDTO> getAll(Long groupId);
 
     /**
      *

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.util.ChildBirthDay;
 import com.netease.timemachine.account.util.ResponseView;
-import com.netease.timemachine.common.service.LabelService;
+import com.netease.timemachine.moment.service.LabelService;
 import com.netease.timemachine.moment.dto.CommentDTO;
 import com.netease.timemachine.moment.service.CommentService;
 import com.netease.timemachine.moment.service.GivealikeService;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/moment")
+@RequestMapping("/records")
 public class MomentController {
 
     @Autowired
@@ -50,13 +50,13 @@ public class MomentController {
      * @param userId
      * @param childId
      * @param currentPage
+     * @param type
      * @return
      */
-    @RequestMapping(value = "/getMoments", method = RequestMethod.POST)
-    public ResponseEntity getMoments(@RequestParam Long userId,
-                                  @RequestParam Long childId,
-                                  @RequestParam Long currentPage) {
-        List<MomentVO> moments = MomentVoToDto.dtoListToVoList(momentService.getMoments(childId, currentPage));
+    @RequestMapping(value = "/getRecords", method = RequestMethod.POST)
+    public ResponseEntity getMoments(@RequestParam Long userId, @RequestParam Long childId,
+                                  @RequestParam Long currentPage, @RequestParam Long type) {
+        List<MomentVO> moments = MomentVoToDto.dtoListToVoList(momentService.getMoments(childId, currentPage, type));
         List<MomentVO> res = new ArrayList<>();
         Date date = childService.selectChildById(childId).getBirthDate();
         Integer months = ChildBirthDay.getChildMonths(date);
@@ -67,7 +67,7 @@ public class MomentController {
             moment.setNickName(momentService.getNickName(childId,userId));
             List<CommentDTO> comments = commentService.selectComments(childId, moment.getMomentId());
             moment.setComments(CommentVoToDto.commentDtoToVoList(comments));
-            //moment.setGiveALike(givealikeService.getAll(moment.getMomentId()));
+            moment.setGiveALike(givealikeService.getAll(moment.getMomentId()));
             moment.setHasLike(givealikeService.isGivealike(userId,moment.getMomentId()));
             res.add(moment);
         }
@@ -82,7 +82,7 @@ public class MomentController {
      *
      * @param momentVO
      */
-    @RequestMapping(value = "/addMoment", method = RequestMethod.POST)
+    @RequestMapping(value = "/addRecord", method = RequestMethod.POST)
     public ResponseEntity addMoment(@RequestBody MomentVO momentVO) {
         Long momentId = momentService.addMoment(MomentVoToDto.voToDto(momentVO),momentVO.getFiles());
         labelService.addLabels(momentVO.getCreatorId(), momentVO.getChildId(),
@@ -94,9 +94,10 @@ public class MomentController {
      *
      * @param momentId
      */
-    @RequestMapping(value = "/deleteMoment", method = RequestMethod.POST)
-    public void deleteMoment(@RequestParam Long momentId) {
+    @RequestMapping(value = "/deleteRecord", method = RequestMethod.POST)
+    public ResponseEntity deleteMoment(@RequestParam Long momentId) {
         momentService.deleteMoment(momentId);
+        return ResponseView.success(Boolean.TRUE,"删除成功");
     }
 
 }

@@ -1,7 +1,6 @@
-package com.netease.timemachine.common.dao;
+package com.netease.timemachine.moment.dao;
 
-import com.netease.timemachine.common.dto.LabelDTO;
-import com.netease.timemachine.common.meta.Label;
+import com.netease.timemachine.moment.meta.Label;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public interface LabelDao {
                     "</foreach>",
             "</script>"
     })
-    List<LabelDTO> getLabelsByIds(@Param("ids") List<Long> ids);
+    List<Label> getLabelsByIds(@Param("ids") List<Long> ids);
 
     /**
      * 获得历史标签
@@ -108,11 +107,14 @@ public interface LabelDao {
 //                         @Param("labelName")String labelName);
     void addHistoryLabel(Label label);
 
-    /**
-     * 用户添加过标签后，插入到label_belonged表里并标记为2，代表状态的标签
-     */
-    @Insert("insert into label_belonged(label_id,group_type,group_id) values(#{labelId},2,#{groupId})")
-    void addLabelBelonged(@Param("labelId") Long labelId, @Param("groupId")Long groupId);
+//    /**
+//     * 用户添加过标签后，插入到label_belonged表里并标记为2，代表状态的标签
+//     */
+//    @Insert("insert into label_belonged(label_id,group_type,group_id) values(#{labelId},2,#{groupId})")
+//    void addLabelBelonged(@Param("labelId") Long labelId, @Param("groupId")Long groupId);
+
+    @Update("update label set group_id=#{groupId} where id=#{labelId}")
+    void updateId(@Param("groupId") Long groupId, @Param("labelId") Long labelId);
 
     /**
      * 如果该标签为历史标签，则更新历史标签的时间

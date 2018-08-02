@@ -2,7 +2,7 @@ package com.netease.timemachine.moment.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.util.ResponseView;
-import com.netease.timemachine.common.service.LabelService;
+import com.netease.timemachine.moment.service.LabelService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

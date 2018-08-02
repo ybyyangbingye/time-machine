@@ -18,7 +18,7 @@ public interface MomentService {
      * @param currentPage
      * @return
      */
-    List<MomentDTO> getMoments(Long childId, Long currentPage);
+    List<MomentDTO> getMoments(Long childId, Long currentPage, Long type);
 
     /**
      * 获取某个状态下的所有照片或视频（文件）
