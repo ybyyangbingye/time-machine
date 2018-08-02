@@ -23,6 +23,8 @@ public class MomentVO implements Serializable {
 
     private Long creatorId;
 
+    private String tile;
+
     private Long groupType;
 
     private String nickName;

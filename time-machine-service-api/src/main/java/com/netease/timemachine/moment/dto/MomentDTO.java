@@ -23,6 +23,8 @@ public class MomentDTO implements Serializable {
 
     private Long creatorId;
 
+    private String title;
+
     private String description;
 
     private String location;

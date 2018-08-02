@@ -42,6 +42,7 @@ public class MomentVoToDto {
         MomentVO momentVO = new MomentVO();
         momentVO.setMomentId(dto.getMomentId());
         momentVO.setCreatorId(dto.getCreatorId());
+        momentVO.setTile(dto.getTitle());
         momentVO.setGroupType(dto.getGroupType());
         momentVO.setDescription(dto.getDescription());
         momentVO.setLocation(dto.getLocation());
@@ -59,6 +60,7 @@ public class MomentVoToDto {
         MomentDTO dto = new MomentDTO();
         dto.setMomentId(vo.getMomentId());
         dto.setCreatorId(vo.getCreatorId());
+        dto.setTitle(vo.getTile());
         dto.setGroupType(vo.getGroupType());
         dto.setDescription(vo.getDescription());
         dto.setLocation(vo.getLocation());

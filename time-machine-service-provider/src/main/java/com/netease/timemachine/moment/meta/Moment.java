@@ -24,6 +24,8 @@ public class Moment implements Serializable {
 
     private Long creatorId;
 
+    private String title;
+
     private String description;
 
     private String location;
@@ -34,10 +36,11 @@ public class Moment implements Serializable {
 
     private Date gmtModified;
 
-    public Moment(Long momentId, Long groupType, Long creatorId, String description, String location, Long childId, Date gmtCreate, Date gmtModified) {
+    public Moment(Long momentId, Long groupType, Long creatorId, String title, String description, String location, Long childId, Date gmtCreate, Date gmtModified) {
         this.momentId = momentId;
         this.groupType = groupType;
         this.creatorId = creatorId;
+        this.title = title;
         this.description = description;
         this.location = location;
         this.childId = childId;

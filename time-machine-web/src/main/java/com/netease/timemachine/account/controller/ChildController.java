@@ -38,7 +38,7 @@ public class ChildController {
         String identification = childVO.getIdentification();
         String imgUrl = childVO.getImgUrl();
         /**插入新的group记录*/
-        GroupDTO groupDTO = new GroupDTO(childId, userId, identification, null, 0, imgUrl);
+        GroupDTO groupDTO = new GroupDTO(childId, userId, identification, identification, 0, imgUrl);
         groupService.insertGroup(groupDTO);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("child", childVO);
