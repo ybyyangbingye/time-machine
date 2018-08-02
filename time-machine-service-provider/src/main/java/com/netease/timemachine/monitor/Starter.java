@@ -40,7 +40,7 @@ public class Starter {
     String env;
     @Autowired CuratorFramework client;
 
-    @Scheduled(cron = "0/5 * * * * ? ")
+//    @Scheduled(cron = "0/5 * * * * ? ")
     public void ping() throws Exception {
         Stat stat = client.checkExists().forPath("/service/"+appName);
         DataStruct dataStruct = new DataStruct();
