@@ -1,9 +1,9 @@
 package com.netease.timemachine.timeset.serviceImpl;
 
+import com.netease.timemachine.moment.meta.Label;
 import com.netease.timemachine.moment.meta.Resource;
 import com.netease.timemachine.timeset.dao.TimeSetDao;
 import com.netease.timemachine.timeset.dto.TimeSetDTO;
-import com.netease.timemachine.timeset.meta.TimeSetByLabel;
 import com.netease.timemachine.timeset.service.TimeSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.*;
 @Service
 public class TimeSetServiceImpl implements TimeSetService {
 
-    private static final Integer MAX_PICS = 12;
+    private static final Integer MAX_PICS = 1;
 
     @Autowired
     private TimeSetDao timeSetDao;
@@ -36,15 +36,16 @@ public class TimeSetServiceImpl implements TimeSetService {
     @Override
     public Map<String, List<String>> searchLastMonthByLabels(Long childId) {
         /**获取所有的满足条件的标签name,groupId,groupType：前一个月，孩子id*/
-        List<TimeSetByLabel> timeSetByLabelList = timeSetDao.searchLastMonthByLabels(childId);
+        List<Label> timeSetByLabelList = timeSetDao.searchLastMonthByLabels(childId);
         Map<String, List<String>> res = null;
         if(!CollectionUtils.isEmpty(timeSetByLabelList)) {
             res = new HashMap<>();
             Map<String, List<Resource>> listMap = new HashMap<>();
             /**获取每种标签中，关联的图片数量*/
-            for (TimeSetByLabel label : timeSetByLabelList) {
-                List<Resource> resourceList = timeSetDao.searchByGroupIdAndType(label.getGroupId(), label.getGroupType());
-                String name = label.getName();
+            for (Label label : timeSetByLabelList) {
+                List<Resource> resourceList = timeSetDao.searchByGroupId(11L);
+                //String name = label.getName();
+                String name = "";
                 List<Resource> resources = listMap.get(name);
                 if (listMap.containsKey(name)) {
                     resources.addAll(resourceList);

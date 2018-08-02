@@ -8,6 +8,6 @@ import com.alibaba.fastjson.JSONObject;
  * @Date: 2018/7/23 15:11
  */
 public interface MsService {
-    JSONObject sms(String phoneNumber) throws Exception;
-    JSONObject vms(String phoneNumber, String code) throws Exception;
+    boolean sms(String phoneNumber) throws Exception;
+    boolean vms(String phoneNumber, String code) throws Exception;
 }

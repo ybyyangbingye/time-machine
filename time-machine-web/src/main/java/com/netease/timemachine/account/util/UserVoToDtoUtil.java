@@ -19,6 +19,7 @@ public class UserVoToDtoUtil {
         userVO.setUserName(userDTO.getUserName());
         userVO.setPhone(userDTO.getPhone());
         userVO.setImgUrl(userDTO.getImgUrl());
+        userVO.setIsRegistered(userDTO.getIsRegistered());
         return userVO;
     }
 
@@ -31,6 +32,7 @@ public class UserVoToDtoUtil {
         userDTO.setUserName(userVO.getUserName());
         userDTO.setImgUrl(userVO.getImgUrl());
         userDTO.setPhone(userVO.getPhone());
+        userDTO.setIsRegistered(userVO.getIsRegistered());
 
         return userDTO;
     }

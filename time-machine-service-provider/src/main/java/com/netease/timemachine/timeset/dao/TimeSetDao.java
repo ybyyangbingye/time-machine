@@ -1,5 +1,6 @@
 package com.netease.timemachine.timeset.dao;
 
+import com.netease.timemachine.moment.meta.Label;
 import com.netease.timemachine.moment.meta.Resource;
 import com.netease.timemachine.timeset.dto.TimeSetDTO;
 import com.netease.timemachine.timeset.meta.TimeSetByLabel;
@@ -16,12 +17,6 @@ import java.util.List;
 @Mapper
 public interface TimeSetDao {
 
-    /**
-     * 通过孩子id来获取上个月状态、里程牌的图片，排序规则为浏览量
-     * 返回图片资源地址、浏览量
-     * @param childId
-     * @return
-     */
     @Select("(select r.resource_obj, r.views from moment m " +
             "INNER JOIN resource r on m.moment_id=r.group_id " +
             "where m.child_id = #{childId} and r.resource_type = 1 " +
@@ -33,38 +28,53 @@ public interface TimeSetDao {
             "and r.resource_type = 1 " +
             "ORDER BY r.views desc) order by views desc")
     @ResultType(HashMap.class)
-    List<HashMap> searchLastMonthByViews(Long childId);
+    List<HashMap> searchLastMonthByViewsTest(Long childId);
 
-
-    /**
-     * 筛选label表和label_belonged表
-     * @param childId
-     * @return
-     */
     @Select("select * from label as l, label_belonged as b " +
             "where period_diff(date_format(now(),'%Y%m') , date_format(b.gmt_create, '%Y%m')) =1 " +
             "and l.child_id=#{childId} and b.label_id=l.id")
-    List<TimeSetByLabel> searchLastMonthByLabels(Long childId);
+    List<TimeSetByLabel> searchLastMonthByLabelsTest(Long childId);
+
+    /**
+     * 通过孩子id来获取上个月状态、里程牌的图片，排序规则为浏览量
+     * 返回图片资源地址、浏览量
+     * @param childId
+     * @return
+     */
+    @Select("select r.resource_obj, r.views " +
+            "from moment m inner join resource r on m.moment_id=r.group_id " +
+            "where m.child_id = 6 and r.resource_type = 1 " +
+            "and period_diff(date_format(now(),'%Y%m') , date_format(m.gmt_create, '%Y%m')) =1 order by r.views desc")
+    @ResultType(HashMap.class)
+    List<HashMap> searchLastMonthByViews(Long childId);
+
+    /**
+     * 筛选label表
+     * @param childId
+     * @return
+     */
+    @Select("select * from label " +
+            "where period_diff(date_format(now(),'%Y%m') , date_format(gmt_create, '%Y%m')) =1 " +
+            "and child_id=#{childId}")
+    List<Label> searchLastMonthByLabels(Long childId);
 
 
     /**
      * 获取资源
      * @param groupId
-     * @param groupType
      * @return
      */
-    @Select("select * from resource where resource_type = 1 and group_id = #{groupId} and group_type = #{groupType}")
+    @Select("select * from resource where resource_type = 1 and group_id = #{groupId}")
     @Results({
             @Result(id = true, column = "id", property = "file_id"),
             @Result(column = "resource_obj", property = "resource_obj"),
             @Result(column = "resource_type", property = "resource_type"),
-            @Result(column = "group_type", property = "group_type"),
             @Result(column = "group_id", property = "group_id"),
             @Result(column = "gmt_create", property = "gmt_create"),
             @Result(column = "gmt_modified", property = "gmt_modified"),
             @Result(column = "views", property = "views")
     })
-    List<Resource> searchByGroupIdAndType(@Param("groupId") Long groupId, @Param("groupType") Integer groupType);
+    List<Resource> searchByGroupId(@Param("groupId") Long groupId);
 
     /**
      * 插入一条时光集记录，返回主键
@@ -86,7 +96,7 @@ public interface TimeSetDao {
      * 随机获取一条时光集音乐
      * @return
      */
-    @Select("select resource_obj from resource where resource_type=3 and group_type =3 order by rand() limit 1")
+    @Select("select resource_obj from resource where resource_type=3 order by rand() limit 1")
     String musicRanByTimeSet();
 
     /**
@@ -98,10 +108,10 @@ public interface TimeSetDao {
      */
     @Insert("<script>"
     + "insert into resource "
-    + "(resource_obj,resource_type,group_id,group_type)"
+    + "(resource_obj,resource_type,group_id)"
     + "VALUES"
     + "<foreach item='item' index='index' collection='pictures' open='(' separator=',' close=')'>"
-    + "#{item},3,#{groupId},3"
+    + "#{item},3,#{groupId}"
     + "</foreach>"
     + "</script>")
     void addTimeSetToResource(@Param("pictures") List<String> pictures, @Param("groupId") Long groupId);
@@ -119,6 +129,6 @@ public interface TimeSetDao {
      * @param setId
      * @return
      */
-    @Select("select resource_obj from resource where resource_type=3 and group_type=3 and group_id=#{setId}")
+    @Select("select resource_obj from resource where resource_type=3 and group_id=#{setId}")
     List<String> selectTimeSetResources(Long setId);
 }

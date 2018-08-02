@@ -46,28 +46,31 @@ public class UserController {
 
     @RequestMapping(value = "/sms",method = RequestMethod.POST)
     public ResponseEntity smsByPhone(@RequestParam String phone){
+        boolean res = false;
         try{
-            JSONObject jsonObject = msService.sms(phone);
-            if(jsonObject.getInteger("code") != 200){
-                return ResponseView.fail(100, "发送失败");
-            }
+            res  = msService.sms(phone);
         }catch (Exception e){
             e.printStackTrace();
             return ResponseView.fail(500, "服务器内部错误");
         }
-        return ResponseView.success(null,"发送成功");
+        if(res){
+            return ResponseView.success(null,"发送成功");
+        }else {
+            return ResponseView.fail(100, "发送失败");
+        }
     }
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseEntity login(@RequestParam String phone, @RequestParam String code){
-        try {
-            JSONObject res = msService.sms(phone);
-            if(res.getInteger("code") != 200){
-                return ResponseView.fail(100, "发送失败");
-            }
-        }catch (Exception e) {
-            return ResponseView.fail(500, "验证失败");
-        }
+//        boolean res = false;
+//        try {
+//            res = msService.sms(phone);
+//        }catch (Exception e) {
+//            return ResponseView.fail(500, "服务器内部错误");
+//        }
+//        if(!res) {
+//            return ResponseView.fail(100, "验证失败");
+//        }
         UserDTO userDTO = userService.selectByPhone(phone);
         JSONObject jsonObject = new JSONObject();
         if(userDTO == null){
@@ -75,21 +78,25 @@ public class UserController {
             userDTO.setPhone(phone);
             userService.insertUser(userDTO);
             userDTO = userService.selectByPhone(phone);
+            userDTO.setIsRegistered(false);
+            jsonObject.put("child", null);
         }else{
             List<ChildDTO> childDTOList = userService.selectOwnChildren(userDTO.getUserId());
             if(!CollectionUtils.isEmpty(childDTOList)){
-                jsonObject.put("child", ChildVoToDtoUtil.childDtoToVo(childDTOList.get(0)));
+                ChildVO childVO = ChildVoToDtoUtil.childDtoToVo(childDTOList.get(0));
+                childVO.setAge(ChildBirthDay.getAge(childVO.getBirthDate()));
+                jsonObject.put("child", childVO);
             }
+            userDTO.setIsRegistered(true);
         }
         UserVO userVo = UserVoToDtoUtil.UserDtoToVo(userDTO);
         Map<String, Object> map = new HashMap<>(2);
         map.put("userId", userVo.getUserId());
         map.put("phone", phone);
         String token = rsaAlgorithm.create(null, map);
-        JSONObject json= new JSONObject();
-        json.put("user", userVo);
-        json.put("token", token);
-        return ResponseView.success(json,"登录成功");
+        jsonObject.put("user", userVo);
+        jsonObject.put("token", token);
+        return ResponseView.success(jsonObject,"登录成功");
     }
 
     /**

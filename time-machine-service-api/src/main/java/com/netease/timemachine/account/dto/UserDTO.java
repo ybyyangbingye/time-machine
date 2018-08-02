@@ -24,6 +24,8 @@ public class UserDTO implements Serializable {
 
     private String imgUrl;
 
+    private Boolean isRegistered;
+
     public UserDTO(String userName, String phone, String imgUrl) {
         this.userName = userName;
         this.phone = phone;
