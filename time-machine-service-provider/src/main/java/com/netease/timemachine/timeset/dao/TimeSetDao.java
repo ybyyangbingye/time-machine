@@ -56,6 +56,16 @@ public interface TimeSetDao {
     @Select("select * from label " +
             "where period_diff(date_format(now(),'%Y%m') , date_format(gmt_create, '%Y%m')) =1 " +
             "and child_id=#{childId}")
+    @Results({
+            @Result(id = true, column = "id", property = "labelId"),
+            @Result(column = "group_id", property = "groupId"),
+            @Result(column = "name", property = "labelName"),
+            @Result(column = "type", property = "labelType"),
+            @Result(column = "child_id", property = "childId"),
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "gmt_create", property = "gmtCreate"),
+            @Result(column = "gmt_modified", property = "gmtModified")
+    })
     List<Label> searchLastMonthByLabels(Long childId);
 
 

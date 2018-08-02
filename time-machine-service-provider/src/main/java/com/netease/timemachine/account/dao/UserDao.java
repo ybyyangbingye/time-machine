@@ -42,7 +42,8 @@ public interface UserDao {
      * @param userId
      * @return
      */
-    @Select("select c.child_id, c.gender, c.child_name, c.imgUrl, c.birth_date from child c,user_child_group u where u.child_id = c.child_id and u.user_id=#{userId}")
+    @Select("select c.child_id, c.gender, c.child_name, " +
+            "c.imgUrl, c.birth_date from child c,user_child_group u where u.child_id = c.child_id and u.user_id=#{userId}")
     List<Child> selectOwnChildren(long userId);
 
     /**

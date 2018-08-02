@@ -50,13 +50,13 @@ public class MomentController {
      * @param userId
      * @param childId
      * @param currentPage
-     * @param type
+     * @param groupType
      * @return
      */
     @RequestMapping(value = "/getRecords", method = RequestMethod.POST)
     public ResponseEntity getMoments(@RequestParam Long userId, @RequestParam Long childId,
-                                  @RequestParam Long currentPage, @RequestParam Long type) {
-        List<MomentVO> moments = MomentVoToDto.dtoListToVoList(momentService.getMoments(childId, currentPage, type));
+                                  @RequestParam Long currentPage, @RequestParam Long groupType) {
+        List<MomentVO> moments = MomentVoToDto.dtoListToVoList(momentService.getMoments(childId, currentPage, groupType));
         List<MomentVO> res = new ArrayList<>();
         Date date = childService.selectChildById(childId).getBirthDate();
         Integer months = ChildBirthDay.getChildMonths(date);

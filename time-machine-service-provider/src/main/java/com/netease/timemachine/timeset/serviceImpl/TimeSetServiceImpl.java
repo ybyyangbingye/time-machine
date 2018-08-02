@@ -43,9 +43,8 @@ public class TimeSetServiceImpl implements TimeSetService {
             Map<String, List<Resource>> listMap = new HashMap<>();
             /**获取每种标签中，关联的图片数量*/
             for (Label label : timeSetByLabelList) {
-                List<Resource> resourceList = timeSetDao.searchByGroupId(11L);
-                //String name = label.getName();
-                String name = "";
+                List<Resource> resourceList = timeSetDao.searchByGroupId(label.getGroupId());
+                String name = label.getLabelName();
                 List<Resource> resources = listMap.get(name);
                 if (listMap.containsKey(name)) {
                     resources.addAll(resourceList);
