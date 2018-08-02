@@ -44,7 +44,7 @@ public class CommentController {
         Long commentId = commentService.insertComment(commentDTO);
         /**前端直接插入该条评论，无需刷新首页*/
         commentVO.setCommentId(commentId);
-        commentVO.setCreateTime(commentService.selectByCommentIdType(commentId, commentVO.getGroupType()).getCreateTime());
+        commentVO.setCreateTime(commentService.selectByCommentIdType(commentId).getCreateTime());
         GroupDTO parent = groupService.selectByUserAndChildId(commentVO.getParentId(), commentVO.getChildId());
         commentVO.setParentNickName(parent.getNickName());
         GroupDTO reply = groupService.selectByUserAndChildId(commentVO.getReplyId(), commentVO.getChildId());
@@ -56,21 +56,18 @@ public class CommentController {
      * 单独测试用
      * @param childId
      * @param groupId
-     * @param groupType
      * @return
      */
     @RequestMapping(value = "/allComments",method = RequestMethod.POST)
     public ResponseEntity selectComments1(@RequestParam("childId") Long childId,
-                                         @RequestParam("groupId") Long groupId,
-                                         @RequestParam("groupType") Integer groupType){
-        List<CommentDTO> commentDTOList = commentService.selectComments(childId,groupId,groupType);
+                                         @RequestParam("groupId") Long groupId){
+        List<CommentDTO> commentDTOList = commentService.selectComments(childId,groupId);
         return ResponseView.success(CommentVoToDto.commentDtoToVoList(commentDTOList));
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public ResponseEntity deleteComment(@RequestParam("commentId") Long commentId,
-                                        @RequestParam("groupType") Integer groupType){
-        commentService.deleteComment(commentId, groupType);
+    public ResponseEntity deleteComment(@RequestParam("commentId") Long commentId){
+        commentService.deleteComment(commentId);
         return ResponseView.success(null, "删除成功");
     }
 }

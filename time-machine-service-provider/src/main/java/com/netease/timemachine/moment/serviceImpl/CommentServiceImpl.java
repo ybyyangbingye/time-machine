@@ -36,8 +36,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDTO> selectComments(Long childId, Long groupId, Integer groupType) {
-        List<Comment> commentList = commentDao.selectComments(groupId, groupType);
+    public List<CommentDTO> selectComments(Long childId, Long groupId) {
+        List<Comment> commentList = commentDao.selectComments(groupId);
         List<CommentDTO> res = new ArrayList<>();
         List<CommentDTO>  commentDTOList = CommentDtoToMeta.commentMetaToDtoList(commentList);
         if(!CollectionUtils.isEmpty(commentDTOList)){
@@ -53,18 +53,18 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Long commentId, Integer groupType) {
-        commentDao.deleteComment(commentId, groupType);
+    public void deleteComment(Long commentId) {
+        commentDao.deleteComment(commentId);
     }
 
     @Override
-    public int getCommentCountByGroupIdType(Long groupId, Integer groupType) {
-        return commentDao.getCommentCountByGroupIdType(groupId, groupType);
+    public int getCommentCountByGroupIdType(Long groupId) {
+        return commentDao.getCommentCountByGroupIdType(groupId);
     }
 
     @Override
-    public CommentDTO selectByCommentIdType(Long commentId, Integer groupType) {
-        Comment comment = commentDao.selectByCommentIdType(commentId, groupType);
+    public CommentDTO selectByCommentIdType(Long commentId) {
+        Comment comment = commentDao.selectByCommentIdType(commentId);
         return CommentDtoToMeta.commentMetaToDto(comment);
     }
 }

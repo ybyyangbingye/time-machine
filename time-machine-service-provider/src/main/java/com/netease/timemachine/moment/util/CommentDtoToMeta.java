@@ -20,7 +20,6 @@ public class CommentDtoToMeta {
         Comment comment = new Comment();
         comment.setCommentId(commentDTO.getCommentId());
         comment.setGroupId(commentDTO.getGroupId());
-        comment.setGroupType(commentDTO.getGroupType());
         comment.setContent(commentDTO.getContent());
         comment.setParentId(commentDTO.getParentId());
         comment.setReplyId(commentDTO.getReplyId());
@@ -36,7 +35,6 @@ public class CommentDtoToMeta {
         commentDTO.setCommentId(comment.getCommentId());
         commentDTO.setContent(comment.getContent());
         commentDTO.setGroupId(comment.getGroupId());
-        commentDTO.setGroupType(comment.getGroupType());
         commentDTO.setParentId(comment.getParentId());
         commentDTO.setReplyId(comment.getReplyId());
         commentDTO.setCreateTime(comment.getCreateTime());

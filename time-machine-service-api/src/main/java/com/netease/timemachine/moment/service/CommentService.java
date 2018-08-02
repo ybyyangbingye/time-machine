@@ -21,31 +21,27 @@ public interface CommentService {
      * 获取该条状态或者里程牌下的所有评论
      * @param childId
      * @param groupId
-     * @param groupType
      * @return
      */
-    List<CommentDTO> selectComments(Long childId,Long groupId,Integer groupType);
+    List<CommentDTO> selectComments(Long childId,Long groupId);
 
     /**
      * 删除某条状态或者里程牌下的某个评论
      * @param commentId
-     * @param groupType
      */
-    void deleteComment(Long commentId,Integer groupType);
+    void deleteComment(Long commentId);
 
     /**
      * 根据动态id获取状态或者里程牌的评论数量
      * @param groupId
-     * @param groupType
      * @return
      */
-    int getCommentCountByGroupIdType(Long groupId,Integer groupType);
+    int getCommentCountByGroupIdType(Long groupId);
 
     /**
      * 通过commentId查询一条评论信息
      * @param commentId
-     * @param groupType
      * @return
      */
-    CommentDTO selectByCommentIdType(Long commentId,Integer groupType);
+    CommentDTO selectByCommentIdType(Long commentId);
 }

@@ -21,9 +21,6 @@ public class CommentDTO implements Serializable {
 
     private Long groupId;
 
-    /**评论对象类型（1：状态，2：里程牌）*/
-    private Integer groupType;
-
     private String content;
 
     private Long replyId;

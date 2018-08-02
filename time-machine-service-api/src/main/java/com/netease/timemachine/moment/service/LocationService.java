@@ -16,7 +16,7 @@ public interface LocationService {
      * @return
      * @throws Exception
      */
-    public JSONArray searchPosByPoint(String location, Integer page_size,
+    JSONArray searchPosByPoint(String location, Integer page_size,
                                       Integer page_index) throws Exception;
 
     /**
@@ -28,6 +28,6 @@ public interface LocationService {
      * @return
      * @throws Exception
      */
-    public JSONArray searchPosByKeyWord(String location,String keyword,
+    JSONArray searchPosByKeyWord(String location,String keyword,
                                         Integer page_size,Integer page_index) throws Exception;
 }
