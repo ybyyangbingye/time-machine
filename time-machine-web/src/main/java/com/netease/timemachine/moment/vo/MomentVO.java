@@ -37,6 +37,8 @@ public class MomentVO implements Serializable {
 
     private Long childId;
 
+    private Integer resourceType;
+
     private List<String> files;
 
     private List<String> labels;

@@ -58,6 +58,13 @@ public interface MomentService {
     boolean deleteMoment(Long momentId);
 
     /**
+     * 获取发表状态后需要被提醒的人
+     * @param childId
+     * @return
+     */
+    List<Long> getReceivers(Long childId);
+
+    /**
      * 根据用户id获取用户所有的动态
      * @param userId
      * @return

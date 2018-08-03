@@ -70,13 +70,12 @@ public interface MomentDao {
 
     /**
      * 添加状态下的图片/视频
-     * todo: resource_type为1，默认插入的是图片，没处理视频
      * @param file
      * @param momentId
      */
     @Insert("insert into resource(resource_obj,resource_type,group_id,group_type) values"+
-    "(#{file},1,#{momentId},#{groupType})")
-    void addFile(@Param("file")String file,@Param("momentId")Long momentId, @Param("groupType")Long groupType);
+    "(#{file},#{resourceType},#{momentId},#{groupType})")
+    void addFile(@Param("file")String file, @Param("resourceType")Integer resourceType, @Param("momentId")Long momentId, @Param("groupType")Long groupType);
 
     /**
      * 用户删除某条状态
@@ -99,4 +98,12 @@ public interface MomentDao {
      */
     @Select("select moment_id, description where creator_id = #{creatorId}")
     List<MomentDTO> listMomentByUserId(long creatorId);
+
+    /**
+     * 在发表状态后，获得所有被提醒的人
+     * @param childId
+     * @return
+     */
+    @Select("select user_id from user_child_group where child_id=#{childId}")
+    List<Long> getReceivers(Long childId);
 }

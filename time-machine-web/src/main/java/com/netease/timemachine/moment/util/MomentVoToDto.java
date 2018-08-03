@@ -49,6 +49,7 @@ public class MomentVoToDto {
         momentVO.setChildId(dto.getChildId());
         momentVO.setGmtCreate(dto.getGmtCreate());
         momentVO.setGmtModified(dto.getGmtModified());
+        momentVO.setResourceType(dto.getResourceType());
         return momentVO;
     }
 
@@ -67,6 +68,7 @@ public class MomentVoToDto {
         dto.setChildId(vo.getChildId());
         dto.setGmtCreate(vo.getGmtCreate());
         dto.setGmtModified(vo.getGmtModified());
+        dto.setResourceType(vo.getResourceType());
         return dto;
     }
 }

@@ -49,6 +49,7 @@ public class MomentDtoToMeta {
         momentDto.setChildId(moment.getChildId());
         momentDto.setGmtCreate(moment.getGmtCreate());
         momentDto.setGmtModified(moment.getGmtModified());
+        momentDto.setResourceType(moment.getResourceType());
         return momentDto;
     }
 
@@ -72,6 +73,7 @@ public class MomentDtoToMeta {
         moment.setChildId(momentDTO.getChildId());
         moment.setGmtCreate(momentDTO.getGmtCreate());
         moment.setGmtModified(momentDTO.getGmtModified());
+        moment.setResourceType(momentDTO.getResourceType());
         return moment;
     }
 

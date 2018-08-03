@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.util.ChildBirthDay;
 import com.netease.timemachine.account.util.ResponseView;
+import com.netease.timemachine.common.dto.MessageDTO;
+import com.netease.timemachine.common.service.MessageService;
 import com.netease.timemachine.moment.service.LabelService;
 import com.netease.timemachine.moment.dto.CommentDTO;
 import com.netease.timemachine.moment.service.CommentService;
@@ -45,6 +47,9 @@ public class MomentController {
     @Autowired
     private LabelService labelService;
 
+    @Autowired
+    private MessageService messageService;
+
     /**
      *
      * @param userId
@@ -79,7 +84,7 @@ public class MomentController {
     }
 
     /**
-     *
+     * 添加状态、里程碑
      * @param momentVO
      */
     @RequestMapping(value = "/addRecord", method = RequestMethod.POST)
@@ -87,11 +92,26 @@ public class MomentController {
         Long momentId = momentService.addMoment(MomentVoToDto.voToDto(momentVO),momentVO.getFiles());
         labelService.addLabels(momentVO.getCreatorId(), momentVO.getChildId(),
                 momentId, momentVO.getLabels());
+
+        //添加提醒
+        List<Long> receivers = momentService.getReceivers(momentVO.getChildId());
+        for(Long userId : receivers) {
+            if(userId != momentVO.getCreatorId()) {
+                MessageDTO messageDTO = new MessageDTO();
+                messageDTO.setSenderId(momentVO.getCreatorId());
+                messageDTO.setReceiverId(userId);
+                messageDTO.setGroupType(1);
+                messageDTO.setGroupId(momentId);
+                String nickName = momentService.getNickName(momentVO.getChildId(),momentVO.getCreatorId());
+                messageDTO.setContent(nickName + "发表了新的状态");
+                messageService.addMessage(messageDTO);
+            }
+        }
         return ResponseView.success(Boolean.TRUE,"添加成功");
     }
 
     /**
-     *
+     * 删除状态或里程碑
      * @param momentId
      */
     @RequestMapping(value = "/deleteRecord", method = RequestMethod.POST)

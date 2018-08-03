@@ -25,6 +25,8 @@ public class MomentDTO implements Serializable {
 
     private String title;
 
+    private Integer resourceType;
+
     private String description;
 
     private String location;
