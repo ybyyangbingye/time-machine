@@ -42,7 +42,6 @@ public class LabelVoToDto {
         LabelDTO labelDTO = new LabelDTO();
         labelDTO.setLabelId(labelVO.getLabelId());
         labelDTO.setLabelName(labelVO.getLabelName());
-        labelDTO.setLabelType(labelVO.getLabelType());
         labelDTO.setUserId(labelVO.getUserId());
         labelDTO.setGmtCreate(labelVO.getGmtCreate());
         labelDTO.setGmtModified(labelVO.getGmtCreate());
@@ -58,7 +57,6 @@ public class LabelVoToDto {
         LabelVO label = new LabelVO();
         label.setLabelId(labelDTO.getLabelId());
         label.setLabelName(labelDTO.getLabelName());
-        label.setLabelType(labelDTO.getLabelType());
         label.setUserId(labelDTO.getUserId());
         label.setGmtCreate(labelDTO.getGmtCreate());
         label.setGmtModified(labelDTO.getGmtCreate());

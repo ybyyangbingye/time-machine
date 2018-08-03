@@ -21,9 +21,17 @@ public interface MomentDao {
      * @param start
      * @return
      */
-    @Select("select * from moment where child_id=#{childId} and group_type=2 order by gmt_create limit #{start},5")
+    @Select("select * from moment where child_id=#{childId} and group_type=#{type} order by gmt_create desc limit #{start},5")
     List<Moment> getMoments( @Param("childId")Long childId,
                              @Param("start")Long start, @Param("type")Long type);
+
+    /**
+     * 获取宝宝所有的里程碑状态
+     * @param childId
+     * @return
+     */
+    @Select("select * from moment where child_id=#{childId} and group_type=#{type} order by gmt_create desc")
+    List<Moment> getAllMoments( @Param("childId")Long childId, @Param("type")Long type);
 
     /**
      * 获取一条状态下的所有图片或视频
@@ -55,8 +63,8 @@ public interface MomentDao {
      * 用户添加状态
      * @param moment
      */
-    @Insert("insert into moment(group_type,creator_id,description,location,child_id) values" +
-    "(#{groupType},#{creatorId},#{description},#{location},#{childId})")
+    @Insert("insert into moment(group_type,creator_id,description,location,child_id,title) values" +
+    "(#{groupType},#{creatorId},#{description},#{location},#{childId},#{title})")
     @Options(useGeneratedKeys = true, keyProperty = "momentId")
     void addMoment(Moment moment);
 

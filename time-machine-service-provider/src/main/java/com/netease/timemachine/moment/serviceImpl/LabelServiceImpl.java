@@ -1,13 +1,9 @@
 package com.netease.timemachine.moment.serviceImpl;
 
 import com.netease.timemachine.moment.dao.LabelDao;
-import com.netease.timemachine.moment.dto.LabelDTO;
 import com.netease.timemachine.moment.service.LabelService;
-import com.netease.timemachine.moment.meta.Label;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
 
 import java.util.List;
 
@@ -19,7 +15,7 @@ import java.util.List;
 @Service
 public class LabelServiceImpl implements LabelService{
 
-    private static String [] recommendLabels = {"过生日","可爱","写真"};
+    //private static String [] recommendLabels = {"过生日","可爱","写真"};
 
     @Autowired
     private LabelDao labelDao;
@@ -43,8 +39,8 @@ public class LabelServiceImpl implements LabelService{
      */
     @Override
     public List<String> getFamilyLabels(Long userId, Long childId) {
-//        List<String> res1 = labelDao.getFamilyLabelsFromLabel(userId, childId);
         List<String> res = labelDao.getFamilyLabelsFromUCG(childId);
+//        List<String> res1 = labelDao.getFamilyLabelsFromLabel(userId, childId);
 //        if(res1.size() == res2.size()) {
 //            return res1;
 //        }
@@ -70,13 +66,15 @@ public class LabelServiceImpl implements LabelService{
      */
     @Override
     public List<String> getRecommendLabels(Long userId, Long childId) {
-        List<String> res = labelDao.getRecommendLabels(userId, childId);
-        if(CollectionUtils.isEmpty(res)) {
-            for(String s : recommendLabels) {
-                labelDao.insertRecommendLabels(s,childId,userId);
-            }
-        }
-        return labelDao.getRecommendLabels(userId, childId);
+        List<String> res = labelDao.getRecommendLabels2();
+        return res;
+//        List<String> res = labelDao.getRecommendLabels(userId, childId);
+//        if(CollectionUtils.isEmpty(res)) {
+//            for(String s : recommendLabels) {
+//                labelDao.insertRecommendLabels(s,childId,userId);
+//            }
+//        }
+//        return labelDao.getRecommendLabels(userId, childId);
     }
 
     /**
@@ -87,42 +85,45 @@ public class LabelServiceImpl implements LabelService{
      */
     @Override
     public void addLabels(Long userId, Long childId, Long momentId, List<String> labels) {
-        List<String> names = getFamilyLabels(userId, childId);
         for(String s : labels) {
-            List<Long> type = labelDao.searchLabel(userId,childId,s);
-            if(type.size() == 0) {
-                Label label = new Label();
-                label.setUserId(userId);
-                label.setChildId(childId);
-                label.setLabelName(s);
-                if(names.contains(s)) {
-                    // 插入不存在的家人标签
-                    label.setLabelType(2L);
-                    labelDao.insertFamilyLabel(label);
-                }
-                else {
-                    // 插入用户自定义标签
-                    label.setLabelType(1L);
-                    labelDao.addLabel(label);
-                }
-                //labelDao.addLabelBelonged(label.getLabelId(), momentId);
-                labelDao.updateId(momentId, label.getLabelId());
-            }
-            // 插入的是历史标签，即已经存在的推荐标签或家人标签
-            else if(type.size() == 1){
-                Label label = new Label();
-                label.setUserId(userId);
-                label.setChildId(childId);
-                label.setLabelName(s);
-                label.setLabelType(1L);
-                labelDao.addHistoryLabel(label);
-                //labelDao.addLabelBelonged(label.getLabelId(), momentId);
-                labelDao.updateId(momentId, label.getLabelId());
-            }
-            // type.size() == 2 则更新已经插入的历史标签
-            else {
-                labelDao.updateLabel(userId,childId,s);
-            }
+            labelDao.addLabel(momentId,s,userId,childId);
         }
+//        List<String> names = getFamilyLabels(userId, childId);
+//        for(String s : labels) {
+//            List<Long> type = labelDao.searchLabel(userId,childId,s);
+//            if(type.size() == 0) {
+//                Label label = new Label();
+//                label.setUserId(userId);
+//                label.setChildId(childId);
+//                label.setLabelName(s);
+//                if(names.contains(s)) {
+//                    // 插入不存在的家人标签
+//                    label.setLabelType(2L);
+//                    labelDao.insertFamilyLabel(label);
+//                }
+//                else {
+//                    // 插入用户自定义标签
+//                    label.setLabelType(1L);
+//                    labelDao.addLabel(label);
+//                }
+//                //labelDao.addLabelBelonged(label.getLabelId(), momentId);
+//                labelDao.updateId(momentId, label.getLabelId());
+//            }
+//            // 插入的是历史标签，即已经存在的推荐标签或家人标签
+//            else if(type.size() == 1){
+//                Label label = new Label();
+//                label.setUserId(userId);
+//                label.setChildId(childId);
+//                label.setLabelName(s);
+//                label.setLabelType(1L);
+//                labelDao.addHistoryLabel(label);
+//                //labelDao.addLabelBelonged(label.getLabelId(), momentId);
+//                labelDao.updateId(momentId, label.getLabelId());
+//            }
+//            // type.size() == 2 则更新已经插入的历史标签
+//            else {
+//                labelDao.updateLabel(userId,childId,s);
+//            }
+//        }
     }
 }

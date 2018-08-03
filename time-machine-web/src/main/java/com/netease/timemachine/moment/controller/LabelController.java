@@ -41,8 +41,8 @@ public class LabelController {
 
     @RequestMapping(value = "/addLabels", method = RequestMethod.POST)
     public ResponseEntity addLabels(@RequestParam Long userId, @RequestParam Long childId,
-                         @RequestParam List<String> labels) {
-        //labelService.addLabels(userId,childId,labels);
+                                    @RequestParam Long momentId, @RequestParam List<String> labels) {
+        labelService.addLabels(userId,childId,momentId,labels);
         //return ResponseView.success(null,"添加成功");
         return null;
     }

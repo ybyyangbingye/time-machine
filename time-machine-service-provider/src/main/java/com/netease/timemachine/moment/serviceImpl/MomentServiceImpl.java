@@ -30,9 +30,15 @@ public class MomentServiceImpl implements MomentService {
      */
     @Override
     public List<MomentDTO> getMoments(Long childId, Long currentPage, Long type) {
-        Long start = currentPage * 5;
-        List<Moment> res = momentDao.getMoments(childId, start, type);
-        return MomentDtoToMeta.metaListToDtoList(res);
+        if(type == 1L) {
+            List<Moment> res = momentDao.getAllMoments(childId, type);
+            return MomentDtoToMeta.metaListToDtoList(res);
+        }
+        else {
+            Long start = currentPage * 5;
+            List<Moment> res = momentDao.getMoments(childId, start, type);
+            return MomentDtoToMeta.metaListToDtoList(res);
+        }
     }
 
     /**
