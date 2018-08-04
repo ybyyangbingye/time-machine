@@ -53,9 +53,8 @@ public interface TimeSetDao {
      * @param childId
      * @return
      */
-    @Select("select * from label " +
-            "where period_diff(date_format(now(),'%Y%m') , date_format(gmt_create, '%Y%m')) =1 " +
-            "and child_id=#{childId}")
+    @Select("select * from label where child_id=#{childId} and " +
+            "period_diff(date_format(now(),'%Y%m'), date_format(gmt_create, '%Y%m'))=1")
     @Results({
             @Result(id = true, column = "id", property = "labelId"),
             @Result(column = "group_id", property = "groupId"),
@@ -74,7 +73,7 @@ public interface TimeSetDao {
      * @param groupId
      * @return
      */
-    @Select("select * from resource where resource_type = 1 and group_id = #{groupId}")
+    @Select("select * from resource where resource_type = 1 and group_id = #{groupId} and group_type = 3")
     @Results({
             @Result(id = true, column = "id", property = "file_id"),
             @Result(column = "resource_obj", property = "resource_obj"),
@@ -111,20 +110,14 @@ public interface TimeSetDao {
 
     /**
      * 新增一条时光集，然后一次向resource表插入多个数据
-     * resource_type=3 音频
+     * resource_type=1 图片
      * group_type=3 时光集
-     * @param pictures
+     * @param picture
      * @param groupId
      */
-    @Insert("<script>"
-    + "insert into resource "
-    + "(resource_obj,resource_type,group_id)"
-    + "VALUES"
-    + "<foreach item='item' index='index' collection='pictures' open='(' separator=',' close=')'>"
-    + "#{item},3,#{groupId}"
-    + "</foreach>"
-    + "</script>")
-    void addTimeSetToResource(@Param("pictures") List<String> pictures, @Param("groupId") Long groupId);
+    @Insert("insert into resource (resource_obj,resource_type,group_id,group_type) "
+    + "VALUES (#{picture},1,#{groupId},3)")
+    void addTimeSetToResource(@Param("picture") String picture, @Param("groupId") Long groupId);
 
     /**
      * 获取已经存在的时光集（时间降序）
@@ -139,6 +132,6 @@ public interface TimeSetDao {
      * @param setId
      * @return
      */
-    @Select("select resource_obj from resource where resource_type=3 and group_id=#{setId}")
+    @Select("select resource_obj from resource where group_type=3 and group_id=#{setId}")
     List<String> selectTimeSetResources(Long setId);
 }

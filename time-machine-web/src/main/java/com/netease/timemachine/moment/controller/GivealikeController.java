@@ -1,5 +1,7 @@
 package com.netease.timemachine.moment.controller;
 
+import com.netease.timemachine.common.dto.MessageDTO;
+import com.netease.timemachine.common.service.MessageService;
 import com.netease.timemachine.moment.dto.GivealikeDTO;
 import com.netease.timemachine.moment.service.GivealikeService;
 import com.netease.timemachine.moment.vo.GivealikeVO;
@@ -24,10 +26,15 @@ public class GivealikeController {
     @Autowired
     GivealikeService givealikeService;
 
+    @Autowired
+    MessageService messageService;
+
     @RequestMapping("/givealike")
     public GivealikeVO getGivealikeVO(HttpServletRequest request, @RequestBody GivealikeDTO givealikeDTO) {
         String nickname = givealikeService.getNickname(givealikeDTO);
         givealikeService.addGivealike(givealikeDTO);
+        MessageDTO messageDTO = new MessageDTO();
+        messageService.addMessage(messageDTO);
         return new GivealikeVO(givealikeDTO.getUserId(), nickname);
     }
 

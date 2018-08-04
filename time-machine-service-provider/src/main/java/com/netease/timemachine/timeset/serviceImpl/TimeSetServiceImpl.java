@@ -19,7 +19,7 @@ import java.util.*;
 @Service
 public class TimeSetServiceImpl implements TimeSetService {
 
-    private static final Integer MAX_PICS = 1;
+    private static final Integer MAX_PICS = 12;
 
     @Autowired
     private TimeSetDao timeSetDao;
@@ -102,8 +102,8 @@ public class TimeSetServiceImpl implements TimeSetService {
     }
 
     @Override
-    public void addTimeSetToResource(List<String> pictures, Long groupId) {
-        timeSetDao.addTimeSetToResource(pictures, groupId);
+    public void addTimeSetToResource(String picture, Long groupId) {
+        timeSetDao.addTimeSetToResource(picture, groupId);
     }
 
     @Override

@@ -3,6 +3,9 @@ package com.netease.timemachine.moment.controller;
 import com.netease.timemachine.account.dto.GroupDTO;
 import com.netease.timemachine.account.service.GroupService;
 import com.netease.timemachine.account.util.ResponseView;
+import com.netease.timemachine.common.dto.MessageDTO;
+import com.netease.timemachine.common.meta.Message;
+import com.netease.timemachine.common.service.MessageService;
 import com.netease.timemachine.moment.dto.CommentDTO;
 import com.netease.timemachine.moment.meta.Comment;
 import com.netease.timemachine.moment.service.CommentService;
@@ -35,6 +38,9 @@ public class CommentController {
     @Autowired
     private GroupService groupService;
 
+    @Autowired
+    private MessageService messageService;
+
     @RequestMapping(value = "/insert",method = RequestMethod.POST)
     public ResponseEntity insertComment(@RequestBody CommentVO commentVO){
         if(StringUtils.isEmpty(commentVO.getContent())){
@@ -49,6 +55,13 @@ public class CommentController {
         commentVO.setParentNickName(parent.getNickName());
         GroupDTO reply = groupService.selectByUserAndChildId(commentVO.getReplyId(), commentVO.getChildId());
         commentVO.setReplyNickName(reply.getNickName());
+        MessageDTO messageDTO = new MessageDTO();
+        messageDTO.setGroupId(commentId);
+        messageDTO.setSenderId(reply.getUserId());
+        messageDTO.setReceiverId(parent.getUserId());
+        messageDTO.setGroupType(3);
+        messageDTO.setContent(commentVO.getContent());
+        messageService.addMessage(messageDTO);
         return ResponseView.success(commentVO, "发表评论成功");
     }
 

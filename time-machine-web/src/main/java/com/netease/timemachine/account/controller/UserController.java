@@ -1,15 +1,17 @@
 package com.netease.timemachine.account.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.netease.timemachine.account.dao.GroupDao;
 import com.netease.timemachine.account.dto.ChildDTO;
+import com.netease.timemachine.account.dto.GroupDTO;
 import com.netease.timemachine.account.dto.UserDTO;
+import com.netease.timemachine.account.meta.Child;
+import com.netease.timemachine.account.meta.Group;
+import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.service.GroupService;
 import com.netease.timemachine.account.service.MsService;
 import com.netease.timemachine.account.service.UserService;
-import com.netease.timemachine.account.util.ChildBirthDay;
-import com.netease.timemachine.account.util.ChildVoToDtoUtil;
-import com.netease.timemachine.account.util.ResponseView;
-import com.netease.timemachine.account.util.UserVoToDtoUtil;
+import com.netease.timemachine.account.util.*;
 import com.netease.timemachine.account.vo.ChildVO;
 import com.netease.timemachine.account.vo.UserVO;
 import com.netease.timemachine.auth.meta.RsaAlgorithm;
@@ -43,6 +45,9 @@ public class UserController {
 
     @Autowired
     private RsaAlgorithm rsaAlgorithm;
+
+    @Autowired
+    private ChildService childService;
 
     @RequestMapping(value = "/sms",method = RequestMethod.POST)
     public ResponseEntity smsByPhone(@RequestParam String phone){
@@ -133,5 +138,23 @@ public class UserController {
             return ResponseView.success(res);
         }
         return ResponseView.success(null, "您还没有添加过孩子哦");
+    }
+
+    /**
+     * 关联孩子，TODU
+     * @param userId
+     * @param invitationCode
+     * @return
+     */
+    @PostMapping("/apply")
+    public ResponseEntity managerChildByCode(@RequestParam Long userId,
+                                             @RequestParam String invitationCode) {
+        long childId = ChildInvitationCode.inviDecoding(invitationCode);
+        ChildDTO childDTO = childService.selectChildById(childId);
+        if(childDTO == null){
+            ResponseView.fail(100, "没有该宝宝信息");
+        }
+        //添加申请信息
+        return ResponseView.success(null,"关联孩子成功");
     }
 }
