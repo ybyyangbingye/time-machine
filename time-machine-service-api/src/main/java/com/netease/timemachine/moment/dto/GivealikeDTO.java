@@ -14,7 +14,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class GivealikeDTO implements Serializable {
     private static final long serialVersionUID = -2901094656712762124L;
+    private Long likeId;
     private Long userId;
     private Long groupId;
     private String nickName;
+
+
 }

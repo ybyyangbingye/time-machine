@@ -15,4 +15,6 @@ public class GivealikeVO {
     private Long userId;
     private String nickname;
 //    private boolean isGivealike;
+
+
 }

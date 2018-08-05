@@ -32,8 +32,13 @@ public class GivealikeController {
     @RequestMapping("/givealike")
     public GivealikeVO getGivealikeVO(HttpServletRequest request, @RequestBody GivealikeDTO givealikeDTO) {
         String nickname = givealikeService.getNickname(givealikeDTO);
-        givealikeService.addGivealike(givealikeDTO);
+        Long likeId = givealikeService.addGivealike(givealikeDTO);
         MessageDTO messageDTO = new MessageDTO();
+        messageDTO.setSenderId(givealikeDTO.getUserId());
+        messageDTO.setReceiverId(givealikeService.getLikedUser(givealikeDTO.getGroupId()));
+        messageDTO.setGroupType(2);
+        messageDTO.setGroupId(likeId);
+        messageDTO.setContent(nickname + "点赞了你的状态");
         messageService.addMessage(messageDTO);
         return new GivealikeVO(givealikeDTO.getUserId(), nickname);
     }

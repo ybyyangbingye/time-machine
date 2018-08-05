@@ -31,11 +31,13 @@ public class GivealikeImpl implements GivealikeService {
     }
 
     @Override
-    public void addGivealike(GivealikeDTO givealikeDTO) {
+    public Long addGivealike(GivealikeDTO givealikeDTO) {
         long groupId=givealikeDTO.getGroupId();
         long userId=givealikeDTO.getUserId();
         String nickname=getNickname(givealikeDTO);
-        givealikeDao.insertGivealike(new Givealike(userId,groupId,nickname));
+        Givealike givealike = new Givealike(userId,groupId,nickname);
+        givealikeDao.insertGivealike(givealike);
+        return givealike.getLikeId();
     }
 
     @Override
@@ -58,6 +60,11 @@ public class GivealikeImpl implements GivealikeService {
         else {
             return false;
         }
+    }
+
+    @Override
+    public Long getLikedUser(Long groupId) {
+        return givealikeDao.getLikedUser(groupId);
     }
 
     @Override

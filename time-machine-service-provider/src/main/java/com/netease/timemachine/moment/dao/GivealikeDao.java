@@ -37,7 +37,7 @@ public interface GivealikeDao {
      */
     @Insert("insert into givealike(user_id, group_id, nickname) " +
             "values(#{userId}, #{groupId}, #{nickname})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Options(useGeneratedKeys = true, keyProperty = "likeId")
     boolean insertGivealike(Givealike givealike);
 
     /**
@@ -73,4 +73,7 @@ public interface GivealikeDao {
      */
     @Select("select count(*) from givealike where group_id = #{groupId}")
     int getLoverCountByMomentId(long groupId);
+
+    @Select("select creator_id from moment where moment_id=#{groupId}")
+    Long getLikedUser(Long groupId);
 }

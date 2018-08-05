@@ -12,11 +12,18 @@ import java.util.List;
  */
 public interface GivealikeService {
     String getNickname(GivealikeDTO givealikeDTO);
-    void addGivealike(GivealikeDTO givealikeDTO);
+    Long addGivealike(GivealikeDTO givealikeDTO);
     void deletealike(GivealikeDTO givealikeDTO);
     List<GivealikeDTO> getAll(Long groupId);
 
     int getLoverCountByMomentId(Long groupId);
 
     boolean isGivealike(Long userId, Long groupId);
+
+    /**
+     * 获取被点赞状态/里程碑发表人的id，以接受消息提醒
+     * @param groupId
+     * @return
+     */
+    Long getLikedUser(Long groupId);
 }

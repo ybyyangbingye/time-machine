@@ -36,7 +36,7 @@ public class Starter {
     @Value("${monitor.name}")
     String appName;
 
-    @Value("${env}")
+    @Value("${spring.profiles.active}")
     String env;
     @Autowired CuratorFramework client;
 
