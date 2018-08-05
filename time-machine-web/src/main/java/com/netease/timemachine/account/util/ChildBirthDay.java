@@ -15,6 +15,9 @@ public class ChildBirthDay {
     }
 
     public static String getAge(Date date) {
+        if(date == null) {
+            return null;
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String str = df.format(date);
         String[] data = str.split("-");
@@ -62,6 +65,9 @@ public class ChildBirthDay {
         return tag.toString();
     }
     public static Integer getChildMonths(Date date){
+        if(date == null){
+            return null;
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String str = df.format(date);
         String[] data = str.split("-");

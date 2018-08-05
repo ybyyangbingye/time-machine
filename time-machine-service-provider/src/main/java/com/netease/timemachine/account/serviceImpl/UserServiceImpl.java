@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService {
     public void insertUser(UserDTO userDTO) {
         User user = UserDtoToMetaUtil.UserDtoToMeta(userDTO);
         user.setUserName(user.getPhone());
+        user.setImgUrl("http://time-machine.nos-eastchina1.126.net/default/user.jpg");
         userDao.insertUser(user);
     }
 

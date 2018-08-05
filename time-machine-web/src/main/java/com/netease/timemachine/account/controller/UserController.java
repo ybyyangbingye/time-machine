@@ -15,6 +15,9 @@ import com.netease.timemachine.account.util.*;
 import com.netease.timemachine.account.vo.ChildVO;
 import com.netease.timemachine.account.vo.UserVO;
 import com.netease.timemachine.auth.meta.RsaAlgorithm;
+import com.netease.timemachine.common.dto.MessageDTO;
+import com.netease.timemachine.common.meta.Message;
+import com.netease.timemachine.common.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -24,6 +27,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.netease.timemachine.account.enums.AccountEnum.APPLY_REPEAT;
+import static com.netease.timemachine.account.enums.AccountEnum.USER_NULL;
 
 /**
  * @author: wqh
@@ -45,6 +51,9 @@ public class UserController {
 
     @Autowired
     private RsaAlgorithm rsaAlgorithm;
+
+    @Autowired
+    private MessageService messageService;
 
     @Autowired
     private ChildService childService;
@@ -141,20 +150,51 @@ public class UserController {
     }
 
     /**
-     * 关联孩子，TODU
+     * 引导页+app内部申请关联孩子
      * @param userId
-     * @param invitationCode
+     * @param childId
      * @return
      */
     @PostMapping("/apply")
     public ResponseEntity managerChildByCode(@RequestParam Long userId,
-                                             @RequestParam String invitationCode) {
-        long childId = ChildInvitationCode.inviDecoding(invitationCode);
-        ChildDTO childDTO = childService.selectChildById(childId);
-        if(childDTO == null){
-            ResponseView.fail(100, "没有该宝宝信息");
+                                             @RequestParam Long childId) {
+        MessageDTO messageDTO = new MessageDTO();
+        GroupDTO groupDTO = groupService.selectByUserAndChildId(userId, childId);
+        if(groupDTO != null){
+            return ResponseView.fail(APPLY_REPEAT.getCode(), APPLY_REPEAT.getMessage());
         }
-        //添加申请信息
-        return ResponseView.success(null,"关联孩子成功");
+        Long receiverId = groupService.selectChildCreator(childId);
+        UserDTO userDTO = userService.selectById(userId);
+        ChildDTO childDTO = childService.selectChildById(childId);
+        messageDTO.setSenderId(userId);
+        messageDTO.setReceiverId(receiverId);
+        messageDTO.setGroupType(4);
+        messageDTO.setGroupId(childId);
+        messageDTO.setContent(userDTO.getUserName() + "申请关联您的宝宝" + childDTO.getChildName());
+        messageService.addMessage(messageDTO);
+        return ResponseView.success(null,"申请关联宝宝成功");
+    }
+
+    /**
+     * 微信点击链接主动关联孩子,直接绑定
+     * @param childId
+     * @param phone
+     * @return
+     */
+    @PostMapping("/association")
+    public ResponseEntity managerChildByCode(@RequestParam Long childId,
+                                             @RequestParam String phone) {
+        UserDTO userDTO = userService.selectByPhone(phone);
+        if (userDTO == null) {
+            return ResponseView.fail(USER_NULL.getCode(), USER_NULL.getMessage());
+        }
+        Long userId = userDTO.getUserId();
+        GroupDTO groupDTO = groupService.selectByUserAndChildId(userId, childId);
+        if(groupDTO != null){
+            return ResponseView.fail(APPLY_REPEAT.getCode(), APPLY_REPEAT.getMessage());
+        }
+        groupDTO = new GroupDTO(childId, userId, "其他","其他", 2, userDTO.getImgUrl());
+        groupService.insertGroup(groupDTO);
+        return ResponseView.success(null, "绑定该宝宝成功");
     }
 }

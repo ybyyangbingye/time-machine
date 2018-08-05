@@ -61,4 +61,11 @@ public interface GroupService {
      * @return
      */
     Integer permissionById(Long userId, Long childId);
+
+    /**
+     * 查询childId的创建者（根据权限）
+     * @param childId
+     * @return
+     */
+    Long selectChildCreator(Long childId);
 }

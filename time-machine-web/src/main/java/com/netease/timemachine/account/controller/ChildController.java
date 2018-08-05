@@ -5,15 +5,21 @@ import com.netease.timemachine.account.dto.ChildDTO;
 import com.netease.timemachine.account.dto.GroupDTO;
 import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.service.GroupService;
+import com.netease.timemachine.account.service.UserService;
 import com.netease.timemachine.account.util.*;
 import com.netease.timemachine.account.vo.ChildVO;
 import com.netease.timemachine.account.vo.GroupVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.netease.timemachine.account.enums.AccountEnum.CHILD_NULL;
+import static com.netease.timemachine.account.enums.AccountEnum.CHILD_REPEAT;
 
 /**
  * @author: wqh
@@ -24,17 +30,37 @@ import java.util.List;
 @RestController
 public class ChildController {
 
+    private static final String DEFAULT_BABY_PIC = "http://time-machine.nos-eastchina1.126.net/default/baby.jpg";
+
     @Autowired
     private ChildService childService;
 
     @Autowired
     private GroupService groupService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public ResponseEntity insertChild(@RequestBody ChildVO childVO){
+        if(StringUtils.isEmpty(childVO.getImgUrl())){
+            childVO.setImgUrl(DEFAULT_BABY_PIC);
+        }
+        Long userId = childVO.getUserId();
+        if(userId != null) {
+            List<ChildDTO> childDTOList = userService.selectOwnChildren(userId);
+            if (!CollectionUtils.isEmpty(childDTOList)) {
+                for (ChildDTO childDTO : childDTOList) {
+                    if (childVO.getChildName().equals(childDTO.getChildName())) {
+                        return ResponseView.fail(CHILD_REPEAT.getCode(), CHILD_REPEAT.getMessage());
+                    }
+                }
+            }
+        }
         ChildDTO childDTO = ChildVoToDtoUtil.childVoToDto(childVO);
         Long childId = childService.insertChild(childDTO);
-        Long userId = childVO.getUserId();
+        childVO.setChildId(childId);
+        childVO.setAge(ChildBirthDay.getAge(childVO.getBirthDate()));
         String identification = childVO.getIdentification();
         String imgUrl = childVO.getImgUrl();
         /**插入新的group记录*/
@@ -49,9 +75,16 @@ public class ChildController {
     @RequestMapping(value = "/select")
     public ResponseEntity selectChildById(@RequestParam Long childId){
         ChildDTO childDTO = childService.selectChildById(childId);
-        ChildVO childVO = ChildVoToDtoUtil.childDtoToVo(childDTO);
-        childVO.setAge(ChildBirthDay.getAge(childVO.getBirthDate()));
-        return ResponseView.success(childVO);
+        if(childDTO != null) {
+            ChildVO childVO = ChildVoToDtoUtil.childDtoToVo(childDTO);
+            String age = ChildBirthDay.getAge(childVO.getBirthDate());
+            if(age != null){
+                childVO.setAge(age);
+            }
+            return ResponseView.success(childVO);
+        }else {
+            return ResponseView.fail(CHILD_NULL.getCode(), CHILD_NULL.getMessage());
+        }
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -59,20 +92,6 @@ public class ChildController {
         ChildDTO childDTO = ChildVoToDtoUtil.childVoToDto(childVO);
         childService.updateChild(childDTO);
         return ResponseView.success(null, "更新成功");
-    }
-
-    /**
-     * 根据邀请码获取孩子信息
-     * @param invitationCode
-     * @return
-     */
-    @RequestMapping(value = "/detailByCode", method = RequestMethod.POST)
-    public ResponseEntity childDetailByCode(@RequestParam String invitationCode){
-        Long childId = ChildInvitationCode.inviDecoding(invitationCode);
-        ChildDTO childDTO = childService.selectChildById(childId);
-        ChildVO childVO = ChildVoToDtoUtil.childDtoToVo(childDTO);
-        childVO.setAge(ChildBirthDay.getAge(childVO.getBirthDate()));
-        return ResponseView.success(childVO);
     }
 
     /**
@@ -84,6 +103,15 @@ public class ChildController {
     @RequestMapping("/ownManagers")
     public ResponseEntity selectOwnChildren(@Param("userId") Long userId, @RequestParam Long childId){
         List<GroupDTO> groupDTOList = groupService.selectGroupByChildId(childId);
+        GroupDTO groupDTO = null;
+        for(int i = 0; i < groupDTOList.size(); i++){
+            groupDTO = groupDTOList.get(i);
+            if(groupDTO.getUserId().equals(userId)){
+                groupDTOList.remove(i);
+                break;
+            }
+        }
+        groupDTOList.add(0, groupDTO);
         List<GroupVO> groupVOList = GroupVoToDtoUtil.GroupDtoToVoList(groupDTOList);
         Integer permission = groupService.permissionById(userId, childId);
         JSONObject jsonObject = new JSONObject();
@@ -126,14 +154,31 @@ public class ChildController {
         return ResponseView.success(null, "删除成功");
     }
 
+    /**
+     * 根据孩子id获取邀请码
+     * @param childId
+     * @return
+     */
     @RequestMapping(value = "/getCode", method = RequestMethod.POST)
     public ResponseEntity getChildCode(@RequestParam Long childId){
-        if(childId == 888L){
-            return ResponseView.fail(100, "請求失敗");
-        }
         String invitationCode = ChildInvitationCode.inviCodeGenerator(childId);
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("invitationCode", invitationCode);
-        return ResponseView.success(jsonObject);
+        return ResponseView.success(invitationCode);
+    }
+
+    /**
+     * 根据邀请码获取孩子信息(引导页和app内部)
+     * @param invitationCode
+     * @return
+     */
+    @RequestMapping(value = "/detailByCode", method = RequestMethod.POST)
+    public ResponseEntity childDetailByCode(@RequestParam String invitationCode){
+        Long childId = ChildInvitationCode.inviDecoding(invitationCode);
+        ChildDTO childDTO = childService.selectChildById(childId);
+        if(childDTO == null){
+            return ResponseView.fail(CHILD_NULL.getCode(), CHILD_NULL.getMessage());
+        }
+        ChildVO childVO = ChildVoToDtoUtil.childDtoToVo(childDTO);
+        childVO.setAge(ChildBirthDay.getAge(childVO.getBirthDate()));
+        return ResponseView.success(childVO);
     }
 }

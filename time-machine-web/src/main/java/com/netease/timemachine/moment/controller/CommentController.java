@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.netease.timemachine.moment.enums.CommentEnum.COMMENT_ERROR;
 import static com.netease.timemachine.moment.enums.CommentEnum.COMMENT_NULL;
 
 /**
@@ -52,8 +53,14 @@ public class CommentController {
         commentVO.setCommentId(commentId);
         commentVO.setCreateTime(commentService.selectByCommentIdType(commentId).getCreateTime());
         GroupDTO parent = groupService.selectByUserAndChildId(commentVO.getParentId(), commentVO.getChildId());
-        commentVO.setParentNickName(parent.getNickName());
+        if(parent == null){
+            return ResponseView.fail(COMMENT_ERROR.getCode(),COMMENT_ERROR.getMessage());
+        }
         GroupDTO reply = groupService.selectByUserAndChildId(commentVO.getReplyId(), commentVO.getChildId());
+        if(reply == null){
+            return ResponseView.fail(COMMENT_ERROR.getCode(),COMMENT_ERROR.getMessage());
+        }
+        commentVO.setParentNickName(parent.getNickName());
         commentVO.setReplyNickName(reply.getNickName());
         MessageDTO messageDTO = new MessageDTO();
         messageDTO.setGroupId(commentId);
