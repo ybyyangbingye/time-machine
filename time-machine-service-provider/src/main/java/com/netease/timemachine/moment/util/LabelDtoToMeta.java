@@ -32,8 +32,8 @@ public class LabelDtoToMeta {
         }
         LabelDTO labelDTO = new LabelDTO();
         labelDTO.setLabelId(label.getLabelId());
+        labelDTO.setGroupId(label.getGroupId());
         labelDTO.setLabelName(label.getLabelName());
-        labelDTO.setLabelType(label.getLabelType());
         labelDTO.setUserId(label.getUserId());
         labelDTO.setGmtCreate(label.getGmtCreate());
         labelDTO.setGmtModified(label.getGmtCreate());
@@ -48,8 +48,8 @@ public class LabelDtoToMeta {
         }
         Label label = new Label();
         label.setLabelId(labelDTO.getLabelId());
+        label.setGroupId(labelDTO.getGroupId());
         label.setLabelName(labelDTO.getLabelName());
-        label.setLabelType(labelDTO.getLabelType());
         label.setUserId(labelDTO.getUserId());
         label.setGmtCreate(labelDTO.getGmtCreate());
         label.setGmtModified(labelDTO.getGmtCreate());

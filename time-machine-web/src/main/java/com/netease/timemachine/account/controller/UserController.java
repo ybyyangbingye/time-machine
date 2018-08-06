@@ -1,18 +1,23 @@
 package com.netease.timemachine.account.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.netease.timemachine.account.dao.GroupDao;
 import com.netease.timemachine.account.dto.ChildDTO;
+import com.netease.timemachine.account.dto.GroupDTO;
 import com.netease.timemachine.account.dto.UserDTO;
+import com.netease.timemachine.account.meta.Child;
+import com.netease.timemachine.account.meta.Group;
+import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.service.GroupService;
 import com.netease.timemachine.account.service.MsService;
 import com.netease.timemachine.account.service.UserService;
-import com.netease.timemachine.account.util.ChildBirthDay;
-import com.netease.timemachine.account.util.ChildVoToDtoUtil;
-import com.netease.timemachine.account.util.ResponseView;
-import com.netease.timemachine.account.util.UserVoToDtoUtil;
+import com.netease.timemachine.account.util.*;
 import com.netease.timemachine.account.vo.ChildVO;
 import com.netease.timemachine.account.vo.UserVO;
 import com.netease.timemachine.auth.meta.RsaAlgorithm;
+import com.netease.timemachine.common.dto.MessageDTO;
+import com.netease.timemachine.common.meta.Message;
+import com.netease.timemachine.common.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +27,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.netease.timemachine.account.enums.AccountEnum.APPLY_REPEAT;
+import static com.netease.timemachine.account.enums.AccountEnum.USER_NULL;
 
 /**
  * @author: wqh
@@ -44,30 +52,39 @@ public class UserController {
     @Autowired
     private RsaAlgorithm rsaAlgorithm;
 
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private ChildService childService;
+
     @RequestMapping(value = "/sms",method = RequestMethod.POST)
     public ResponseEntity smsByPhone(@RequestParam String phone){
+        boolean res = false;
         try{
-            JSONObject jsonObject = msService.sms(phone);
-            if(jsonObject.getInteger("code") != 200){
-                return ResponseView.fail(100, "发送失败");
-            }
+            res  = msService.sms(phone);
         }catch (Exception e){
             e.printStackTrace();
             return ResponseView.fail(500, "服务器内部错误");
         }
-        return ResponseView.success(null,"发送成功");
+        if(res){
+            return ResponseView.success(null,"发送成功");
+        }else {
+            return ResponseView.fail(100, "发送失败");
+        }
     }
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseEntity login(@RequestParam String phone, @RequestParam String code){
-        try {
-            JSONObject res = msService.sms(phone);
-            if(res.getInteger("code") != 200){
-                return ResponseView.fail(100, "发送失败");
-            }
-        }catch (Exception e) {
-            return ResponseView.fail(500, "验证失败");
-        }
+//        boolean res = false;
+//        try {
+//            res = msService.sms(phone);
+//        }catch (Exception e) {
+//            return ResponseView.fail(500, "服务器内部错误");
+//        }
+//        if(!res) {
+//            return ResponseView.fail(100, "验证失败");
+//        }
         UserDTO userDTO = userService.selectByPhone(phone);
         JSONObject jsonObject = new JSONObject();
         if(userDTO == null){
@@ -75,21 +92,25 @@ public class UserController {
             userDTO.setPhone(phone);
             userService.insertUser(userDTO);
             userDTO = userService.selectByPhone(phone);
+            userDTO.setIsRegistered(false);
+            jsonObject.put("child", null);
         }else{
             List<ChildDTO> childDTOList = userService.selectOwnChildren(userDTO.getUserId());
             if(!CollectionUtils.isEmpty(childDTOList)){
-                jsonObject.put("child", ChildVoToDtoUtil.childDtoToVo(childDTOList.get(0)));
+                ChildVO childVO = ChildVoToDtoUtil.childDtoToVo(childDTOList.get(0));
+                childVO.setAge(ChildBirthDay.getAge(childVO.getBirthDate()));
+                jsonObject.put("child", childVO);
             }
+            userDTO.setIsRegistered(true);
         }
         UserVO userVo = UserVoToDtoUtil.UserDtoToVo(userDTO);
         Map<String, Object> map = new HashMap<>(2);
         map.put("userId", userVo.getUserId());
         map.put("phone", phone);
         String token = rsaAlgorithm.create(null, map);
-        JSONObject json= new JSONObject();
-        json.put("user", userVo);
-        json.put("token", token);
-        return ResponseView.success(json,"登录成功");
+        jsonObject.put("user", userVo);
+        jsonObject.put("token", token);
+        return ResponseView.success(jsonObject,"登录成功");
     }
 
     /**
@@ -126,5 +147,54 @@ public class UserController {
             return ResponseView.success(res);
         }
         return ResponseView.success(null, "您还没有添加过孩子哦");
+    }
+
+    /**
+     * 引导页+app内部申请关联孩子
+     * @param userId
+     * @param childId
+     * @return
+     */
+    @PostMapping("/apply")
+    public ResponseEntity managerChildByCode(@RequestParam Long userId,
+                                             @RequestParam Long childId) {
+        MessageDTO messageDTO = new MessageDTO();
+        GroupDTO groupDTO = groupService.selectByUserAndChildId(userId, childId);
+        if(groupDTO != null){
+            return ResponseView.fail(APPLY_REPEAT.getCode(), APPLY_REPEAT.getMessage());
+        }
+        Long receiverId = groupService.selectChildCreator(childId);
+        UserDTO userDTO = userService.selectById(userId);
+        ChildDTO childDTO = childService.selectChildById(childId);
+        messageDTO.setSenderId(userId);
+        messageDTO.setReceiverId(receiverId);
+        messageDTO.setGroupType(4);
+        messageDTO.setGroupId(childId);
+        messageDTO.setContent(userDTO.getUserName() + "申请关联您的宝宝" + childDTO.getChildName());
+        messageService.addMessage(messageDTO);
+        return ResponseView.success(null,"申请关联宝宝成功");
+    }
+
+    /**
+     * 微信点击链接主动关联孩子,直接绑定
+     * @param childId
+     * @param phone
+     * @return
+     */
+    @PostMapping("/association")
+    public ResponseEntity managerChildByCode(@RequestParam Long childId,
+                                             @RequestParam String phone) {
+        UserDTO userDTO = userService.selectByPhone(phone);
+        if (userDTO == null) {
+            return ResponseView.fail(USER_NULL.getCode(), USER_NULL.getMessage());
+        }
+        Long userId = userDTO.getUserId();
+        GroupDTO groupDTO = groupService.selectByUserAndChildId(userId, childId);
+        if(groupDTO != null){
+            return ResponseView.fail(APPLY_REPEAT.getCode(), APPLY_REPEAT.getMessage());
+        }
+        groupDTO = new GroupDTO(childId, userId, "其他","其他", 2, userDTO.getImgUrl());
+        groupService.insertGroup(groupDTO);
+        return ResponseView.success(null, "绑定该宝宝成功");
     }
 }

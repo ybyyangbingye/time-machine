@@ -42,11 +42,14 @@ public class MomentDtoToMeta {
         MomentDTO momentDto = new MomentDTO();
         momentDto.setMomentId(moment.getMomentId());
         momentDto.setCreatorId(moment.getCreatorId());
+        momentDto.setTitle(moment.getTitle());
+        momentDto.setGroupType(moment.getGroupType());
         momentDto.setDescription(moment.getDescription());
         momentDto.setLocation(moment.getLocation());
         momentDto.setChildId(moment.getChildId());
         momentDto.setGmtCreate(moment.getGmtCreate());
         momentDto.setGmtModified(moment.getGmtModified());
+        momentDto.setResourceType(moment.getResourceType());
         return momentDto;
     }
 
@@ -63,11 +66,14 @@ public class MomentDtoToMeta {
         Moment moment = new Moment();
         moment.setMomentId(momentDTO.getMomentId());
         moment.setCreatorId(momentDTO.getCreatorId());
+        moment.setTitle(momentDTO.getTitle());
+        moment.setGroupType(momentDTO.getGroupType());
         moment.setDescription(momentDTO.getDescription());
         moment.setLocation(momentDTO.getLocation());
         moment.setChildId(momentDTO.getChildId());
         moment.setGmtCreate(momentDTO.getGmtCreate());
         moment.setGmtModified(momentDTO.getGmtModified());
+        moment.setResourceType(momentDTO.getResourceType());
         return moment;
     }
 

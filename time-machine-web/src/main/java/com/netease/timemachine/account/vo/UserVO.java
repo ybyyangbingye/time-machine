@@ -24,6 +24,8 @@ public class UserVO implements Serializable {
 
     private String imgUrl;
 
+    private Boolean isRegistered;
+
     public UserVO(String userName, String phone, String imgUrl) {
         this.userName = userName;
         this.phone = phone;

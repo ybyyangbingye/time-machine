@@ -1,9 +1,10 @@
 package com.netease.timemachine.timeset.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import com.netease.timemachine.timeset.dao.TimeSetDao;
+import com.netease.timemachine.timeset.dto.TimeSetDTO;
+import com.netease.timemachine.timeset.service.TimeSetService;
+
+import java.util.*;
 
 /**
  * @author: wqh
@@ -11,6 +12,22 @@ import java.util.List;
  * @Date: Created in 16:33 2018/7/31
  **/
 public class TimeSetUtil{
+
+    /**默认时光集图片*/
+    public static final String[] DEFAULT_PICS = new String[]{
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p1.jpg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p2.jpg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p3.jpg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p4.jpg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p5.png",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p6.png",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p7.png",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p8.png",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p9.png",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p10.png",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p11.png",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/p12.png"
+    };
 
     /**
      * map集合转string集合
@@ -22,8 +39,25 @@ public class TimeSetUtil{
         for(HashMap map : list){
             Iterator iterator = map.values().iterator();
             res.add((String)iterator.next());
-            break;
         }
         return res;
+    }
+
+    /**
+     * 新增一条时光集，同时插入timeset和resource表
+     * @param timeSetService
+     * @param timeSetDTO
+     */
+    public static void addTimeSetAndResource(TimeSetService timeSetService, TimeSetDTO timeSetDTO){
+        Long setId = timeSetService.addTimeSet(timeSetDTO);
+        for(String picture : timeSetDTO.getPictures()) {
+            timeSetService.addTimeSetToResource(picture, setId);
+        }
+    }
+
+    public static TimeSetDTO generateDefault(TimeSetService timeSetService){
+        TimeSetDTO timeSetDTO = new TimeSetDTO("时光集", null, Arrays.asList(DEFAULT_PICS),
+                timeSetService.musicRanByTimeSet());
+        return timeSetDTO;
     }
 }

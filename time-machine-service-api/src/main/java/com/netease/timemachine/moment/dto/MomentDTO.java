@@ -19,7 +19,13 @@ public class MomentDTO implements Serializable {
 
     private Long momentId;
 
+    private Long groupType;
+
     private Long creatorId;
+
+    private String title;
+
+    private Integer resourceType;
 
     private String description;
 

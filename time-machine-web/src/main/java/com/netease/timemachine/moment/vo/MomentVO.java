@@ -1,5 +1,6 @@
 package com.netease.timemachine.moment.vo;
 
+import com.netease.timemachine.moment.dto.GivealikeDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +23,10 @@ public class MomentVO implements Serializable {
 
     private Long creatorId;
 
+    private String title;
+
+    private Long groupType;
+
     private String nickName;
 
     private String childAge;
@@ -32,11 +37,13 @@ public class MomentVO implements Serializable {
 
     private Long childId;
 
+    private Integer resourceType;
+
     private List<String> files;
 
     private List<String> labels;
 
-    private List<String> giveALike;
+    private List<GivealikeDTO> giveALike;
 
     private Boolean hasLike;
 

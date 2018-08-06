@@ -8,7 +8,8 @@ package com.netease.timemachine.moment.enums;
 public enum  CommentEnum {
 
     /**评论为空*/
-    COMMENT_NULL(100, "评论不能为空");
+    COMMENT_NULL(100, "评论不能为空"),
+    COMMENT_ERROR(101, "评论内部错误");
 
     CommentEnum(Integer code, String message) {
         this.code = code;

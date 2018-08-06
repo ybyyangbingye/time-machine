@@ -2,7 +2,7 @@ package com.netease.timemachine.moment.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.util.ResponseView;
-import com.netease.timemachine.common.service.LabelService;
+import com.netease.timemachine.moment.service.LabelService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,8 +41,8 @@ public class LabelController {
 
     @RequestMapping(value = "/addLabels", method = RequestMethod.POST)
     public ResponseEntity addLabels(@RequestParam Long userId, @RequestParam Long childId,
-                         @RequestParam List<String> labels) {
-        //labelService.addLabels(userId,childId,labels);
+                                    @RequestParam Long momentId, @RequestParam List<String> labels) {
+        labelService.addLabels(userId,childId,momentId,labels);
         //return ResponseView.success(null,"添加成功");
         return null;
     }

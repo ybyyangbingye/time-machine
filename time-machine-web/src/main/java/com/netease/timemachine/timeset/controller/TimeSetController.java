@@ -25,19 +25,29 @@ public class TimeSetController {
     private TimeSetService timeSetService;
 
     /**
-     * 查询是否有相应的时光集生成，前台一直在询问
+     * 查询是否有相应的时光集生成，前端一直在询问
+     * 没有创建孩子，给默认时光集
+     * 有孩子的话，去数据库拉取满足条件的时光集，判断表timeset是否存在该时光集
+     * 若不存在，则添加到表timeset和resource中
+     * 最后，统一拉取所有的新旧时光集
+     * 如果没有，则返回默认时光集
      * @param childId
      * @return
      */
     @RequestMapping(value = "/return",method = RequestMethod.POST)
-    public ResponseEntity returnTimeSet(@RequestParam Long childId){
-        String yearMonth = CalendarYearMonth.yearAndMonth();
+    @CrossOrigin(methods = { RequestMethod.GET, RequestMethod.POST }, origins = "*")
+    public ResponseEntity returnTimeSet(@RequestParam(required = false) Long childId){
         List<TimeSetDTO> list = new ArrayList<>();
+        if(childId == null){
+            list.add(TimeSetUtil.generateDefault(timeSetService));
+            return ResponseView.success(list);
+        }
+        String yearMonth = CalendarYearMonth.yearAndMonth();
         List<HashMap> listByTime = timeSetService.searchLastMonthByViews(childId);
         if(listByTime != null && !timeSetService.isExist(yearMonth, childId)){
             TimeSetDTO timeSetDTO = new TimeSetDTO(yearMonth, childId, TimeSetUtil.listMapToString(listByTime),
                     timeSetService.musicRanByTimeSet());
-            list.add(timeSetDTO);
+            TimeSetUtil.addTimeSetAndResource(timeSetService, timeSetDTO);
         }
         Map<String,List<String>> mapByLabel = timeSetService.searchLastMonthByLabels(childId);
         if(!CollectionUtils.isEmpty(mapByLabel)){
@@ -48,29 +58,17 @@ public class TimeSetController {
                 if(!timeSetService.isExist(labelName, childId)){
                     TimeSetDTO timeSetDTO = new TimeSetDTO(labelName, childId, entry.getValue(),
                             timeSetService.musicRanByTimeSet());
-                    list.add(timeSetDTO);
+                    TimeSetUtil.addTimeSetAndResource(timeSetService, timeSetDTO);
                 }
             }
         }
         /**去拉取已经生成的时光集*/
-        List<TimeSetDTO> oldList = timeSetService.selectTimeSetDetail(childId);
-        if(!CollectionUtils.isEmpty(oldList) && !CollectionUtils.isEmpty(list)){
-            list.addAll(oldList);
+        list = timeSetService.selectTimeSetDetail(childId);
+        if(!CollectionUtils.isEmpty(list)) {
+            return ResponseView.success(list);
+        }else {
+            list.add(TimeSetUtil.generateDefault(timeSetService));
+            return ResponseView.success(list);
         }
-        return ResponseView.success(list);
-    }
-
-    /**
-     * 前端点开某个壳子，生成真实的时光集
-     * @param timeSetDTO
-     * @return
-     */
-    @RequestMapping("/generate")
-    public ResponseEntity generateTimeSet(@RequestBody TimeSetDTO timeSetDTO){
-        if(!timeSetService.isExist(timeSetDTO.getSetName(), timeSetDTO.getChildId())){
-            Long setId = timeSetService.addTimeSet(timeSetDTO);
-            timeSetService.addTimeSetToResource(timeSetDTO.getPictures(), setId);
-        }
-        return ResponseView.success(null, "时光集生成成功");
     }
 }

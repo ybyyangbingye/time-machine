@@ -16,8 +16,6 @@ public class TimeSetByLabel implements Serializable {
 
     private String name;
 
-    private Integer groupType;
-
     private Long groupId;
 
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author: wqh
@@ -15,6 +16,8 @@ import java.io.Serializable;
 public class Group implements Serializable {
 
     private static final long serialVersionUID = -8345277924592070879L;
+
+    private Long groupId;
 
     /**childId和userId联合表征*/
     private Long childId;
@@ -32,4 +35,5 @@ public class Group implements Serializable {
 
     /**用户的图像*/
     private String imgUrl;
+
 }

@@ -43,9 +43,13 @@ public class CommentServiceImpl implements CommentService {
         if(!CollectionUtils.isEmpty(commentDTOList)){
             for (CommentDTO commentDTO : commentDTOList){
                 Group parent = groupDao.selectByUserAndChildId(commentDTO.getParentId(), childId);
-                commentDTO.setParentNickName(parent.getNickName());
+                if(parent != null) {
+                    commentDTO.setParentNickName(parent.getNickName());
+                }
                 Group reply = groupDao.selectByUserAndChildId(commentDTO.getReplyId(), childId);
-                commentDTO.setReplyNickName(reply.getNickName());
+                if(reply != null) {
+                    commentDTO.setReplyNickName(reply.getNickName());
+                }
                 res.add(commentDTO);
             }
         }

@@ -24,7 +24,6 @@ public class TimeSetDTO implements Serializable {
     /**
      * 时光集命名规则
      * ①时间：以月命名，如：2018年7月。
-     * ②地点：以地点+地点时间命名，如：北京+2017年8月。
      * ③标签：以标签+标签时间命名，如：吃饭+2018年5月。
      **/
     private String setName;

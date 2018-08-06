@@ -25,7 +25,6 @@ public class ChildVO implements Serializable {
 
     private String imgUrl;
 
-    /**形如2018-07-17*/
     private Date birthDate;
 
     /**在插入group表时需要使用userId，通过ChildVO这个对象传递*/

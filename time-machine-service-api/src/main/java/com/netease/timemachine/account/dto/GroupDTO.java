@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author: wqh
@@ -30,6 +31,8 @@ public class GroupDTO implements Serializable {
     private Integer permission;
 
     private String imgUrl;
+
+    private Date createTime;
 
     public GroupDTO(Long childId, Long userId, String identification, String nickName, Integer permission, String imgUrl) {
         this.childId = childId;

@@ -1,6 +1,5 @@
 package com.netease.timemachine.account.dao;
 
-import com.netease.timemachine.account.dto.GroupDTO;
 import com.netease.timemachine.account.meta.Group;
 import org.apache.ibatis.annotations.*;
 
@@ -67,4 +66,12 @@ public interface GroupDao {
      */
     @Select("select permission from user_child_group where user_id = #{userId} and child_id = #{childId}")
     Integer permissionById(@Param("userId") Long userId, @Param("childId") Long childId);
+
+    /**
+     * 查询childId的创建者（根据权限0）
+     * @param childId
+     * @return
+     */
+    @Select("select user_id from user_child_group where child_id = #{childId} and permission=0")
+    Long selectChildCreator(Long childId);
 }

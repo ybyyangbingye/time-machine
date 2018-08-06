@@ -29,11 +29,16 @@ public class MomentServiceImpl implements MomentService {
      * @return
      */
     @Override
-    public List<MomentDTO> getMoments(Long childId, Long currentPage) {
-        Long start = currentPage * 5;
-        Long end = start + 5;
-        List<Moment> res = momentDao.getMoments(childId, start, end);
-        return MomentDtoToMeta.metaListToDtoList(res);
+    public List<MomentDTO> getMoments(Long childId, Long currentPage, Long type) {
+        if(type == 1L) {
+            List<Moment> res = momentDao.getAllMoments(childId, type);
+            return MomentDtoToMeta.metaListToDtoList(res);
+        }
+        else {
+            Long start = currentPage * 5;
+            List<Moment> res = momentDao.getMoments(childId, start, type);
+            return MomentDtoToMeta.metaListToDtoList(res);
+        }
     }
 
     /**
@@ -65,7 +70,7 @@ public class MomentServiceImpl implements MomentService {
     }
 
     /**
-     *
+     * 添加一条状态、里程碑
      * @param momentDTO
      * @param files
      * @return
@@ -75,13 +80,13 @@ public class MomentServiceImpl implements MomentService {
         Moment moment = MomentDtoToMeta.dtoToMeta(momentDTO);
         momentDao.addMoment(moment);
         for(String file : files) {
-            momentDao.addFile(file,moment.getMomentId());
+            momentDao.addFile(file,moment.getResourceType(),moment.getMomentId(),moment.getGroupType());
         }
         return moment.getMomentId();
     }
 
     /**
-     *
+     * 删除一条状态、里程碑
      * @param momentId
      * @return
      */
@@ -89,6 +94,16 @@ public class MomentServiceImpl implements MomentService {
     public boolean deleteMoment(Long momentId) {
         momentDao.deleteMoment(momentId);
         return true;
+    }
+
+    /**
+     * 获取所有被提醒的人
+     * @param childId
+     * @return
+     */
+    @Override
+    public List<Long> getReceivers(Long childId) {
+        return momentDao.getReceivers(childId);
     }
 
     @Override

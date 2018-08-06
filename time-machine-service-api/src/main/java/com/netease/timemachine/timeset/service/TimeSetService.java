@@ -49,13 +49,13 @@ public interface TimeSetService {
     String musicRanByTimeSet();
 
     /**
-     * 新增一条时光集，然后多resource表插入多个数据
-     * resource_type=3 音频
+     * 新增一条时光集，然后逐条向resource表插入数据
+     * resource_type=1 图片
      * group_type=3 时光集
-     * @param pictures
+     * @param picture
      * @param groupId
      */
-    void addTimeSetToResource(List<String> pictures, Long groupId);
+    void addTimeSetToResource(String picture, Long groupId);
 
     /**
      * 获取已经存在的时光集（时间降序）

@@ -42,11 +42,14 @@ public class MomentVoToDto {
         MomentVO momentVO = new MomentVO();
         momentVO.setMomentId(dto.getMomentId());
         momentVO.setCreatorId(dto.getCreatorId());
+        momentVO.setTitle(dto.getTitle());
+        momentVO.setGroupType(dto.getGroupType());
         momentVO.setDescription(dto.getDescription());
         momentVO.setLocation(dto.getLocation());
         momentVO.setChildId(dto.getChildId());
         momentVO.setGmtCreate(dto.getGmtCreate());
         momentVO.setGmtModified(dto.getGmtModified());
+        momentVO.setResourceType(dto.getResourceType());
         return momentVO;
     }
 
@@ -58,11 +61,14 @@ public class MomentVoToDto {
         MomentDTO dto = new MomentDTO();
         dto.setMomentId(vo.getMomentId());
         dto.setCreatorId(vo.getCreatorId());
+        dto.setTitle(vo.getTitle());
+        dto.setGroupType(vo.getGroupType());
         dto.setDescription(vo.getDescription());
         dto.setLocation(vo.getLocation());
         dto.setChildId(vo.getChildId());
         dto.setGmtCreate(vo.getGmtCreate());
         dto.setGmtModified(vo.getGmtModified());
+        dto.setResourceType(vo.getResourceType());
         return dto;
     }
 }

@@ -1,6 +1,6 @@
 package com.netease.timemachine.moment.dao;
 
-import com.netease.timemachine.moment.dto.Givealikevo;
+import com.netease.timemachine.moment.dto.GivealikeDTO;
 import com.netease.timemachine.moment.meta.Givealike;
 import org.apache.ibatis.annotations.*;
 
@@ -37,7 +37,7 @@ public interface GivealikeDao {
      */
     @Insert("insert into givealike(user_id, group_id, nickname) " +
             "values(#{userId}, #{groupId}, #{nickname})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Options(useGeneratedKeys = true, keyProperty = "likeId")
     boolean insertGivealike(Givealike givealike);
 
     /**
@@ -54,8 +54,8 @@ public interface GivealikeDao {
      * @param groupId
      * @return
      */
-    @Select("select user_id,nickname from givealike where group_id=#{groupId}")
-    List<Givealikevo> getAll(Long groupId);
+    @Select("select * from givealike where group_id=#{groupId}")
+    List<GivealikeDTO> getAll(Long groupId);
 
     /**
      *
@@ -73,4 +73,7 @@ public interface GivealikeDao {
      */
     @Select("select count(*) from givealike where group_id = #{groupId}")
     int getLoverCountByMomentId(long groupId);
+
+    @Select("select creator_id from moment where moment_id=#{groupId}")
+    Long getLikedUser(Long groupId);
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.service.MsService;
 import com.netease.timemachine.account.util.CheckSumBuilder;
 import com.netease.timemachine.config.SmsAutoConfig;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -30,7 +31,7 @@ public class MsServiceImpl implements MsService {
     SmsAutoConfig smsAutoConfig;
 
     @Override
-    public JSONObject sms(String phoneNumber) throws Exception {
+    public boolean sms(String phoneNumber) throws Exception {
         HttpClient httpClient=new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(smsAutoConfig.getServerUrl());
         String curTime = String.valueOf((new Date()).getTime() / 1000L);
@@ -63,11 +64,15 @@ public class MsServiceImpl implements MsService {
          * 2.具体的code有问题的可以参考官网的Code状态表
          */
         String res = EntityUtils.toString(response.getEntity(), "utf-8");
-        return JSONObject.parseObject(res);
+        JSONObject jsonObject= JSONObject.parseObject(res);
+        if(jsonObject.getInteger("code") != 200){
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public JSONObject vms(String phoneNumber, String code) throws Exception {
+    public boolean vms(String phoneNumber, String code) throws Exception {
             HttpClient httpClient=new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(smsAutoConfig.getVerifyUrl());
             String curTime = String.valueOf((new Date()).getTime() / 1000L);
@@ -99,8 +104,12 @@ public class MsServiceImpl implements MsService {
              * 2.具体的code有问题的可以参考官网的Code状态表
              */
         String res = EntityUtils.toString(response.getEntity(), "utf-8");
-        return  JSONObject.parseObject(res);
+        JSONObject jsonObject= JSONObject.parseObject(res);
+        if(jsonObject.getInteger("code") != 200){
+            return false;
         }
+        return true;
+    }
 }
 
 

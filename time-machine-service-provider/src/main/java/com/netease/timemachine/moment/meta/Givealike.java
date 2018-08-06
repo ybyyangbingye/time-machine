@@ -16,8 +16,14 @@ public class Givealike implements Serializable{
 
     private static final long serialVersionUID = 6401987480840121155L;
 
+    private Long likeId;
     private Long userId;
     private Long groupId;
     private String nickname;
 
+    public Givealike(Long userId, Long groupId, String nickname) {
+        this.userId = userId;
+        this.groupId = groupId;
+        this.nickname = nickname;
+    }
 }

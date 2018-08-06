@@ -22,8 +22,6 @@ public class LabelVO implements Serializable {
 
     private String labelName;
 
-    private Long labelType;
-
     private Long userId;
 
     private Long childId;

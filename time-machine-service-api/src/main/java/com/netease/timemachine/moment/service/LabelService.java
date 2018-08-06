@@ -1,6 +1,6 @@
-package com.netease.timemachine.common.service;
+package com.netease.timemachine.moment.service;
 
-import com.netease.timemachine.common.dto.LabelDTO;
+import com.netease.timemachine.moment.dto.LabelDTO;
 
 import java.util.List;
 
@@ -10,8 +10,6 @@ import java.util.List;
  * @date 2018/7/24 下午3:03
  */
 public interface LabelService {
-
-    List<LabelDTO> getLabelsByIds(List<Long> ids);
 
     /**
      * 获得历史标签

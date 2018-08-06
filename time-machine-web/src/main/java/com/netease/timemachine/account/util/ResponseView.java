@@ -60,15 +60,4 @@ public final class ResponseView {
         return buildView(null, code, message);
     }
 
-    /**
-     * 返回失败操作.
-     *
-     * @param code         错误码.
-     * @param message      错误信息.
-     * @param resultObject 错误结果.
-     * @return
-     */
-    public static ResponseEntity<?> fail(Integer code, String message, Object resultObject) {
-        return buildView(resultObject, code, message);
-    }
 }

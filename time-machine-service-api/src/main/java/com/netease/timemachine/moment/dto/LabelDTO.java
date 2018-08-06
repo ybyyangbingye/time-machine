@@ -20,9 +20,9 @@ public class LabelDTO implements Serializable {
 
     private Long labelId;
 
-    private String labelName;
+    private Long groupId;
 
-    private Long labelType;
+    private String labelName;
 
     private Long userId;
 

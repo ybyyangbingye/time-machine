@@ -60,4 +60,9 @@ public class GroupServiceImpl implements GroupService {
     public Integer permissionById(Long userId, Long childId) {
         return groupDao.permissionById(userId, childId);
     }
+
+    @Override
+    public Long selectChildCreator(Long childId) {
+        return groupDao.selectChildCreator(childId);
+    }
 }
