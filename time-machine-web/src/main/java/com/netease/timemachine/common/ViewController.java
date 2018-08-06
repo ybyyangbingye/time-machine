@@ -31,4 +31,8 @@ public class ViewController {
     public boolean updateViews(HttpServletRequest request, @RequestParam("resourceObj") String resourceObj) {
         return resourceService.updateViewsByResourceObj(resourceObj);
     }
+    @RequestMapping("test")
+    public String test(){
+        return "JE";
+    }
 }
