@@ -35,6 +35,7 @@ public class TimeSetController {
      * @return
      */
     @RequestMapping(value = "/return",method = RequestMethod.POST)
+    @CrossOrigin(methods = { RequestMethod.GET, RequestMethod.POST }, origins = "*")
     public ResponseEntity returnTimeSet(@RequestParam(required = false) Long childId){
         List<TimeSetDTO> list = new ArrayList<>();
         if(childId == null){
