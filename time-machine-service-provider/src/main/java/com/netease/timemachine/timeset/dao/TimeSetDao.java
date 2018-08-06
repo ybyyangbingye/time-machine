@@ -134,4 +134,12 @@ public interface TimeSetDao {
      */
     @Select("select resource_obj from resource where group_type=3 and group_id=#{setId}")
     List<String> selectTimeSetResources(Long setId);
+
+    /**
+     * 根据setId查询是否包含时光集
+     * @param setId
+     * @return
+     */
+    @Select("select * from timeset where set_id = #{setId}")
+    TimeSetDTO selectTimeSetBysetId(Long setId);
 }

@@ -39,7 +39,7 @@ public class TimeSetController {
     public ResponseEntity returnTimeSet(@RequestParam(required = false) Long childId){
         List<TimeSetDTO> list = new ArrayList<>();
         if(childId == null){
-            list.add(TimeSetUtil.generateDefault(timeSetService));
+            list.add(TimeSetUtil.generateDefault());
             return ResponseView.success(list);
         }
         String yearMonth = CalendarYearMonth.yearAndMonth();
@@ -67,8 +67,27 @@ public class TimeSetController {
         if(!CollectionUtils.isEmpty(list)) {
             return ResponseView.success(list);
         }else {
-            list.add(TimeSetUtil.generateDefault(timeSetService));
+            list.add(TimeSetUtil.generateDefault());
             return ResponseView.success(list);
         }
+    }
+
+    @RequestMapping(value = "/generate",method = RequestMethod.POST)
+    @CrossOrigin(methods = { RequestMethod.GET, RequestMethod.POST }, origins = "*")
+    public ResponseEntity generateTimeSet(@RequestParam(required = false) Long setId){
+        if(setId == null){
+            ResponseView.success(TimeSetUtil.generateDefault());
+        }
+        TimeSetDTO timeSetDTO = timeSetService.selectTimeSetBysetId(setId);
+        if(timeSetDTO != null) {
+            List<String> pics = timeSetService.selectTimeSetResources(setId);
+            if(!CollectionUtils.isEmpty(pics)) {
+                timeSetDTO.setSetId(setId);
+                timeSetDTO.setPictures(pics);
+                timeSetDTO.setMusicUrl(timeSetService.musicRanByTimeSet());
+                return ResponseView.success(timeSetDTO);
+            }
+        }
+        return ResponseView.success(TimeSetUtil.generateDefault());
     }
 }

@@ -13,7 +13,7 @@ import java.util.*;
  **/
 public class TimeSetUtil{
 
-    /**默认时光集图片*/
+    /**时光集默认图片*/
     public static final String[] DEFAULT_PICS = new String[]{
             "http://time-machine.nos-eastchina1.126.net/default/timeset/p1.jpg",
             "http://time-machine.nos-eastchina1.126.net/default/timeset/p2.jpg",
@@ -28,6 +28,9 @@ public class TimeSetUtil{
             "http://time-machine.nos-eastchina1.126.net/default/timeset/p11.png",
             "http://time-machine.nos-eastchina1.126.net/default/timeset/p12.png"
     };
+
+    /**时光集默认音乐*/
+    public static final String DEFAULT_MUSIC = "http://time-machine.nos-eastchina1.126.net/music/1-13%20%E6%A0%91%E6%B0%B7%E3%81%AE%E8%BE%89%E3%81%8D.m4a";
 
     /**
      * map集合转string集合
@@ -55,9 +58,13 @@ public class TimeSetUtil{
         }
     }
 
-    public static TimeSetDTO generateDefault(TimeSetService timeSetService){
+    public static TimeSetDTO generateDefault(){
         TimeSetDTO timeSetDTO = new TimeSetDTO("时光集", null, Arrays.asList(DEFAULT_PICS),
-                timeSetService.musicRanByTimeSet());
+                DEFAULT_MUSIC);
         return timeSetDTO;
+    }
+
+    public static String returnDefaultPics(){
+        return DEFAULT_PICS[0];
     }
 }
