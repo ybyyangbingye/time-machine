@@ -16,17 +16,17 @@ import java.util.List;
 public interface MomentDao {
 
     /**
-     * 根据页码获取用户宝宝的五条状态
+     * 根据页码获取用户宝宝的五条状态或状态
      * @param childId
      * @param start
      * @return
      */
-    @Select("select * from moment where child_id=#{childId} and group_type=#{type} order by gmt_create desc limit #{start},5")
+    @Select("select * from moment where child_id=#{childId} order by gmt_create desc limit #{start},5")
     List<Moment> getMoments( @Param("childId")Long childId,
                              @Param("start")Long start, @Param("type")Long type);
 
     /**
-     * 获取宝宝所有的里程碑状态
+     * 获取宝宝所有的里程碑
      * @param childId
      * @return
      */
