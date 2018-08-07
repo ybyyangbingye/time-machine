@@ -16,6 +16,7 @@ import com.netease.timemachine.moment.util.MomentVoToDto;
 import com.netease.timemachine.moment.vo.MomentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -67,9 +68,18 @@ public class MomentController {
         Integer months = ChildBirthDay.getChildMonths(date);
         for(MomentVO moment : moments) {
             moment.setFiles(momentService.getMomentFiles(moment.getMomentId()));
+            List<Integer> types = momentService.getType(moment.getMomentId());
+            if(!CollectionUtils.isEmpty(types)) {
+                if(types.size() == 1 && types.get(0) == 2) {
+                    moment.setResourceType(2);
+                }
+                else {
+                    moment.setResourceType(1);
+                }
+            }
             moment.setLabels(momentService.getMomentLabels(moment.getMomentId()));
             moment.setChildAge(ChildBirthDay.getAge(date));
-            moment.setNickName(momentService.getNickName(childId,userId));
+            moment.setNickName(momentService.getNickName(childId,moment.getCreatorId()));
             List<CommentDTO> comments = commentService.selectComments(childId, moment.getMomentId());
             moment.setComments(CommentVoToDto.commentDtoToVoList(comments));
             moment.setGiveALike(givealikeService.getAll(moment.getMomentId()));

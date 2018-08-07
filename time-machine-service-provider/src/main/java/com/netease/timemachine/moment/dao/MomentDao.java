@@ -43,6 +43,14 @@ public interface MomentDao {
 
 
     /**
+     * 获取文件的类型
+     * @param groupId
+     * @return
+     */
+    @Select("select resource_type from resource where group_id=#{groupId}")
+    List<Integer> getType(@Param("groupId")Long groupId);
+
+    /**
      * 获取一条状态下的所有标签
      * @param groupId
      * @return
@@ -106,4 +114,6 @@ public interface MomentDao {
      */
     @Select("select user_id from user_child_group where child_id=#{childId}")
     List<Long> getReceivers(Long childId);
+
+
 }
