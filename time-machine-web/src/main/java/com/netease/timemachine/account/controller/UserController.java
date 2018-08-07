@@ -61,11 +61,12 @@ public class UserController {
      * 返回验证码页面
      * @return
      */
-    @RequestMapping(value="/generatePicCode")
-    public ResponseEntity validateCode(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    @GetMapping(value="/generatePicCode")
+    @CrossOrigin(methods = { RequestMethod.GET, RequestMethod.POST }, origins = "*")
+    public String validateCode(HttpServletRequest request, HttpServletResponse response) {
         // 设置响应的类型格式为图片格式
         response.setContentType("image/jpeg");
-        //禁止图像缓存。
+        //禁止图像缓存
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
@@ -74,11 +75,17 @@ public class UserController {
 
         ValidateCode vCode = new ValidateCode(120,40,5,100);
         session.setAttribute("code", vCode.getCode());
-        vCode.write(response.getOutputStream());
-        return ResponseView.success(null, "生成图形验证码成功");
+        try{
+            vCode.write(response.getOutputStream());
+        }catch (Exception e){
+            e.printStackTrace();
+            return "获取图形验证码失败";
+        }
+        return "成功获取图形验证码";
     }
 
     @PostMapping("/verifyPicCode")
+    @CrossOrigin(methods = { RequestMethod.GET, RequestMethod.POST }, origins = "*")
     public ResponseEntity verifyPictureCode(@RequestParam() String code,
                                             HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -86,7 +93,7 @@ public class UserController {
         if (!StringUtils.equalsIgnoreCase(code, sessionCode)) {
             return ResponseView.fail(PICCODE_FAILED.getCode(), PICCODE_FAILED.getMessage());
         }
-        return ResponseView.success(null, "图形验证码成功");
+        return ResponseView.success(null, "图形验证码验证成功");
     }
 
     @RequestMapping(value = "/sms",method = RequestMethod.POST)
@@ -181,13 +188,32 @@ public class UserController {
     }
 
     /**
-     * 引导页+app内部申请关联孩子
+     * 引导页+app内部申请关联孩子,直接绑定
      * @param userId
      * @param childId
      * @return
      */
     @PostMapping("/apply")
     public ResponseEntity managerChildByCode(@RequestParam Long userId,
+                                             @RequestParam Long childId) {
+        GroupDTO groupDTO = groupService.selectByUserAndChildId(userId, childId);
+        if(groupDTO != null){
+            return ResponseView.fail(BINED_REPEAT.getCode(), BINED_REPEAT.getMessage());
+        }
+        UserDTO userDTO = userService.selectById(userId);
+        groupDTO = new GroupDTO(childId, userId, "其他", "其他", 2, userDTO.getImgUrl());
+        groupService.insertGroup(groupDTO);
+        return ResponseView.success(null, "绑定该宝宝成功");
+    }
+
+    /**
+     * 引导页+app内部申请关联孩子(后续工作)
+     * @param userId
+     * @param childId
+     * @return
+     */
+    @PostMapping("/applyTodo")
+    public ResponseEntity managerChildByCodeNext(@RequestParam Long userId,
                                              @RequestParam Long childId) {
         GroupDTO groupDTO = groupService.selectByUserAndChildId(userId, childId);
         if(groupDTO != null){
