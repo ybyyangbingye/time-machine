@@ -10,9 +10,15 @@ public enum AccountEnum {
     /**定义枚举异常*/
     INNER_ERROR(1000, "内部错误"),
     CHILD_NULL(1001, "没有该宝宝信息"),
-    APPLY_REPEAT(1002, "已关注该宝宝"),
-    USER_NULL(1002, "该用户未注册"),
-    CHILD_REPEAT(1003, "已创建宝宝");
+    BINED_REPEAT(1002, "已关注该宝宝"),
+    APPLY_REPEAT(1003, "该宝宝已经申请过，请等待确认"),
+    USER_NULL(1003, "该用户未注册"),
+    CHILD_REPEAT(1004, "已创建宝宝"),
+    BIND_FAILED(1005, "绑定失败"),
+    SEND_FAILED(1006, "发送失败"),
+    VERIFY_FAILED(1007, "验证失败"),
+    PICCODE_FAILED(1008, "图形验证码验证失败");
+
 
     private Integer code;
 

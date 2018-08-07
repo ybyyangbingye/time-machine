@@ -3,6 +3,7 @@ package com.netease.timemachine.timeset.util;
 import com.netease.timemachine.timeset.dao.TimeSetDao;
 import com.netease.timemachine.timeset.dto.TimeSetDTO;
 import com.netease.timemachine.timeset.service.TimeSetService;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -59,12 +60,11 @@ public class TimeSetUtil{
     }
 
     public static TimeSetDTO generateDefault(){
-        TimeSetDTO timeSetDTO = new TimeSetDTO("时光集", null, Arrays.asList(DEFAULT_PICS),
+        List<String> pictures = Arrays.asList(DEFAULT_PICS);
+        Collections.reverse(pictures);
+        TimeSetDTO timeSetDTO = new TimeSetDTO("时光集", null, pictures,
                 DEFAULT_MUSIC);
+        timeSetDTO.setSetId(0L);
         return timeSetDTO;
-    }
-
-    public static String returnDefaultPics(){
-        return DEFAULT_PICS[0];
     }
 }

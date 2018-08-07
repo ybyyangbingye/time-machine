@@ -75,13 +75,14 @@ public class TimeSetController {
     @RequestMapping(value = "/generate",method = RequestMethod.POST)
     @CrossOrigin(methods = { RequestMethod.GET, RequestMethod.POST }, origins = "*")
     public ResponseEntity generateTimeSet(@RequestParam(required = false) Long setId){
-        if(setId == null){
-            ResponseView.success(TimeSetUtil.generateDefault());
+        if(setId == null || setId == 0){
+            return ResponseView.success(TimeSetUtil.generateDefault());
         }
         TimeSetDTO timeSetDTO = timeSetService.selectTimeSetBysetId(setId);
         if(timeSetDTO != null) {
             List<String> pics = timeSetService.selectTimeSetResources(setId);
             if(!CollectionUtils.isEmpty(pics)) {
+                Collections.reverse(pics);
                 timeSetDTO.setSetId(setId);
                 timeSetDTO.setPictures(pics);
                 timeSetDTO.setMusicUrl(timeSetService.musicRanByTimeSet());
