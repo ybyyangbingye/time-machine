@@ -7,7 +7,6 @@
 package com.netease.timemachine.asyntask.img;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.common.dao.ResourceDao;
 import com.netease.timemachine.common.dto.ResourceDTO;
@@ -39,12 +39,18 @@ import java.util.Random;
 @Service
 public class ImageService {
 
-    @Autowired ResourceDao resourceDao;
-    @Autowired RestTemplate restTemplate;
     private static final String SECRET_ID = "090cbc98fc999f69b58424e89a817269";
     private static final String SECRET_KEY = "f1c4ba558ddfa449cf7b30d670d86d08";
     private static final String BUSINESS_ID = "be017655713de9e7c7da3a7d07479a0d";
+    private static final String VIDEO_BUSINESS_ID = "1003e730de1f3992a602e5870150757c";
     private final static String API_URL = "https://as.dun.163yun.com/v3/image/check";
+    private final static String VIDEO_URL = "https://as.dun.163yun.com/v3/video/submit";
+    private final static String VIDEO_RESULT_URL = "https://as.dun.163yun.com/v3/video/callback/results";
+
+    @Autowired ResourceDao resourceDao;
+    @Autowired RestTemplate restTemplate;
+
+    //    @Scheduled(cron = "0 0 0-12 * * ? ")
     public void run(){
         List<ResourceDTO> lists = resourceDao.listByUnCheck(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()-1000*24*60*60)));
 //        System.out.println(JSON.toJSONString(lists));
@@ -78,9 +84,7 @@ public class ImageService {
                 headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                 MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
                 map.setAll(kvs);
-                System.out.println(JSON.toJSONString(map));
                 HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-                System.out.println(JSON.toJSONString(request));
                 ResponseEntity response = restTemplate.postForEntity(API_URL,request,String.class);
                 JSONObject resp = JSONObject.parseObject(response.getBody().toString());
                 if (JSONObject.parseObject(JSON.parseArray(JSONObject.parseObject(JSON.parseArray(resp.getString("result")).getString(0)).getString("labels")).getString(0)).getString("level").equals(ReturnCode.NO)){
@@ -90,15 +94,78 @@ public class ImageService {
                 }
                 break;
             }
+            case 2:{
+                kvs.put("businessId",VIDEO_BUSINESS_ID);
+                kvs.put("url", resourceDTO.getResourceObj());
+                kvs.put("dataId", String.valueOf(resourceDTO.getId()));
+                kvs.put("callback",String.valueOf(resourceDTO.getId()) );
+                kvs.put("scFrequency", "5");
+                String signature = null;
+                try {
+                    signature = genSignature(SECRET_KEY,kvs);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                kvs.put("signature",signature);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+                map.setAll(kvs);
+                HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+                ResponseEntity response = restTemplate.postForEntity(VIDEO_URL,request,String.class);
+                JSONObject resp = JSONObject.parseObject(response.getBody().toString());
+
+
+                break;
+            }
         }
     }
 
-    /**
-     * 生成签名信息
-     * @param secretKey 产品私钥
-     * @param params 接口请求参数名和参数值map，不包括signature参数名
-     * @return
-     */
+    //    @Scheduled(cron = "0 0 0 1/1 * ? ")
+    public void checkResult( ){
+        Map<String,String> kvs = new HashMap<>();
+        kvs.put("secretId",SECRET_ID);
+        kvs.put("businessId",VIDEO_BUSINESS_ID);
+        kvs.put("version","v3.2");
+        kvs.put("timestamp",String.valueOf(System.currentTimeMillis()));
+        kvs.put("nonce",String.valueOf(new Random().nextInt()));
+        String signature = null;
+        try {
+            signature = genSignature(SECRET_KEY,kvs);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        kvs.put("signature",signature);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+        map.setAll(kvs);
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+        ResponseEntity response = restTemplate.postForEntity(VIDEO_RESULT_URL,request,String.class);
+        JSONObject resp = JSONObject.parseObject(response.getBody().toString());
+        System.out.println(resp);
+        JSONArray results = JSON.parseArray(resp.getString("result"));
+        results.stream().forEach((result)->{
+            JSONObject jo = JSON.parseObject(result.toString());
+            System.out.println(Integer.valueOf(jo.get("status").toString()));
+            System.out.println(Integer.valueOf(jo.get("level").toString()));
+            System.out.println(Integer.valueOf(jo.get("callback").toString()));
+            if (Integer.valueOf(jo.get("status").toString())==110 && Integer.valueOf(jo.get("level").toString())==2){
+                resourceDao.updateValidById(1,Long.valueOf(jo.get("callback").toString()));
+            } else {
+                resourceDao.updateValidById(0,Long.valueOf(jo.get("callback").toString()));
+            }
+        });
+        System.out.println(results);
+
+    }
+
+        /**
+         * 生成签名信息
+         * @param secretKey 产品私钥
+         * @param params 接口请求参数名和参数值map，不包括signature参数名
+         * @return
+         */
     public static String genSignature(String secretKey, Map<String, String> params)
         throws UnsupportedEncodingException {
         // 1. 参数名按照ASCII码表升序排序

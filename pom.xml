@@ -153,6 +153,9 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>0.9.7</version>
                 <configuration>
+                    <from>
+                        <image>openjdk:alpine</image>
+                    </from>
                     <to>
                         <image>tm</image>
                     </to>
