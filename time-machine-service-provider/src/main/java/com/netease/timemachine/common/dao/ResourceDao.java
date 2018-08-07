@@ -75,4 +75,10 @@ public interface ResourceDao {
             "</script>"
     })
     List<ResourceDTO> listByGroupIdAndGroupType(@Param("groupIds") List<Long> groupIds, @Param("groupType") int goupType);
+
+    @Select("select id, resource_obj, resource_type from resource where valid = -1 and gmt_create >= #{time} ")
+    List<ResourceDTO> listByUnCheck(@Param("time") String time);
+
+    @Update("update resource set valid = #{valid} where id = #{id}")
+    boolean updateValidById(@Param("valid") Integer valid,@Param("id") Long id);
 }

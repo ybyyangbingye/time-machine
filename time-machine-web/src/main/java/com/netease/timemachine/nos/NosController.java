@@ -23,8 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class NosController {
 
     @Autowired NosService nosService;
+
     @RequestMapping("/token")
     public ResponseEntity token(@RequestBody NosDTO nosDTO){
         return ResponseView.success(nosService.create(nosDTO));
     }
+
+    @RequestMapping("/beat")
+    public ResponseEntity beat(){
+        return ResponseView.success("beat");
+    }
+
 }
