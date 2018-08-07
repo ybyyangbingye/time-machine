@@ -84,4 +84,12 @@ public interface ResourceDao {
      */
     @Update("update resource set views = views + 1 where group_id = #{groupId} and resource_obj = #{resourceObj}")
     boolean updateViewsByGroupIdAndResourceId(@Param("groupId") long groupId, @Param("resourceObj") String resourceObj);
+
+
+    @Select("select id, resource_obj, resource_type from resource where valid = -1 and gmt_create >= #{time} ")
+    List<ResourceDTO> listByUnCheck(@Param("time") String time);
+
+
+    @Update("update resource set valid = #{valid} where id = #{id}")
+    boolean updateValidById(@Param("valid") Integer valid,@Param("id") Long id);
 }
