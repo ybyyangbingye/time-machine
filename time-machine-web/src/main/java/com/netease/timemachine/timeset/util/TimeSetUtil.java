@@ -3,6 +3,7 @@ package com.netease.timemachine.timeset.util;
 import com.netease.timemachine.timeset.dao.TimeSetDao;
 import com.netease.timemachine.timeset.dto.TimeSetDTO;
 import com.netease.timemachine.timeset.service.TimeSetService;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -13,7 +14,7 @@ import java.util.*;
  **/
 public class TimeSetUtil{
 
-    /**默认时光集图片*/
+    /**时光集默认图片*/
     public static final String[] DEFAULT_PICS = new String[]{
             "http://time-machine.nos-eastchina1.126.net/default/timeset/p1.jpg",
             "http://time-machine.nos-eastchina1.126.net/default/timeset/p2.jpg",
@@ -28,6 +29,9 @@ public class TimeSetUtil{
             "http://time-machine.nos-eastchina1.126.net/default/timeset/p11.png",
             "http://time-machine.nos-eastchina1.126.net/default/timeset/p12.png"
     };
+
+    /**时光集默认音乐*/
+    public static final String DEFAULT_MUSIC = "http://time-machine.nos-eastchina1.126.net/music/1-13%20%E6%A0%91%E6%B0%B7%E3%81%AE%E8%BE%89%E3%81%8D.m4a";
 
     /**
      * map集合转string集合
@@ -55,9 +59,12 @@ public class TimeSetUtil{
         }
     }
 
-    public static TimeSetDTO generateDefault(TimeSetService timeSetService){
-        TimeSetDTO timeSetDTO = new TimeSetDTO("时光集", null, Arrays.asList(DEFAULT_PICS),
-                timeSetService.musicRanByTimeSet());
+    public static TimeSetDTO generateDefault(){
+        List<String> pictures = Arrays.asList(DEFAULT_PICS);
+        Collections.reverse(pictures);
+        TimeSetDTO timeSetDTO = new TimeSetDTO("时光集", null, pictures,
+                DEFAULT_MUSIC);
+        timeSetDTO.setSetId(0L);
         return timeSetDTO;
     }
 }

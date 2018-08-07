@@ -51,4 +51,13 @@ public interface ResourceService {
      * @return
      */
     List<ResourceDTO> listByGroupIdAndGroupType(List<Long> groupIds, int groupType);
+
+    /**
+     * 更新浏览量
+     * @param groupId
+     * @param resourceObj
+     * @return
+     */
+
+    boolean updateViewsByGroupIdAndResourceId(long groupId, String resourceObj);
 }

@@ -31,5 +31,8 @@ public class MessageServiceImpl implements MessageService{
         messageDao.deleteMessage(messageId);
     }
 
-
+    @Override
+    public boolean isExistMessage(Long sendId, Long receiverId, Long groupId, Integer groupType) {
+        return messageDao.isExistMessage(sendId, receiverId, groupId, groupType);
+    }
 }

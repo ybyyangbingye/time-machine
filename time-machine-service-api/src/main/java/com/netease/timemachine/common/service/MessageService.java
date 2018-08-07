@@ -25,4 +25,13 @@ public interface MessageService {
      * @param messageId
      */
     void deleteMessage(Long messageId);
+
+    /**
+     * 查找该条信息是否存在
+     * @param sendId
+     * @param receiverId
+     * @param groupId
+     * @return
+     */
+    boolean isExistMessage(Long sendId, Long receiverId, Long groupId, Integer groupType);
 }

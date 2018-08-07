@@ -96,7 +96,7 @@ public class MomentController {
         //添加提醒
         List<Long> receivers = momentService.getReceivers(momentVO.getChildId());
         for(Long userId : receivers) {
-            if(userId != momentVO.getCreatorId()) {
+            if(!userId.equals(momentVO.getCreatorId())) {
                 MessageDTO messageDTO = new MessageDTO();
                 messageDTO.setSenderId(momentVO.getCreatorId());
                 messageDTO.setReceiverId(userId);

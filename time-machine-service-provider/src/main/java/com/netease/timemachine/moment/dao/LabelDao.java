@@ -19,7 +19,7 @@ public interface LabelDao {
      * @param childId
      * @return
      */
-    @Select("select name from label where user_id=#{userId} and child_id=#{childId} order by gmt_modified desc limit 5")
+    @Select("select distinct name from label where user_id=#{userId} and child_id=#{childId} order by gmt_modified desc limit 5")
     List<String> getHistoryLabels(@Param("userId") Long userId, @Param("childId")Long childId);
 
     /**

@@ -1,10 +1,7 @@
 package com.netease.timemachine.common.dao;
 
 import com.netease.timemachine.common.dto.MessageDTO;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -19,4 +16,17 @@ public interface MessageDao {
 
     @Delete("delete from message where message_id=#{messageId}")
     void deleteMessage(Long messageId);
+
+    /**
+     * 查找该条消息是否存在
+     * @param sendId
+     * @param receiverId
+     * @param groupId
+     * @param groupType
+     * @return
+     */
+    @Select("select count(*) from message where sender_id=#{sendId} and " +
+            "receiver_id=#{receiverId} and group_id=#{groupId} and group_type=#{groupType}")
+    boolean isExistMessage(@Param("sendId") Long sendId, @Param("receiverId") Long receiverId,
+                           @Param("groupId") Long groupId, @Param("groupType") Integer groupType);
 }

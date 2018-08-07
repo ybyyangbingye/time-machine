@@ -1,12 +1,9 @@
 package com.netease.timemachine.account.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.netease.timemachine.account.dao.GroupDao;
 import com.netease.timemachine.account.dto.ChildDTO;
 import com.netease.timemachine.account.dto.GroupDTO;
 import com.netease.timemachine.account.dto.UserDTO;
-import com.netease.timemachine.account.meta.Child;
-import com.netease.timemachine.account.meta.Group;
 import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.service.GroupService;
 import com.netease.timemachine.account.service.MsService;
@@ -16,20 +13,22 @@ import com.netease.timemachine.account.vo.ChildVO;
 import com.netease.timemachine.account.vo.UserVO;
 import com.netease.timemachine.auth.meta.RsaAlgorithm;
 import com.netease.timemachine.common.dto.MessageDTO;
-import com.netease.timemachine.common.meta.Message;
 import com.netease.timemachine.common.service.MessageService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.netease.timemachine.account.enums.AccountEnum.APPLY_REPEAT;
-import static com.netease.timemachine.account.enums.AccountEnum.USER_NULL;
+import static com.netease.timemachine.account.enums.AccountEnum.*;
 
 /**
  * @author: wqh
@@ -58,6 +57,38 @@ public class UserController {
     @Autowired
     private ChildService childService;
 
+    /**
+     * 返回验证码页面
+     * @return
+     */
+    @RequestMapping(value="/generatePicCode")
+    public ResponseEntity validateCode(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        // 设置响应的类型格式为图片格式
+        response.setContentType("image/jpeg");
+        //禁止图像缓存。
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        HttpSession session = request.getSession();
+
+        ValidateCode vCode = new ValidateCode(120,40,5,100);
+        session.setAttribute("code", vCode.getCode());
+        vCode.write(response.getOutputStream());
+        return ResponseView.success(null, "生成图形验证码成功");
+    }
+
+    @PostMapping("/verifyPicCode")
+    public ResponseEntity verifyPictureCode(@RequestParam() String code,
+                                            HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String sessionCode = (String) session.getAttribute("code");
+        if (!StringUtils.equalsIgnoreCase(code, sessionCode)) {
+            return ResponseView.fail(PICCODE_FAILED.getCode(), PICCODE_FAILED.getMessage());
+        }
+        return ResponseView.success(null, "图形验证码成功");
+    }
+
     @RequestMapping(value = "/sms",method = RequestMethod.POST)
     public ResponseEntity smsByPhone(@RequestParam String phone){
         boolean res = false;
@@ -65,26 +96,26 @@ public class UserController {
             res  = msService.sms(phone);
         }catch (Exception e){
             e.printStackTrace();
-            return ResponseView.fail(500, "服务器内部错误");
+            return ResponseView.fail(INNER_ERROR.getCode(), INNER_ERROR.getMessage());
         }
         if(res){
             return ResponseView.success(null,"发送成功");
         }else {
-            return ResponseView.fail(100, "发送失败");
+            return ResponseView.fail(SEND_FAILED.getCode(), SEND_FAILED.getMessage());
         }
     }
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseEntity login(@RequestParam String phone, @RequestParam String code){
-//        boolean res = false;
-//        try {
-//            res = msService.sms(phone);
-//        }catch (Exception e) {
-//            return ResponseView.fail(500, "服务器内部错误");
-//        }
-//        if(!res) {
-//            return ResponseView.fail(100, "验证失败");
-//        }
+        boolean res = false;
+        try {
+            res = msService.vms(phone, code);
+        }catch (Exception e) {
+            return ResponseView.fail(INNER_ERROR.getCode(), INNER_ERROR.getMessage());
+        }
+        if(!res) {
+            return ResponseView.fail(VERIFY_FAILED.getCode(), VERIFY_FAILED.getMessage());
+        }
         UserDTO userDTO = userService.selectByPhone(phone);
         JSONObject jsonObject = new JSONObject();
         if(userDTO == null){
@@ -158,14 +189,17 @@ public class UserController {
     @PostMapping("/apply")
     public ResponseEntity managerChildByCode(@RequestParam Long userId,
                                              @RequestParam Long childId) {
-        MessageDTO messageDTO = new MessageDTO();
         GroupDTO groupDTO = groupService.selectByUserAndChildId(userId, childId);
         if(groupDTO != null){
-            return ResponseView.fail(APPLY_REPEAT.getCode(), APPLY_REPEAT.getMessage());
+            return ResponseView.fail(BINED_REPEAT.getCode(), BINED_REPEAT.getMessage());
         }
         Long receiverId = groupService.selectChildCreator(childId);
         UserDTO userDTO = userService.selectById(userId);
+        if(messageService.isExistMessage(userId, receiverId, childId, 4)){
+            return ResponseView.fail(APPLY_REPEAT.getCode(), APPLY_REPEAT.getMessage());
+        }
         ChildDTO childDTO = childService.selectChildById(childId);
+        MessageDTO messageDTO = new MessageDTO();
         messageDTO.setSenderId(userId);
         messageDTO.setReceiverId(receiverId);
         messageDTO.setGroupType(4);
@@ -177,24 +211,28 @@ public class UserController {
 
     /**
      * 微信点击链接主动关联孩子,直接绑定
-     * @param childId
+     * @param invitationCode
      * @param phone
      * @return
      */
     @PostMapping("/association")
-    public ResponseEntity managerChildByCode(@RequestParam Long childId,
+    public ResponseEntity managerChildByCode(@RequestParam String invitationCode,
                                              @RequestParam String phone) {
-        UserDTO userDTO = userService.selectByPhone(phone);
-        if (userDTO == null) {
-            return ResponseView.fail(USER_NULL.getCode(), USER_NULL.getMessage());
+        Long childId = ChildInvitationCode.inviDecoding(invitationCode);
+        if(childId!=null && childService.selectChildById(childId)!=null) {
+            UserDTO userDTO = userService.selectByPhone(phone);
+            if (userDTO == null) {
+                return ResponseView.fail(USER_NULL.getCode(), USER_NULL.getMessage());
+            }
+            Long userId = userDTO.getUserId();
+            GroupDTO groupDTO = groupService.selectByUserAndChildId(userId, childId);
+            if (groupDTO != null) {
+                return ResponseView.fail(BINED_REPEAT.getCode(), BINED_REPEAT.getMessage());
+            }
+            groupDTO = new GroupDTO(childId, userId, "其他", "其他", 2, userDTO.getImgUrl());
+            groupService.insertGroup(groupDTO);
+            return ResponseView.success(null, "绑定该宝宝成功");
         }
-        Long userId = userDTO.getUserId();
-        GroupDTO groupDTO = groupService.selectByUserAndChildId(userId, childId);
-        if(groupDTO != null){
-            return ResponseView.fail(APPLY_REPEAT.getCode(), APPLY_REPEAT.getMessage());
-        }
-        groupDTO = new GroupDTO(childId, userId, "其他","其他", 2, userDTO.getImgUrl());
-        groupService.insertGroup(groupDTO);
-        return ResponseView.success(null, "绑定该宝宝成功");
+        return ResponseView.fail(BIND_FAILED.getCode(), BIND_FAILED.getMessage());
     }
 }

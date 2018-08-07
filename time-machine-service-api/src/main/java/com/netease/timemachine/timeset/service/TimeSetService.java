@@ -75,4 +75,11 @@ public interface TimeSetService {
      * 获取所有时光集的详细信息（包含名字、图片集合）
      */
     List<TimeSetDTO> selectTimeSetDetail(Long childId);
+
+    /**
+     * 根据setId查询是否包含时光集
+     * @param setId
+     * @return
+     */
+    TimeSetDTO selectTimeSetBysetId(Long setId);
 }

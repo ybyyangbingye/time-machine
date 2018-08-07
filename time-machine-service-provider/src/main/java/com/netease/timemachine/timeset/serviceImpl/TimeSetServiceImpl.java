@@ -130,4 +130,9 @@ public class TimeSetServiceImpl implements TimeSetService {
         }
         return res;
     }
+
+    @Override
+    public TimeSetDTO selectTimeSetBysetId(Long setId) {
+        return timeSetDao.selectTimeSetBysetId(setId);
+    }
 }
