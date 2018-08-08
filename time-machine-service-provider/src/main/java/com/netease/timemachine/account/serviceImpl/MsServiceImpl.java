@@ -64,6 +64,7 @@ public class MsServiceImpl implements MsService {
          * 2.具体的code有问题的可以参考官网的Code状态表
          */
         String res = EntityUtils.toString(response.getEntity(), "utf-8");
+        System.out.println(res);
         JSONObject jsonObject= JSONObject.parseObject(res);
         if(jsonObject.getInteger("code") != 200){
             return false;

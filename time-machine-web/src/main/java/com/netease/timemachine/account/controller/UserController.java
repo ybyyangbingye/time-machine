@@ -125,6 +125,7 @@ public class UserController {
         }
         UserDTO userDTO = userService.selectByPhone(phone);
         JSONObject jsonObject = new JSONObject();
+
         if(userDTO == null){
             userDTO = new UserDTO();
             userDTO.setPhone(phone);
@@ -248,15 +249,20 @@ public class UserController {
         Long childId = ChildInvitationCode.inviDecoding(invitationCode);
         if(childId!=null && childService.selectChildById(childId)!=null) {
             UserDTO userDTO = userService.selectByPhone(phone);
+            GroupDTO groupDTO = null;
+            /**如果用户之前未注册过，则也是直接绑定，然后*/
             if (userDTO == null) {
-                return ResponseView.fail(USER_NULL.getCode(), USER_NULL.getMessage());
+                userDTO = new UserDTO();
+                userDTO.setPhone(phone);
+                userService.insertUser(userDTO);
+                userDTO = userService.selectByPhone(phone);
+            }else {
+                groupDTO = groupService.selectByUserAndChildId(userDTO.getUserId(), childId);
+                if (groupDTO != null) {
+                    return ResponseView.fail(BINED_REPEAT.getCode(), BINED_REPEAT.getMessage());
+                }
             }
-            Long userId = userDTO.getUserId();
-            GroupDTO groupDTO = groupService.selectByUserAndChildId(userId, childId);
-            if (groupDTO != null) {
-                return ResponseView.fail(BINED_REPEAT.getCode(), BINED_REPEAT.getMessage());
-            }
-            groupDTO = new GroupDTO(childId, userId, "其他", "其他", 2, userDTO.getImgUrl());
+            groupDTO = new GroupDTO(childId, userDTO.getUserId(), "其他", "其他", 2, userDTO.getImgUrl());
             groupService.insertGroup(groupDTO);
             return ResponseView.success(null, "绑定该宝宝成功");
         }
