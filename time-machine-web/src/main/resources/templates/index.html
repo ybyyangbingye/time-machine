@@ -130,10 +130,10 @@
                         },
                         success:function (json) {
                             if(json.code==200){
-                                window.location.href="/wechat/success?code="+ code
+                                window.location.href="/timemachine/wechat/success?code="+ code
                             }else if(json.code==1002){
                                 alert('您已经关注该宝宝了');
-                                window.location.href="/wechat/toQRcode"
+                                window.location.href="/timemachine/wechat/toQRcode"
                             }
                         }
                     })
