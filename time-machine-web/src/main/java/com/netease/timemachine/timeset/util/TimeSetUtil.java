@@ -25,11 +25,11 @@ public class TimeSetUtil{
             "http://time-machine.nos-eastchina1.126.net/default/timeset/9.jpg",
             "http://time-machine.nos-eastchina1.126.net/default/timeset/10.jpg",
             "http://time-machine.nos-eastchina1.126.net/default/timeset/11.jpg",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/12.jpg"
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/12.png"
     };
 
     /**时光集默认音乐*/
-    public static final String DEFAULT_MUSIC = "http://time-machine.nos-eastchina1.126.net/music/1-13%20%E6%A0%91%E6%B0%B7%E3%81%AE%E8%BE%89%E3%81%8D.m4a";
+    public static final String DEFAULT_MUSIC = "http://time-machine.nos-eastchina1.126.net/music/%E5%8A%A0%E8%97%A4%E9%81%94%E4%B9%9F-%E3%81%8D%E3%82%89%E3%82%81%E3%81%8F%E6%B9%96%E7%95%94%20-%20%E9%93%83%E5%A3%B0(1).mp3";
 
     /**
      * map集合转string集合
@@ -60,7 +60,7 @@ public class TimeSetUtil{
     public static TimeSetDTO generateDefault(){
         List<String> pictures = Arrays.asList(DEFAULT_PICS);
         Collections.reverse(pictures);
-        TimeSetDTO timeSetDTO = new TimeSetDTO("时光集", null, pictures,
+        TimeSetDTO timeSetDTO = new TimeSetDTO("时光集示例", null, pictures,
                 DEFAULT_MUSIC);
         timeSetDTO.setSetId(0L);
         return timeSetDTO;
