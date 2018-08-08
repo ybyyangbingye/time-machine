@@ -26,9 +26,9 @@ public class test {
     public void t(){
         ResourceDTO resourceDTO = new ResourceDTO();
         resourceDTO.setId(100L);
-        resourceDTO.setResourceType(1);
+        resourceDTO.setResourceType(2);
         System.out.println(123);
-        resourceDTO.setResourceObj("http://pic2.orsoon.com/2016/0919/20160919101341925.png");
-        imageService.run();
+        resourceDTO.setResourceObj("https://v.youku.com/v_show/id_XMzA5NzkxNzA1Ng==.html?spm=a2h1n.8251843.playList.5~5~A&f=51266236&o=1");
+        imageService.checkResult();
     }
 }

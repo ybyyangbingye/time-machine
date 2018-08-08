@@ -7,6 +7,8 @@
 package com.netease.timemachine.asyntask.img;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -39,6 +41,7 @@ import java.util.Random;
 @Service
 public class ImageService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ImageService.class);
     private static final String SECRET_ID = "090cbc98fc999f69b58424e89a817269";
     private static final String SECRET_KEY = "f1c4ba558ddfa449cf7b30d670d86d08";
     private static final String BUSINESS_ID = "be017655713de9e7c7da3a7d07479a0d";
@@ -77,7 +80,7 @@ public class ImageService {
                 try {
                     signature = genSignature(SECRET_KEY,kvs);
                 } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                    LOG.error("Something went wrong during generating signature",e);
                 }
                 kvs.put("signature",signature);
                 HttpHeaders headers = new HttpHeaders();
@@ -104,7 +107,7 @@ public class ImageService {
                 try {
                     signature = genSignature(SECRET_KEY,kvs);
                 } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                    LOG.error("Something went wrong during generating signature",e);
                 }
                 kvs.put("signature",signature);
                 HttpHeaders headers = new HttpHeaders();
@@ -114,8 +117,6 @@ public class ImageService {
                 HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
                 ResponseEntity response = restTemplate.postForEntity(VIDEO_URL,request,String.class);
                 JSONObject resp = JSONObject.parseObject(response.getBody().toString());
-
-
                 break;
             }
         }
@@ -156,8 +157,7 @@ public class ImageService {
                 resourceDao.updateValidById(0,Long.valueOf(jo.get("callback").toString()));
             }
         });
-        System.out.println(results);
-
+//        System.out.println(results);
     }
 
         /**
