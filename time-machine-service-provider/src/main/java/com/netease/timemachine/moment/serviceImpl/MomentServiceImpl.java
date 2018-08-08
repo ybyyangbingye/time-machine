@@ -52,6 +52,12 @@ public class MomentServiceImpl implements MomentService {
         return res;
     }
 
+    @Override
+    public List<Integer> getType(Long moment_id) {
+        List<Integer> types = momentDao.getType(moment_id);
+        return types;
+    }
+
     /**
      * 获取状态下的标签
      * @param momentId

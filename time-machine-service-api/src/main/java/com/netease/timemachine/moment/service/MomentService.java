@@ -28,6 +28,13 @@ public interface MomentService {
     List<String> getMomentFiles(Long momentId);
 
     /**
+     *
+     * @param moment_id
+     * @return
+     */
+    List<Integer> getType(Long moment_id);
+
+    /**
      * 获取某个状态下的所有标签
      * @param momentId
      * @return
