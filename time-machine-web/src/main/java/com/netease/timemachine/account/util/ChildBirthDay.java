@@ -87,24 +87,4 @@ public class ChildBirthDay {
         return year*12+month;
     }
 
-    public static String getAge(String str) {
-        String[] data = str.split("-");
-        if (data.length < 3) {
-            return "";
-        }
-        Calendar birthday = new GregorianCalendar(Integer.valueOf(data[0]), Integer.valueOf(data[1]), Integer.valueOf(data[2]));
-        Calendar now = Calendar.getInstance();
-        int nowDay = now.get(Calendar.DAY_OF_MONTH);
-        int nowMonth = now.get(Calendar.MONTH);
-        int nowYear = now.get(Calendar.YEAR);
-        int birthDay = birthday.get(Calendar.DAY_OF_MONTH);
-        int birthMonth = birthday.get(Calendar.MONTH);
-        int birthYear = birthday.get(Calendar.YEAR);
-        //按照减法原理，先day相减，不够向month借；然后month相减，不够向year借；最后year相减。
-
-
-
-        return "";
-    }
-
 }
