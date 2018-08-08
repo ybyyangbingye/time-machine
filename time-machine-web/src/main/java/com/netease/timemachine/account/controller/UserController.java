@@ -200,10 +200,11 @@ public class UserController {
         if(groupDTO != null){
             return ResponseView.fail(BINED_REPEAT.getCode(), BINED_REPEAT.getMessage());
         }
+        ChildDTO childDTO = childService.selectChildById(childId);
         UserDTO userDTO = userService.selectById(userId);
         groupDTO = new GroupDTO(childId, userId, "其他", "其他", 2, userDTO.getImgUrl());
         groupService.insertGroup(groupDTO);
-        return ResponseView.success(null, "绑定该宝宝成功");
+        return ResponseView.success(ChildVoToDtoUtil.childDtoToVo(childDTO), "绑定该宝宝成功");
     }
 
     /**
