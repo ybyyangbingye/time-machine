@@ -1,9 +1,7 @@
 package com.netease.timemachine.timeset.util;
 
-import com.netease.timemachine.timeset.dao.TimeSetDao;
 import com.netease.timemachine.timeset.dto.TimeSetDTO;
 import com.netease.timemachine.timeset.service.TimeSetService;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -16,18 +14,18 @@ public class TimeSetUtil{
 
     /**时光集默认图片*/
     public static final String[] DEFAULT_PICS = new String[]{
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p1.jpg",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p2.jpg",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p3.jpg",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p4.jpg",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p5.png",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p6.png",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p7.png",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p8.png",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p9.png",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p10.png",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p11.png",
-            "http://time-machine.nos-eastchina1.126.net/default/timeset/p12.png"
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/1.jpeg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/2.jpeg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/3.jpg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/4.jpeg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/5.jpg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/6.jpg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/7.jpg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/8.jpeg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/9.jpg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/10.jpg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/11.jpg",
+            "http://time-machine.nos-eastchina1.126.net/default/timeset/12.jpg"
     };
 
     /**时光集默认音乐*/
