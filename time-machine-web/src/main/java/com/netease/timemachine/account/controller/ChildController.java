@@ -101,7 +101,8 @@ public class ChildController {
      * @return
      */
     @RequestMapping("/ownManagers")
-    public ResponseEntity selectOwnChildren(@Param("userId") Long userId, @RequestParam Long childId){
+    public ResponseEntity selectOwnChildren(@RequestParam("userId") Long userId,
+                                            @RequestParam("childId") Long childId){
         List<GroupDTO> groupDTOList = groupService.selectGroupByChildId(childId);
         GroupDTO groupDTO = null;
         for(int i = 0; i < groupDTOList.size(); i++){

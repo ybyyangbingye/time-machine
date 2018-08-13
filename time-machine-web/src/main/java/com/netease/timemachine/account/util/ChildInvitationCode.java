@@ -73,7 +73,7 @@ public class ChildInvitationCode {
     }
 
     public static void main(String[] args) {
-        System.out.println(inviCodeGenerator(74L));
+        System.out.println(inviCodeGenerator(268L));
         System.out.println(inviDecoding("KGU4EA"));
     }
 }

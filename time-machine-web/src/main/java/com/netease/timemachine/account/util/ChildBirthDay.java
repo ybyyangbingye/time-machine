@@ -87,4 +87,8 @@ public class ChildBirthDay {
         return year*12+month;
     }
 
+    public static void main(String[] args) {
+        System.out.println(getAge(new Date()));
+    }
+
 }

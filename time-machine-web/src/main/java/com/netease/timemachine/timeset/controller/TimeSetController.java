@@ -40,6 +40,8 @@ public class TimeSetController {
         List<TimeSetDTO> list = new ArrayList<>();
         if(childId == null){
             list.add(TimeSetUtil.generateDefault());
+            list.add(TimeSetUtil.generateDefault10000());
+            list.add(TimeSetUtil.generateDefault10001());
             return ResponseView.success(list);
         }
         String yearMonth = CalendarYearMonth.yearAndMonth();
@@ -68,6 +70,8 @@ public class TimeSetController {
             return ResponseView.success(list);
         }else {
             list.add(TimeSetUtil.generateDefault());
+            list.add(TimeSetUtil.generateDefault10000());
+            list.add(TimeSetUtil.generateDefault10001());
             return ResponseView.success(list);
         }
     }
@@ -77,6 +81,12 @@ public class TimeSetController {
     public ResponseEntity generateTimeSet(@RequestParam(required = false) Long setId){
         if(setId == null || setId == 0){
             return ResponseView.success(TimeSetUtil.generateDefault());
+        }
+        if(setId.equals(10000L)){
+            return ResponseView.success(TimeSetUtil.generateDefault10000());
+        }
+        if(setId.equals(10001L)){
+            return ResponseView.success(TimeSetUtil.generateDefault10001());
         }
         TimeSetDTO timeSetDTO = timeSetService.selectTimeSetBysetId(setId);
         if(timeSetDTO != null) {
