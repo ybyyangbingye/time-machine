@@ -42,6 +42,7 @@ public class VerifyHandler implements HandlerInterceptor {
             } catch (Exception e) {
                 LOG.error("JWT验证失败 ip = {}",res.getRemoteAddr() ,e);
                 System.out.println();
+                System.out.println("test合并到master");
                 return false;
             }
         }
