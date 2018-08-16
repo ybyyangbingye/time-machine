@@ -41,6 +41,7 @@ public class VerifyHandler implements HandlerInterceptor {
                 rsaAlgorithm.verify(token);
             } catch (Exception e) {
                 LOG.error("JWT验证失败 ip = {}",res.getRemoteAddr() ,e);
+                System.out.println();
                 return false;
             }
         }
