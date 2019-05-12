@@ -35,18 +35,11 @@ import java.util.Map;
  */
 
 @Component
-public class RsaAlgorithm implements BaseAlgorithm{
-
-    private static final Logger LOG = LoggerFactory.getLogger(RsaAlgorithm.class);
+public class RsaAlgorithm{
 
     private Algorithm algorithm =null;
 
     public RsaAlgorithm() throws Exception {
-        init();
-    }
-
-    @Override
-    public void init() throws Exception{
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(1024);
         KeyPair keyPair = keyPairGenerator.generateKeyPair();
@@ -71,37 +64,16 @@ public class RsaAlgorithm implements BaseAlgorithm{
         }
     }
 
-    public JsonWebToken verify(String token) throws JWTDecodeException {
+    public void verify(String token) throws JWTDecodeException {
         String[] parts = token.split("\\.");
-        if (parts.length == 2 && token.endsWith(".")) {
-            parts = new String[]{parts[0], parts[1], ""};
-        }
         if (parts.length != 3) {
-            throw new JWTDecodeException(String.format("The token was expected to have 3 parts, but got %s.", new Object[]{Integer.valueOf(parts.length)}));
+            throw new JWTDecodeException("JWT format is not standard");
         } else {
-            StringBuilder sb = new StringBuilder();
-            sb.append(parts[0]);
-            sb.append(".");
-            sb.append(parts[1]);
-            byte[] signatureBytes = algorithm.sign(sb.toString().getBytes(StandardCharsets.UTF_8));
+            String str = parts[0] + "." + parts[1];
+            byte[] signatureBytes = algorithm.sign(str.getBytes(StandardCharsets.UTF_8));
             String signature = Base64.encodeBase64URLSafeString(signatureBytes);
             if (!signature.equals(parts[2])) {
                 throw new JWTDecodeException("The token is of wrong format");
-            } else {
-                String headerJson = StringUtils.newStringUtf8(Base64.decodeBase64(parts[0]));
-                String playloadJson = StringUtils.newStringUtf8(Base64.decodeBase64(parts[1]));
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    Map headerMap = mapper.readValue(headerJson, Map.class);
-                    Map playloadMap = mapper.readValue(playloadJson, Map.class);
-                    return new JsonWebToken(parts[0], parts[1], parts[2], headerMap, playloadMap);
-                } catch (JsonParseException e) {
-                    throw new JWTDecodeException("Something wrong occured");
-                } catch (JsonMappingException e) {
-                    throw new JWTDecodeException("Something wrong occured");
-                } catch (IOException e) {
-                    throw new JWTDecodeException("Something wrong occured");
-                }
             }
         }
     }

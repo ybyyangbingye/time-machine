@@ -31,6 +31,7 @@ public class VerifyHandler implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest res, HttpServletResponse resp, Object o) throws Exception {
+        System.out.println("aaa");
         if (o instanceof HandlerMethod) {
             JWTVerify jwtVerify = ((HandlerMethod) o).getMethodAnnotation(JWTVerify.class);
             if (jwtVerify == null) {
@@ -41,8 +42,6 @@ public class VerifyHandler implements HandlerInterceptor {
                 rsaAlgorithm.verify(token);
             } catch (Exception e) {
                 LOG.error("JWT验证失败 ip = {}",res.getRemoteAddr() ,e);
-                System.out.println();
-                System.out.println("test合并到master");
                 return false;
             }
         }
