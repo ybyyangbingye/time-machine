@@ -24,8 +24,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.common.dao.ResourceDao;
 import com.netease.timemachine.common.dto.ResourceDTO;
-import com.netease.timemachine.moment.meta.Resource;
 
+import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -50,8 +50,9 @@ public class ImageService {
     private final static String VIDEO_URL = "https://as.dun.163yun.com/v3/video/submit";
     private final static String VIDEO_RESULT_URL = "https://as.dun.163yun.com/v3/video/callback/results";
 
-    @Autowired ResourceDao resourceDao;
-    @Autowired RestTemplate restTemplate;
+    @Resource
+    ResourceDao resourceDao;
+    @Resource RestTemplate restTemplate;
 
     //    @Scheduled(cron = "0 0 0-12 * * ? ")
     public void run(){

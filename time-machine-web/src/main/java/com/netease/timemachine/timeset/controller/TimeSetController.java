@@ -5,11 +5,11 @@ import com.netease.timemachine.timeset.dto.TimeSetDTO;
 import com.netease.timemachine.timeset.service.TimeSetService;
 import com.netease.timemachine.timeset.util.CalendarYearMonth;
 import com.netease.timemachine.timeset.util.TimeSetUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -21,7 +21,7 @@ import java.util.*;
 @RequestMapping("/timeset")
 public class TimeSetController {
 
-    @Autowired
+    @Resource
     private TimeSetService timeSetService;
 
     /**

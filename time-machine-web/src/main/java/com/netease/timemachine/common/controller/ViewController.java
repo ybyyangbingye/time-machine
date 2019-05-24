@@ -1,10 +1,9 @@
 package com.netease.timemachine.common.controller;
 
 import com.netease.timemachine.common.service.ResourceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 
 /**
  * @author zhongweichang
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class ViewController {
 
-    @Autowired
+    @Resource
     private ResourceService resourceService;
 
     /**

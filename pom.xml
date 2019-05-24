@@ -33,73 +33,6 @@
     </properties>
 
     <dependencies>
-        <!--启动jar包-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zookeeper-config</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>org.apache.curator</artifactId>
-                    <groupId>curator-framework</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>org.apache.curator</artifactId>
-                    <groupId>curator-recipes</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>org.apache.curator</artifactId>
-                    <groupId>curator-client</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>org.apache.curator</artifactId>
-                    <groupId>curator-framework</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>org.apache.curator</artifactId>
-                    <groupId>curator-recipes</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>org.apache.curator</artifactId>
-                    <groupId>curator-client</groupId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.curator</groupId>
-                    <artifactId>curator-x-discovery</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-
-
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-framework</artifactId>
-            <version>2.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-recipes</artifactId>
-            <version>2.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-client</artifactId>
-            <version>2.9.1</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.curator/curator-x-discovery -->
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-x-discovery</artifactId>
-            <version>2.9.1</version>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -120,7 +53,29 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+        <!-- druid -->
+        <dependency>
+            <groupId>commons-pool</groupId>
+            <artifactId>commons-pool</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.17_preview_6</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>4.0.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.38</version>
+        </dependency>
 
         <!--lombok注解自动生成bean方法-->
         <dependency>

@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,22 +34,22 @@ import java.util.List;
 @RequestMapping("/records")
 public class MomentController {
 
-    @Autowired
+    @Resource
     private MomentService momentService;
 
-    @Autowired
+    @Resource
     private ChildService childService;
 
-    @Autowired
+    @Resource
     private GivealikeService givealikeService;
 
-    @Autowired
+    @Resource
     private CommentService commentService;
 
-    @Autowired
+    @Resource
     private LabelService labelService;
 
-    @Autowired
+    @Resource
     private MessageService messageService;
 
     /**

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.service.MsService;
 import com.netease.timemachine.account.util.CheckSumBuilder;
 import com.netease.timemachine.config.SmsAutoConfig;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -13,9 +12,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.List;
  */
 @Service
 public class MsServiceImpl implements MsService {
-    @Autowired
+    @Resource
     SmsAutoConfig smsAutoConfig;
 
     @Override

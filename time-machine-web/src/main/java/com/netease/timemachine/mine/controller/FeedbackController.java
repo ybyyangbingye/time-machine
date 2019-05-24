@@ -3,13 +3,13 @@ package com.netease.timemachine.mine.controller;
 import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.mine.dto.FeedBackDTO;
 import com.netease.timemachine.mine.service.FeedbackService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/mine/feedback")
 public class FeedbackController {
 
-    @Autowired
+    @Resource
     private FeedbackService feedbackService;
 
     @RequestMapping(method = RequestMethod.POST)

@@ -2,18 +2,17 @@ package com.netease.timemachine.common.serviceImpl;
 
 import com.netease.timemachine.common.dao.MessageDao;
 import com.netease.timemachine.common.dto.MessageDTO;
-import com.netease.timemachine.common.meta.Message;
 import com.netease.timemachine.common.service.MessageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class MessageServiceImpl implements MessageService{
 
-    @Autowired
+    @Resource
     private MessageDao messageDao;
 
     @Override

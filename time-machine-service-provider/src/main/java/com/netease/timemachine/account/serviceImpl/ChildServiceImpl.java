@@ -5,8 +5,9 @@ import com.netease.timemachine.account.dto.ChildDTO;
 import com.netease.timemachine.account.meta.Child;
 import com.netease.timemachine.account.service.ChildService;
 import com.netease.timemachine.account.util.ChildDtoToMetaUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @author: wqh
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChildServiceImpl implements ChildService {
 
-    @Autowired
+    @Resource
     private ChildDao childDao;
 
     @Override

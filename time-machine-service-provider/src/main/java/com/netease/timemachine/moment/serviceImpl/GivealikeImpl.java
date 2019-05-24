@@ -4,9 +4,9 @@ import com.netease.timemachine.moment.dao.GivealikeDao;
 import com.netease.timemachine.moment.dto.GivealikeDTO;
 import com.netease.timemachine.moment.meta.Givealike;
 import com.netease.timemachine.moment.service.GivealikeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class GivealikeImpl implements GivealikeService {
 
-    @Autowired
+    @Resource
     private GivealikeDao givealikeDao;
 
     @Override

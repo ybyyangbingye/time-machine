@@ -7,10 +7,10 @@ import com.netease.timemachine.moment.dto.CommentDTO;
 import com.netease.timemachine.moment.meta.Comment;
 import com.netease.timemachine.moment.service.CommentService;
 import com.netease.timemachine.moment.util.CommentDtoToMeta;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +22,10 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    @Autowired
+    @Resource
     private CommentDao commentDao;
 
-    @Autowired
+    @Resource
     private GroupDao groupDao;
 
     @Override

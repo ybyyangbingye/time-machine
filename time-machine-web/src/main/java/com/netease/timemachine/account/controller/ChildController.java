@@ -9,13 +9,12 @@ import com.netease.timemachine.account.service.UserService;
 import com.netease.timemachine.account.util.*;
 import com.netease.timemachine.account.vo.ChildVO;
 import com.netease.timemachine.account.vo.GroupVO;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.netease.timemachine.account.enums.AccountEnum.CHILD_NULL;
@@ -32,13 +31,13 @@ public class ChildController {
 
     private static final String DEFAULT_BABY_PIC = "http://time-machine.nos-eastchina1.126.net/default/baby.jpg";
 
-    @Autowired
+    @Resource
     private ChildService childService;
 
-    @Autowired
+    @Resource
     private GroupService groupService;
 
-    @Autowired
+    @Resource
     private UserService userService;
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)

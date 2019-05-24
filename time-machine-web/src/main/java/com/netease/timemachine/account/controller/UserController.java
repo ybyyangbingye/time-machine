@@ -15,11 +15,11 @@ import com.netease.timemachine.auth.meta.RsaAlgorithm;
 import com.netease.timemachine.common.dto.MessageDTO;
 import com.netease.timemachine.common.service.MessageService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -39,22 +39,22 @@ import static com.netease.timemachine.account.enums.AccountEnum.*;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
-    @Autowired
+    @Resource
     private MsService msService;
 
-    @Autowired
+    @Resource
     private GroupService groupService;
 
-    @Autowired
+    @Resource
     private RsaAlgorithm rsaAlgorithm;
 
-    @Autowired
+    @Resource
     private MessageService messageService;
 
-    @Autowired
+    @Resource
     private ChildService childService;
 
     /**

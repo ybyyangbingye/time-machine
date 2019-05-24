@@ -5,9 +5,9 @@ import com.netease.timemachine.account.dto.GroupDTO;
 import com.netease.timemachine.account.meta.Group;
 import com.netease.timemachine.account.service.GroupService;
 import com.netease.timemachine.account.util.GroupDtoToMetaUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class GroupServiceImpl implements GroupService {
 
-    @Autowired
+    @Resource
     private GroupDao groupDao;
 
     @Override

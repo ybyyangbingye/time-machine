@@ -2,9 +2,9 @@ package com.netease.timemachine.moment.serviceImpl;
 
 import com.netease.timemachine.moment.dao.LabelDao;
 import com.netease.timemachine.moment.service.LabelService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,7 +17,7 @@ public class LabelServiceImpl implements LabelService{
 
     //private static String [] recommendLabels = {"过生日","可爱","写真"};
 
-    @Autowired
+    @Resource
     private LabelDao labelDao;
 
     /**

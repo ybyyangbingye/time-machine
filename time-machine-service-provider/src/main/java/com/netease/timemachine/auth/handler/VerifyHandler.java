@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,7 +27,7 @@ public class VerifyHandler implements HandlerInterceptor {
 
     private static final Logger LOG = LoggerFactory.getLogger(VerifyHandler.class);
 
-    @Autowired
+    @Resource
     private RsaAlgorithm rsaAlgorithm;
 
     @Override

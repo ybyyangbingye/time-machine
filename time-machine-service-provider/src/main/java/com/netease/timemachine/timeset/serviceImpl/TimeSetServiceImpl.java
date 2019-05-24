@@ -5,7 +5,6 @@ import com.netease.timemachine.moment.meta.Resource;
 import com.netease.timemachine.timeset.dao.TimeSetDao;
 import com.netease.timemachine.timeset.dto.TimeSetDTO;
 import com.netease.timemachine.timeset.service.TimeSetService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -21,7 +20,7 @@ public class TimeSetServiceImpl implements TimeSetService {
 
     private static final Integer MAX_PICS = 12;
 
-    @Autowired
+    @javax.annotation.Resource
     private TimeSetDao timeSetDao;
 
     @Override

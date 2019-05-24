@@ -9,11 +9,12 @@ package com.netease.timemachine.nos;
 import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.nos.dto.NosDTO;
 import com.netease.timemachine.nos.service.NosService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @author 李育鑫(liyuxin02 @ corp.netease.com)
@@ -22,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/nos")
 public class NosController {
 
-    @Autowired NosService nosService;
+    @Resource
+    NosService nosService;
 
     @RequestMapping("/token")
     public ResponseEntity token(@RequestBody NosDTO nosDTO){

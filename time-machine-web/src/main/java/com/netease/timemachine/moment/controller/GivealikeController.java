@@ -5,12 +5,12 @@ import com.netease.timemachine.common.service.MessageService;
 import com.netease.timemachine.moment.dto.GivealikeDTO;
 import com.netease.timemachine.moment.service.GivealikeService;
 import com.netease.timemachine.moment.vo.GivealikeVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -23,10 +23,10 @@ import java.util.List;
 @RequestMapping("/like")
 public class GivealikeController {
 
-    @Autowired
+    @Resource
     GivealikeService givealikeService;
 
-    @Autowired
+    @Resource
     MessageService messageService;
 
     @RequestMapping("/givealike")

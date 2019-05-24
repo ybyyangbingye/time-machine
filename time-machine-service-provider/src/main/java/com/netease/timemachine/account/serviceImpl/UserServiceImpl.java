@@ -8,10 +8,9 @@ import com.netease.timemachine.account.meta.User;
 import com.netease.timemachine.account.service.UserService;
 import com.netease.timemachine.account.util.ChildDtoToMetaUtil;
 import com.netease.timemachine.account.util.UserDtoToMetaUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -22,7 +21,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+    @Resource
     private UserDao userDao;
 
     @Override

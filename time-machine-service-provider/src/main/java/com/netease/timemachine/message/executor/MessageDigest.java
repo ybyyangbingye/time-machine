@@ -6,14 +6,13 @@
  */
 package com.netease.timemachine.message.executor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.netease.timemachine.message.meta.Message;
 import com.netease.timemachine.message.meta.MessageCmd;
 import com.netease.timemachine.monitor.MonitorService;
 
-import java.util.Map;
+import javax.annotation.Resource;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,7 +23,8 @@ import java.util.concurrent.Executors;
 public class MessageDigest {
     ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
 
-    @Autowired MonitorService monitorService;
+    @Resource
+    MonitorService monitorService;
     public void digest(Message message){
         if (MessageCmd.cancelThread.equals(message.getCmd())){
             String threadId = (String) message.getData();

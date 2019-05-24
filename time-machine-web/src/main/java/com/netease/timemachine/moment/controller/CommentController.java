@@ -4,21 +4,16 @@ import com.netease.timemachine.account.dto.GroupDTO;
 import com.netease.timemachine.account.service.GroupService;
 import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.common.dto.MessageDTO;
-import com.netease.timemachine.common.meta.Message;
 import com.netease.timemachine.common.service.MessageService;
 import com.netease.timemachine.moment.dto.CommentDTO;
-import com.netease.timemachine.moment.meta.Comment;
 import com.netease.timemachine.moment.service.CommentService;
 import com.netease.timemachine.moment.util.CommentVoToDto;
 import com.netease.timemachine.moment.vo.CommentVO;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.netease.timemachine.moment.enums.CommentEnum.COMMENT_ERROR;
@@ -33,13 +28,13 @@ import static com.netease.timemachine.moment.enums.CommentEnum.COMMENT_NULL;
 @RequestMapping("/comment")
 public class CommentController {
 
-    @Autowired
+    @Resource
     private CommentService commentService;
 
-    @Autowired
+    @Resource
     private GroupService groupService;
 
-    @Autowired
+    @Resource
     private MessageService messageService;
 
     @RequestMapping(value = "/insert",method = RequestMethod.POST)

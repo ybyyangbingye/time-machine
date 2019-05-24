@@ -4,12 +4,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.netease.timemachine.account.util.ResponseView;
 import com.netease.timemachine.moment.service.LocationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @author: wqh
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LocationController {
 
-    @Autowired
+    @Resource
     private LocationService locationService;
 
     @RequestMapping(value = "/posByPoint",method = RequestMethod.POST)

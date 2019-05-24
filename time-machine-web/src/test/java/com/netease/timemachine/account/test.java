@@ -6,6 +6,8 @@
  */
 package com.netease.timemachine.account;
 
+import com.netease.timemachine.account.dto.ChildDTO;
+import com.netease.timemachine.account.service.ChildService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.netease.timemachine.asyntask.img.ImageService;
 import com.netease.timemachine.common.dto.ResourceDTO;
 
+import javax.annotation.Resource;
+import java.util.Date;
+
 /**
  * @author 李育鑫(liyuxin02 @ corp.netease.com)
  */
@@ -21,7 +26,20 @@ import com.netease.timemachine.common.dto.ResourceDTO;
 @SpringBootTest
 public class test {
 
-    @Autowired ImageService imageService;
+    @Resource ImageService imageService;
+    @Resource
+    ChildService childService;
+    @Test
+    public void insertChild(){
+        ChildDTO childDto=new ChildDTO();
+        childDto.setBirthDate(new Date());
+        childDto.setChildId(0L);
+        childDto.setChildName("杨炳烨");
+        childDto.setGender(0);
+        childDto.setImgUrl("1234");
+        childService.insertChild(childDto);
+
+    }
     @Test
     public void t(){
         ResourceDTO resourceDTO = new ResourceDTO();

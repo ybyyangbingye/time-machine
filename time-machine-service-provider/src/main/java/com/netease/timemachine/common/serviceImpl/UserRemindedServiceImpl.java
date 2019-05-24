@@ -3,9 +3,9 @@ package com.netease.timemachine.common.serviceImpl;
 import com.netease.timemachine.common.dao.UserRemindedDao;
 import com.netease.timemachine.common.dto.UserRemindedDTO;
 import com.netease.timemachine.common.service.UserRemindedService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class UserRemindedServiceImpl implements UserRemindedService{
 
-    @Autowired
+    @Resource
     private UserRemindedDao userRemindedDao;
     @Override
     public boolean addUserReminded(UserRemindedDTO userRemindedDTO) {

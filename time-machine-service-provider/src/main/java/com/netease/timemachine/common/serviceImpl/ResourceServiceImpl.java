@@ -3,9 +3,9 @@ package com.netease.timemachine.common.serviceImpl;
 import com.netease.timemachine.common.dao.ResourceDao;
 import com.netease.timemachine.common.dto.ResourceDTO;
 import com.netease.timemachine.common.service.ResourceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class ResourceServiceImpl implements ResourceService{
 
-    @Autowired
+    @Resource
     private ResourceDao resourceDao;
 
     @Override
