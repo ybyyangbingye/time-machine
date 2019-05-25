@@ -4,6 +4,7 @@ import com.netease.timemachine.account.dto.UserDTO;
 import com.netease.timemachine.account.meta.Child;
 import com.netease.timemachine.account.meta.User;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

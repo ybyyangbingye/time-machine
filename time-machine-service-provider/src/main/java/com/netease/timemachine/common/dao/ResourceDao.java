@@ -2,6 +2,7 @@ package com.netease.timemachine.common.dao;
 
 import com.netease.timemachine.common.dto.ResourceDTO;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

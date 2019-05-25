@@ -2,6 +2,9 @@ package com.netease.timemachine.account.dao;
 
 import com.netease.timemachine.account.meta.Child;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 /**
  * @author: wqh
